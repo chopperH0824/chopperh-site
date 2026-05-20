@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>52059 Toy Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="ambient ambient-c"></div>
+
+    <main class="app-shell">
+      <section class="experience-column">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">52059 Interactive Replica</p>
+            <h1>儿童口算机 HTML Demo</h1>
+            <p class="lead">
+              按 PRD 复刻段码屏、玩法状态机和音频触发规则。长按逻辑在 demo
+              中统一缩短为 <strong>0.8 秒</strong>，便于桌面调试。
+            </p>
+          </div>
+
+          <div class="power-deck">
+            <div class="power-card">
+              <span class="card-label">电源 / 音量拨杆</span>
+              <div class="volume-switch" id="volumeSwitch">
+                <button data-volume="off" class="volume-stop is-active">OFF</button>
+                <button data-volume="mute">静音</button>
+                <button data-volume="low">低</button>
+                <button data-volume="high">高</button>
+              </div>
+            </div>
+
+            <div class="utility-actions">
+              <button class="utility-button" id="sleepButton">模拟休眠</button>
+              <button class="utility-button" id="coldBootButton">冷启动</button>
+            </div>
+          </div>
+        </header>
+
+        <section class="toy-stage">
+          <article class="toy-shell" id="toyShell">
+            <div class="toy-shell__badge">
+              <span>Play-Act</span>
+              <strong>Concept Replica</strong>
+            </div>
+
+            <div class="toy-side-decor toy-side-decor--left" aria-hidden="true">
+              <span class="toy-side-decor__tab toy-side-decor__tab--teal"></span>
+              <span class="toy-side-decor__tab toy-side-decor__tab--orange"></span>
+            </div>
+
+            <button class="toy-side-button" data-button="timer" title="倒计时 / 音乐模式">
+              <span class="toy-side-button__tab"></span>
+              <span class="toy-side-button__nub"></span>
+            </button>
+
+            <div class="display-bezel">
+              <section class="lcd-screen" id="lcdScreen">
+                <div class="sleep-mask" id="sleepMask">
+                  <span>Sleeping</span>
+                  <small>Press any key to wake</small>
+                </div>
+
+                <div class="face-row" id="faceRow">
+                  <div class="eye eye-left" id="leftEye"></div>
+                  <div class="mouth" id="mouth"></div>
+                  <div class="eye eye-right" id="rightEye"></div>
+                </div>
+
+                <div class="status-row">
+                  <div class="status-slot timer-slot" id="timerSlot">
+                    <span class="status-glyph status-clock" aria-hidden="true"></span>
+                    <span class="status-text" id="timerValue">--</span>
+                  </div>
+
+                  <div class="status-icons">
+                    <div class="status-slot icon-slot" id="musicSlot">
+                      <span class="status-glyph">♪</span>
+                    </div>
+                    <div class="status-slot icon-slot" id="gameSlot">
+                      <span class="status-glyph">⚑</span>
+                    </div>
+                  </div>
+
+                  <div class="status-slot progress-slot" id="progressSlot">
+                    <span class="status-text" id="progressValue">0/50</span>
+                  </div>
+                </div>
+
+                <div class="main-display" id="mainDisplay">
+                  <div class="digit-cell" data-cell="D1"></div>
+                  <div class="digit-cell" data-cell="D2"></div>
+                  <div class="operator-cell" data-cell="OP1">
+                    <span class="operator-glyph"></span>
+                  </div>
+                  <div class="digit-cell" data-cell="D3"></div>
+                  <div class="digit-cell" data-cell="D4"></div>
+                  <div class="operator-cell" data-cell="OP2">
+                    <span class="operator-glyph"></span>
+                  </div>
+                  <div class="digit-cell wide" data-cell="D5"></div>
+                  <div class="digit-cell wide" data-cell="D6"></div>
+                  <div class="digit-cell wide" data-cell="D7"></div>
+                </div>
+              </section>
+            </div>
+
+            <section class="button-matrix">
+              <div class="mode-row">
+                <button class="toy-button toy-button--mode toy-button--round accent-mode" data-button="star">
+                  <span class="toy-button__glyph">★</span>
+                </button>
+                <button class="toy-button toy-button--mode toy-button--round accent-mode" data-button="single">
+                  <span class="toy-button__glyph">Ⅰ±Ⅰ</span>
+                </button>
+                <button class="toy-button toy-button--mode toy-button--round accent-mode" data-button="double">
+                  <span class="toy-button__glyph">Ⅱ±Ⅱ</span>
+                </button>
+                <button class="toy-button toy-button--mode toy-button--round accent-mode" data-button="timesDivide">
+                  <span class="toy-button__glyph">×÷</span>
+                </button>
+                <button class="toy-button toy-button--mode toy-button--round accent-mode" data-button="table99">
+                  <span class="toy-button__glyph">♫</span>
+                </button>
+              </div>
+
+              <div class="keypad-grid">
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-1">
+                  <span class="toy-button__number">1</span>
+                  <span class="toy-button__note">do</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-2">
+                  <span class="toy-button__number">2</span>
+                  <span class="toy-button__note">re</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-3">
+                  <span class="toy-button__number">3</span>
+                  <span class="toy-button__note">mi</span>
+                </button>
+                <button class="toy-button toy-button--function accent-white" data-button="backspace">
+                  <span class="toy-button__glyph toy-button__glyph--function">←</span>
+                </button>
+
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-4">
+                  <span class="toy-button__number">4</span>
+                  <span class="toy-button__note">fa</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-5">
+                  <span class="toy-button__number">5</span>
+                  <span class="toy-button__note">so</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-6">
+                  <span class="toy-button__number">6</span>
+                  <span class="toy-button__note">la</span>
+                </button>
+                <button class="toy-button toy-button--function accent-white" data-button="equal">
+                  <span class="toy-button__glyph toy-button__glyph--function">=</span>
+                </button>
+
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-7">
+                  <span class="toy-button__number">7</span>
+                  <span class="toy-button__note">si</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-8">
+                  <span class="toy-button__number">8</span>
+                  <span class="toy-button__note toy-button__note--empty">&nbsp;</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-9">
+                  <span class="toy-button__number">9</span>
+                  <span class="toy-button__note toy-button__note--empty">&nbsp;</span>
+                </button>
+                <button class="toy-button toy-button--digit accent-number" data-button="digit-0">
+                  <span class="toy-button__number">0</span>
+                  <span class="toy-button__note toy-button__note--empty">&nbsp;</span>
+                </button>
+
+                <button class="toy-button toy-button--function accent-white" data-button="less">
+                  <span class="toy-button__glyph toy-button__glyph--function">&lt;</span>
+                </button>
+                <button class="toy-button toy-button--function accent-white" data-button="greater">
+                  <span class="toy-button__glyph toy-button__glyph--function">&gt;</span>
+                </button>
+                <button class="toy-button toy-button--ok accent-ok" data-button="ok">
+                  <span class="toy-button__ok">OK</span>
+                </button>
+              </div>
+            </section>
+
+            <div class="toy-logo" aria-hidden="true">Play-Act</div>
+          </article>
+
+          <aside class="info-column">
+            <section class="info-card">
+              <span class="card-label">当前状态</span>
+              <h2 id="modeTitle">等待开机</h2>
+              <p id="modeSubtitle">拨动右上角 OFF / 静音 / 低 / 高 来模拟实体拨杆。</p>
+            </section>
+
+            <section class="info-card split">
+              <div>
+                <span class="card-label">规则片段</span>
+                <p id="ruleHint">休眠和关机会保存会话，冷启动会清空本地缓存。</p>
+              </div>
+              <div>
+                <span class="card-label">音频状态</span>
+                <p id="audioHint">默认读取仓库里已有的 52059 音频，可用右侧导入覆盖。</p>
+              </div>
+            </section>
+
+            <section class="info-card">
+              <span class="card-label">最近事件</span>
+              <ul class="event-log" id="eventLog"></ul>
+            </section>
+          </aside>
+        </section>
+      </section>
+
+      <aside class="audio-column">
+        <section class="audio-card">
+          <span class="card-label">音频导入</span>
+          <h2>提示音预览库</h2>
+          <p class="card-copy">
+            选择一整批已生成音频文件，按文件名自动覆盖默认资源。支持
+            <code>.mp3</code> / <code>.wav</code>。
+          </p>
+
+          <label class="file-drop">
+            <input id="audioImport" type="file" multiple webkitdirectory />
+            <span>导入音频文件夹或多选文件</span>
+            <small id="audioImportSummary">当前使用仓库默认音频。</small>
+          </label>
+
+          <div class="audio-toolbar">
+            <input id="audioSearch" type="search" placeholder="搜索文件名 / 场景" />
+            <button class="utility-button" id="clearImportedAudio">清空导入覆盖</button>
+          </div>
+        </section>
+
+        <section class="audio-card audio-card--table">
+          <div class="audio-table-head">
+            <span class="card-label">需求表映射</span>
+            <p id="audioStats">加载中...</p>
+          </div>
+          <div class="audio-table" id="audioTable"></div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="./audio-data.generated.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
