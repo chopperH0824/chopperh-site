@@ -174,11 +174,11 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
   height: 280px;
   object-fit: cover;
   display: block;
-  filter: grayscale(1) contrast(1.1) brightness(0.85);
+  filter: saturate(0.85) contrast(1.02) brightness(0.9);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .about-photo-wrapper:hover .about-photo {
-  filter: grayscale(0) contrast(1.05) brightness(0.95);
+  filter: saturate(1.1) contrast(1.05) brightness(1.05);
   transform: scale(1.03);
 }
 .about-photo-caption {
