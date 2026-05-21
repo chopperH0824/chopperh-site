@@ -568,6 +568,16 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
   color:var(--text);
   border-bottom-left-radius:4px;
 }
+.message.bot p{
+  margin:0;
+}
+.message.bot ul, .message.bot ol{
+  padding-left:14px;
+}
+.message.bot a{
+  color:var(--accent);
+  text-decoration:underline;
+}
 .message.bot.loading{
   color:var(--text-dim);
   font-style:italic;
@@ -978,6 +988,102 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 </div>
 
 <script>
+// Markdown to HTML Parser
+function formatMarkdown(text) {
+  if (!text) return "";
+
+  // Escape raw HTML tags to prevent XSS
+  let html = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  // Code blocks (triple backticks)
+  html = html.replace(/```([\s\S]*?)```/g, '<pre style="background:rgba(0,0,0,0.4); padding:10px; border-radius:8px; margin:8px 0; overflow-x:auto; border:1px solid rgba(255,255,255,0.06);"><code style="font-family:var(--mono); font-size:12.5px; color:var(--accent-3);">$1</code></pre>');
+
+  // Inline code (single backtick)
+  html = html.replace(/`([^`]+)`/g, '<code style="font-family:var(--mono); background:rgba(255,255,255,0.1); color:var(--accent); padding:2px 4px; border-radius:4px; font-size:12.5px;">$1</code>');
+
+  // Bold (**text** or __text__)
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+
+  // Italic (*text* or _text_)
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+  // Headers (### text, ## text, # text)
+  html = html.replace(/^### (.*$)/gim, '<h4 style="margin:12px 0 6px; font-family:var(--mono); color:var(--accent); font-size:14px; font-weight:700;">$1</h4>');
+  html = html.replace(/^## (.*$)/gim, '<h3 style="margin:14px 0 8px; font-family:var(--display); color:var(--accent); font-size:15px; font-weight:700;">$1</h3>');
+  html = html.replace(/^# (.*$)/gim, '<h2 style="margin:16px 0 10px; font-family:var(--display); color:var(--accent); font-size:17px; font-weight:800;">$1</h2>');
+
+  // Links [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color:var(--accent); text-decoration:underline;">$1</a>');
+
+  // Handle lists
+  const lines = html.split('\n');
+  let inUl = false;
+  let inOl = false;
+  let result = [];
+
+  for (let line of lines) {
+    const trimmed = line.trim();
+
+    // Check for unordered lists (- or *)
+    const ulMatch = line.match(/^([ \t]*)[-*+] +(.*)$/);
+    if (ulMatch) {
+      if (inOl) {
+        result.push('</ol>');
+        inOl = false;
+      }
+      if (!inUl) {
+        result.push('<ul style="margin:6px 0 8px 18px; list-style-type:disc; display:flex; flex-direction:column; gap:4px;">');
+        inUl = true;
+      }
+      result.push(`<li style="color:var(--text); list-style-type:disc;">${ulMatch[2]}</li>`);
+      continue;
+    }
+
+    // Check for ordered lists (1., 2.)
+    const olMatch = line.match(/^([ \t]*)\d+\. +(.*)$/);
+    if (olMatch) {
+      if (inUl) {
+        result.push('</ul>');
+        inUl = false;
+      }
+      if (!inOl) {
+        result.push('<ol style="margin:6px 0 8px 18px; list-style-type:decimal; display:flex; flex-direction:column; gap:4px;">');
+        inOl = true;
+      }
+      result.push(`<li style="color:var(--text); list-style-type:decimal;">${olMatch[2]}</li>`);
+      continue;
+    }
+
+    // Close any open lists if it's not a list item
+    if (inUl) {
+      result.push('</ul>');
+      inUl = false;
+    }
+    if (inOl) {
+      result.push('</ol>');
+      inOl = false;
+    }
+
+    // Paragraph/Line breaks
+    if (trimmed === '') {
+      result.push('<div style="height: 6px;"></div>');
+    } else {
+      result.push(`<p style="margin-bottom:6px; line-height:1.6;">${line}</p>`);
+    }
+  }
+
+  // Close ultimate trailing lists if still open
+  if (inUl) result.push('</ul>');
+  if (inOl) result.push('</ol>');
+
+  return result.join('\n');
+}
+
 // Nav scroll state
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
@@ -1134,7 +1240,7 @@ async function sendMessage(){
                 const data=JSON.parse(trimmed.slice(6).trim());
                 if(data.content){
                   fullReply+=data.content;
-                  botDiv.textContent=fullReply;
+                  botDiv.innerHTML=formatMarkdown(fullReply);
                   chatMessages.scrollTop=chatMessages.scrollHeight;
                 }
               }catch(e){}
@@ -1158,7 +1264,7 @@ async function sendMessage(){
               // 流结束
             }else if(data.content){
               fullReply+=data.content;
-              botDiv.textContent=fullReply;
+              botDiv.innerHTML=formatMarkdown(fullReply);
               chatMessages.scrollTop=chatMessages.scrollHeight;
             }
           }catch(e){
@@ -1171,10 +1277,10 @@ async function sendMessage(){
     if(fullReply){
       chatHistory.push({role:'assistant',content:fullReply});
     }else{
-      botDiv.textContent='抱歉，暂时无法回答。请稍后再试。';
+      botDiv.innerHTML='抱歉，暂时无法回答。请稍后再试。';
     }
   }catch(error){
-    botDiv.textContent='连接失败，请检查网络或稍后再试。';
+    botDiv.innerHTML='连接失败，请检查网络或稍后再试。';
     console.error('Chat error:',error);
   }
 
@@ -1185,7 +1291,11 @@ async function sendMessage(){
 function appendMessage(role,content,isLoading=false){
   const div=document.createElement('div');
   div.className=`message ${role}${isLoading?' loading':''}`;
-  div.textContent=content;
+  if(role==='bot'){
+    div.innerHTML=formatMarkdown(content);
+  }else{
+    div.textContent=content;
+  }
   chatMessages.appendChild(div);
   chatMessages.scrollTop=chatMessages.scrollHeight;
   return div;
