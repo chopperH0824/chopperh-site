@@ -560,7 +560,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal d1" data-cat="content">
       <div class="cat">AI 内容 · 多模态</div>
-      <img src="images/chatcut剪辑口播视频.png" alt="ChatCut工作提效" class="card-image">
+      <img src="images/chatcut剪辑口播视频.png" alt="ChatCut工作提效" class="card-image" data-full="images/chatcut剪辑口播视频.png">
       <h3>多模态内容生成链路</h3>
       <p>串联 Lovart（视觉）+ Suno（音乐）+ ElevenLabs（提示音）形成完整的产品音视频原型生成链路，直接服务工程评审。</p>
       <div class="stack"><span class="chip">Lovart</span><span class="chip">Suno</span><span class="chip">ElevenLabs</span></div>
@@ -651,6 +651,12 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
   </div>
 </footer>
 
+<!-- Image Modal -->
+<div class="image-modal" id="imageModal">
+  <span class="close-btn">&times;</span>
+  <img src="" alt="预览图片" id="modalImage">
+</div>
+
 <script>
 // Nav scroll state
 const nav=document.getElementById('nav');
@@ -723,7 +729,6 @@ document.querySelectorAll('.demo-overlay').forEach(overlay=>{
 // Image modal - double click to enlarge
 const imageModal=document.getElementById('imageModal');
 const modalImage=document.getElementById('modalImage');
-const closeModal=document.getElementById('closeModal');
 
 document.querySelectorAll('.card-image').forEach(img=>{
   img.addEventListener('dblclick',()=>{
@@ -732,7 +737,7 @@ document.querySelectorAll('.card-image').forEach(img=>{
   });
 });
 
-closeModal.addEventListener('click',()=>{
+document.querySelector('.close-btn').addEventListener('click',()=>{
   imageModal.classList.remove('active');
 });
 
