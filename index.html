@@ -207,7 +207,7 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
 /* Card image */
 .card-image{
   width:100%;
-  height:120px;
+  aspect-ratio:1 / 1;
   object-fit:cover;
   border-radius:10px;
   margin-bottom:18px;
@@ -224,16 +224,15 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
 .image-stack{
   position:relative;
   width:100%;
-  height:130px;
+  aspect-ratio:1 / 1;
   margin-bottom:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 .stack-img{
   position:absolute;
   width:88%;
-  height:115px;
+  height:88%;
+  top:6%;
+  left:6%;
   object-fit:cover;
   border-radius:10px;
   border:1px solid var(--border);
@@ -857,10 +856,10 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
     <div class="card reveal d1" data-cat="content">
       <div class="cat">AI 内容 · 多模态</div>
       <div class="image-stack">
-        <img src="next/elevenlabs 提示音.png" class="stack-img" alt="ElevenLabs" data-full="next/elevenlabs 提示音.png">
+        <img src="next/elevenlabs%20%E6%8F%90%E7%A4%BA%E9%9F%B3.png" class="stack-img" alt="ElevenLabs" data-full="next/elevenlabs%20%E6%8F%90%E7%A4%BA%E9%9F%B3.png">
         <img src="next/suno.png" class="stack-img" alt="Suno" data-full="next/suno.png">
         <img src="next/lovart.png" class="stack-img" alt="Lovart" data-full="next/lovart.png">
-        <img src="next/chatcut剪辑口播视频.png" class="stack-img" alt="ChatCut" data-full="next/chatcut剪辑口播视频.png">
+        <img src="next/chatcut%E5%89%AA%E8%BE%91%E5%8F%A3%E6%92%AD%E8%A7%86%E9%A2%91.png" class="stack-img" alt="ChatCut" data-full="next/chatcut%E5%89%AA%E8%BE%91%E5%8F%A3%E6%92%AD%E8%A7%86%E9%A2%91.png">
       </div>
       <h3>多模态内容生成链路</h3>
       <p>串联 Lovart（视觉）+ Suno（音乐）+ ElevenLabs（提示音）形成完整的产品音视频原型生成链路，直接服务工程评审。</p>
