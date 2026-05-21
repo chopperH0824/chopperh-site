@@ -162,6 +162,37 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
 .about-card li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-dim);}
 .about-card li:last-child{border-bottom:none;}
 .about-card li b{color:var(--text);font-weight:600;min-width:74px;font-family:var(--mono);font-size:12px;}
+.about-photo-wrapper {
+  position: relative;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.about-photo {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.1) brightness(0.85);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.about-photo-wrapper:hover .about-photo {
+  filter: grayscale(0) contrast(1.05) brightness(0.95);
+  transform: scale(1.03);
+}
+.about-photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(10, 10, 11, 0.95));
+  padding: 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
 
 /* ===== Tool stack ===== */
 .tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;}
@@ -798,6 +829,10 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       </div>
     </div>
     <div class="about-card reveal d1">
+      <div class="about-photo-wrapper">
+        <img class="about-photo" src="images/yxy/founder_photo.jpg" alt="胡强斌 · 颜小芋创始人">
+        <div class="about-photo-caption">// 颜小芋创始人 · 大学创业 · 2022</div>
+      </div>
       <h4>// QUICK_FACTS</h4>
       <ul>
         <li><b>现职</b><span>乐漾 JOYIN · AI 玩具 / 硬件 PM</span></li>
@@ -850,8 +885,30 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
     <button class="filter" data-f="vibe">Vibe Coding</button>
     <button class="filter" data-f="content">AI 内容</button>
     <button class="filter" data-f="impact">行业影响力</button>
+    <button class="filter" data-f="startup">创业项目</button>
   </div>
   <div class="grid" id="grid">
+
+    <div class="card reveal" data-cat="startup">
+      <div class="cat">创业项目 · 助农产业链</div>
+      <img src="images/yxy/industry_chain_model_clean.jpg" alt="颜小芋助农产业链模型" class="card-image" data-full="images/yxy/industry_chain_model_clean.jpg">
+      <h3>颜小芋 · 助农产业链</h3>
+      <p>大学期间从 0 发起荔浦芋乡村振兴助农项目，完成调研、种植帮扶、自建加工厂、线下体验店与品牌传播闭环。项目累计收购荔浦芋 780 吨，帮助芋农每户年增收约 2100 元。</p>
+      <div class="stack"><span class="chip">0→1创业</span><span class="chip">全产业链</span><span class="chip">乡村振兴</span></div>
+    </div>
+
+    <div class="card reveal d1" data-cat="startup">
+      <div class="cat">创业项目 · 商业闭环</div>
+      <div class="image-stack">
+        <img src="images/yxy/store_overview_crop.jpg" class="stack-img" alt="颜小芋线下体验店数据" data-full="images/yxy/store_overview_crop.jpg">
+        <img src="images/yxy/brand_growth_crop.jpg" class="stack-img" alt="颜小芋品牌与新媒体运营" data-full="images/yxy/brand_growth_crop.jpg">
+        <img src="images/yxy/media_reports_crop.jpg" class="stack-img" alt="颜小芋媒体报道背书" data-full="images/yxy/media_reports_crop.jpg">
+        <img src="images/yxy/brand_timeline_crop.jpg" class="stack-img" alt="颜小芋品牌发展历程" data-full="images/yxy/brand_timeline_crop.jpg">
+      </div>
+      <h3>颜小芋 · 品牌与商业闭环</h3>
+      <p>从产品、供应链、线下体验店到新媒体推广，完成助农品牌商业化闭环。体验店日售 250 杯、手工产品 180 余份，品牌线上会员 6068 人，并获得 CCTV4 / 中新网等媒体报道。</p>
+      <div class="stack"><span class="chip">品牌0→1</span><span class="chip">新媒体运营</span><span class="chip">商业闭环</span></div>
+    </div>
 
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 产品线</div>
@@ -1004,9 +1061,9 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
     </div>
     <div class="tl-item reveal dim">
       <div class="tl-date">2020.11 — 2022.07</div>
-      <div class="tl-role">校园创业项目创始人</div>
-      <div class="tl-co">颜小芋奶茶</div>
-      <div class="tl-desc">桂林理工大学创业园首个示范实体店，从 0 操盘供应链、品牌、新媒体全链路。互联网+ 大赛区级金/银/铜奖。</div>
+      <div class="tl-role">创始人 / 项目负责人</div>
+      <div class="tl-co">颜小芋 · 荔浦芋乡村振兴助农项目</div>
+      <div class="tl-desc">从 0 搭建「种植帮扶 → 自建加工厂 → 线下体验店 → 品牌传播」完整助农产业链。项目累计收购荔浦芋 780 吨，帮助芋农每户年增收约 2100 元，并获得 CCTV4、中新网等媒体报道。</div>
     </div>
   </div>
 </section>
