@@ -339,6 +339,52 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
   background:rgba(255,255,255,0.2);
 }
 
+/* Gallery carousel navigation buttons inside Image Modal */
+.image-modal .nav-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.5);
+  color:white;
+  border:1px solid rgba(255,255,255,0.18);
+  font-size:36px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  cursor:pointer;
+  display:none; /* Hidden by default - dynamic inline display 'flex' in JS */
+  align-items:center;
+  justify-content:center;
+  transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select:none;
+  z-index:1010;
+}
+.image-modal .nav-btn:hover{
+  background:rgba(255,255,255,0.15);
+  border-color:var(--accent);
+  color:var(--accent);
+}
+.image-modal .prev-btn{
+  left:32px;
+}
+.image-modal .next-btn{
+  right:32px;
+}
+
+@media(max-width:640px){
+  .image-modal .nav-btn{
+    width:42px;
+    height:42px;
+    font-size:28px;
+  }
+  .image-modal .prev-btn{
+    left:12px;
+  }
+  .image-modal .next-btn{
+    right:12px;
+  }
+}
+
 /* Demo preview iframe */
 .demo-preview{
   position:relative;
@@ -980,7 +1026,9 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 <!-- Image Modal -->
 <div class="image-modal" id="imageModal">
   <div class="close-btn" id="closeModal">×</div>
+  <button class="nav-btn prev-btn" id="prevImage">‹</button>
   <img src="" alt="预览图片" id="modalImage">
+  <button class="nav-btn next-btn" id="nextImage">›</button>
 </div>
 
 <footer class="wrap">
@@ -989,12 +1037,6 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
     <span class="made">Built with <span class="accent">vibe coding</span> · Claude + Codex · 2026</span>
   </div>
 </footer>
-
-<!-- Image Modal -->
-<div class="image-modal" id="imageModal">
-  <span class="close-btn">&times;</span>
-  <img src="" alt="预览图片" id="modalImage">
-</div>
 
 <!-- AI Chat -->
 <div class="chat-hint">
@@ -1190,15 +1232,58 @@ document.querySelectorAll('.demo-overlay').forEach(overlay=>{
   });
 });
 
-// Image modal - double click to enlarge
+// Image modal - double click to enlarge with carousel support
 const imageModal=document.getElementById('imageModal');
 const modalImage=document.getElementById('modalImage');
+const prevBtn=document.getElementById('prevImage');
+const nextBtn=document.getElementById('nextImage');
+
+let currentGroup=null;
+let currentIndex=-1;
+
+function updateModalImage(){
+  if(currentGroup && currentIndex>=0){
+    modalImage.src=currentGroup[currentIndex];
+  }
+}
 
 document.querySelectorAll('.card-image, .stack-img').forEach(img=>{
   img.addEventListener('dblclick',()=>{
-    modalImage.src=img.dataset.full||img.src;
     imageModal.classList.add('active');
+
+    // 检查双击图片是否隶属某个多图堆叠组
+    const stackContainer=img.closest('.image-stack');
+    if(stackContainer){
+      const siblings=Array.from(stackContainer.querySelectorAll('.stack-img'));
+      currentGroup=siblings.map(s=>s.dataset.full||s.src);
+      currentIndex=siblings.indexOf(img);
+      prevBtn.style.display='flex';
+      nextBtn.style.display='flex';
+    }else{
+      currentGroup=null;
+      currentIndex=-1;
+      prevBtn.style.display='none';
+      nextBtn.style.display='none';
+    }
+
+    modalImage.src=img.dataset.full||img.src;
   });
+});
+
+prevBtn.addEventListener('click',(e)=>{
+  e.stopPropagation(); // 阻止事件冒泡防止关闭模态框
+  if(currentGroup && currentGroup.length>1){
+    currentIndex=(currentIndex - 1 + currentGroup.length)%currentGroup.length;
+    updateModalImage();
+  }
+});
+
+nextBtn.addEventListener('click',(e)=>{
+  e.stopPropagation(); // 阻止事件冒泡防止关闭模态框
+  if(currentGroup && currentGroup.length>1){
+    currentIndex=(currentIndex + 1)%currentGroup.length;
+    updateModalImage();
+  }
 });
 
 document.querySelector('.close-btn').addEventListener('click',()=>{
@@ -1212,8 +1297,16 @@ imageModal.addEventListener('click',(e)=>{
 });
 
 document.addEventListener('keydown',(e)=>{
-  if(e.key==='Escape'){
-    imageModal.classList.remove('active');
+  if(imageModal.classList.contains('active')){
+    if(e.key==='Escape'){
+      imageModal.classList.remove('active');
+    }else if(e.key==='ArrowLeft' && currentGroup && currentGroup.length>1){
+      currentIndex=(currentIndex - 1 + currentGroup.length)%currentGroup.length;
+      updateModalImage();
+    }else if(e.key==='ArrowRight' && currentGroup && currentGroup.length>1){
+      currentIndex=(currentIndex + 1)%currentGroup.length;
+      updateModalImage();
+    }
   }
 });
 
