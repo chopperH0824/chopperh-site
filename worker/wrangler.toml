@@ -1,0 +1,13 @@
+# Cloudflare Worker 配置文件
+name = "hu-qiangbin-ai-chat"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# 环境变量（需要在Cloudflare Dashboard中设置）
+# MIMO_API_KEY = "你的小米mimo-2.5 API密钥"
+
+# KV命名空间（用于存储记忆文件）
+# 需要在Cloudflare Dashboard中创建KV命名空间
+# [[kv_namespaces]]
+# binding = "MEMORY"
+# id = "你的KV命名空间ID"
