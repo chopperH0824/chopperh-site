@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>胡强斌 · AI 产品经理 / AI Builder</title>
 <meta name="description" content="胡强斌 — AI 硬件产品经理，用 AI 工具链构建消费级产品。Vibe coding 作品集与项目展示。">
+<link rel="icon" type="image/png" href="images/ai-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -359,34 +360,33 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 .chat-hint{
   position:fixed;
   bottom:100px;
-  right:20px;
+  right:18px;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:4px;
+  gap:2px;
   z-index:99;
-  animation:hintBounce 2s ease-in-out infinite;
+  animation:hintFloat 3s ease-in-out infinite;
 }
 .chat-hint span{
-  font-family:var(--mono);
-  font-size:12px;
+  font-family:'Caveat',cursive;
+  font-size:16px;
+  font-weight:700;
   color:var(--accent);
-  background:var(--bg-card);
-  padding:4px 8px;
-  border-radius:4px;
-  border:1px solid var(--border);
 }
 .hint-arrow{
-  font-size:20px;
-  animation:arrowBounce 1s ease-in-out infinite;
+  font-size:28px;
+  line-height:1;
+  animation:arrowSpin 3s ease-in-out infinite;
+  transform-origin:center bottom;
 }
-@keyframes hintBounce{
+@keyframes hintFloat{
   0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-5px);}
+  50%{transform:translateY(-6px);}
 }
-@keyframes arrowBounce{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(3px);}
+@keyframes arrowSpin{
+  0%,100%{transform:rotate(-10deg);}
+  50%{transform:rotate(10deg);}
 }
 
 .chat-toggle{
@@ -884,14 +884,18 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 <!-- AI Chat -->
 <div class="chat-hint">
   <span>ask me</span>
-  <div class="hint-arrow">👇</div>
+  <svg class="hint-arrow" width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 8C32 8 20 8 20 20C20 28 28 32 32 32C36 32 44 28 44 20C44 8 32 8 32 8Z" stroke="#D4FF3F" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M32 32L32 56" stroke="#D4FF3F" stroke-width="3" stroke-linecap="round"/>
+    <path d="M24 48L32 56L40 48" stroke="#D4FF3F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
 </div>
 <button class="chat-toggle" id="chatToggle">
   <img src="images/chopper-avatar.jpeg" alt="Chopper" class="chat-avatar">
 </button>
 <div class="chat-window" id="chatWindow">
   <div class="chat-header">
-    <img src="images/chopper-avatar.jpeg" alt="Chopper" class="header-avatar">
+    <img src="images/ai-icon.png" alt="AI" class="header-avatar">
     <div class="info">
       <h3>Chopper AI</h3>
       <p>问我关于胡强斌的问题</p>
@@ -1025,36 +1029,62 @@ async function sendMessage(){
   const message=chatInput.value.trim();
   if(!message)return;
 
-  // 添加用户消息
   chatHistory.push({role:'user',content:message});
   appendMessage('user',message);
   chatInput.value='';
   chatSend.disabled=true;
 
-  // 添加加载提示
-  const loadingDiv=appendMessage('bot','正在思考...',true);
+  // 创建空的bot消息用于流式填充
+  const botDiv=document.createElement('div');
+  botDiv.className='message bot';
+  botDiv.textContent='';
+  chatMessages.appendChild(botDiv);
+  chatMessages.scrollTop=chatMessages.scrollHeight;
+
+  let fullReply='';
 
   try{
     const response=await fetch(WORKER_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message,history:chatHistory.slice(-10)})
+      body:JSON.stringify({message,history:chatHistory.slice(-10),stream:true})
     });
 
-    const data=await response.json();
+    const reader=response.body.getReader();
+    const decoder=new TextDecoder();
 
-    // 移除加载提示
-    loadingDiv.remove();
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
 
-    if(data.reply){
-      chatHistory.push({role:'assistant',content:data.reply});
-      appendMessage('bot',data.reply);
+      const chunk=decoder.decode(value,{stream:true});
+      const lines=chunk.split('\n');
+
+      for(const line of lines){
+        if(line.startsWith('data: ')){
+          try{
+            const data=JSON.parse(line.slice(6));
+            if(data.done){
+              // 流结束
+            }else if(data.content){
+              fullReply+=data.content;
+              botDiv.textContent=fullReply;
+              chatMessages.scrollTop=chatMessages.scrollHeight;
+            }
+          }catch(e){
+            // skip parse errors
+          }
+        }
+      }
+    }
+
+    if(fullReply){
+      chatHistory.push({role:'assistant',content:fullReply});
     }else{
-      appendMessage('bot','抱歉，暂时无法回答。请稍后再试。');
+      botDiv.textContent='抱歉，暂时无法回答。请稍后再试。';
     }
   }catch(error){
-    loadingDiv.remove();
-    appendMessage('bot','连接失败，请检查网络或稍后再试。');
+    botDiv.textContent='连接失败，请检查网络或稍后再试。';
     console.error('Chat error:',error);
   }
 
