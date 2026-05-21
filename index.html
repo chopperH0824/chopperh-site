@@ -194,11 +194,62 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
 /* Card image */
 .card-image{
   width:100%;
-  height:96px;
-  object-fit:cover;
+  height:120px;
+  object-fit:contain;
   border-radius:10px;
   margin-bottom:18px;
   border:1px solid var(--border);
+  background:#f8f8f8;
+  cursor:pointer;
+  transition:transform .2s;
+}
+.card-image:hover{
+  transform:scale(1.02);
+}
+
+/* Image modal */
+.image-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s,visibility .3s;
+  cursor:pointer;
+}
+.image-modal.active{
+  opacity:1;
+  visibility:visible;
+}
+.image-modal img{
+  max-width:90%;
+  max-height:90%;
+  object-fit:contain;
+  border-radius:8px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.image-modal .close-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:30px;
+  color:white;
+  cursor:pointer;
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.1);
+  border-radius:50%;
+  transition:background .2s;
+}
+.image-modal .close-btn:hover{
+  background:rgba(255,255,255,0.2);
 }
 
 /* Demo preview iframe */
@@ -424,7 +475,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 产品线</div>
-      <img src="images/京东B3.jpg" alt="京东AI玩具产品线" class="card-image">
+      <img src="images/b3.jpg" alt="京东AI玩具产品线" class="card-image" data-full="images/b3.jpg">
       <h3>儿童 AI 玩具产品线</h3>
       <p>主导火火兔由传统语音故事机向 AI 大模型玩具转型，2025 年产品线累计销量近百万台，京东 AI 早教类目登顶 TOP 1。</p>
       <div class="stack"><span class="chip">大模型选型</span><span class="chip">多模型热切换</span><span class="chip">量产落地</span></div>
@@ -432,7 +483,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal d1" data-cat="hw">
       <div class="cat">AI 硬件 · IP 联名</div>
-      <img src="images/f6s-ai京东南孔爷爷.jpg" alt="F6S-AI联名故事机" class="card-image">
+      <img src="images/f6s-ai.jpg" alt="F6S-AI联名故事机" class="card-image" data-full="images/f6s-ai.jpg">
       <h3>F6S-AI 联名故事机</h3>
       <p>制作京东 × 南孔爷爷 IP 联名款 AI 故事机，把 IP 内容与 AI 大模型对话能力结合落地量产。</p>
       <div class="stack"><span class="chip">IP 联名</span><span class="chip">京东</span><span class="chip">AI 故事机</span></div>
@@ -440,7 +491,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal d2" data-cat="hw">
       <div class="cat">AI 硬件 · 平台</div>
-      <div class="ph">[ 图片占位 · DIY 平台 ]</div>
+      <img src="images/diy-platform.jpg" alt="AI智能体DIY平台" class="card-image" data-full="images/diy-platform.jpg">
       <h3>AI 智能体 DIY 平台</h3>
       <p>主导落地行业首个品牌方硬件 AI 智能体 DIY 小程序平台，让用户自定义专属 AI 角色。</p>
       <div class="stack"><span class="chip">行业首个</span><span class="chip">小程序</span><span class="chip">用户共创</span></div>
@@ -449,24 +500,24 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 核心项目</div>
       <div class="ph">[ 图片占位 · StickTalk ]</div>
-      <h3>52055 StickTalk — AI 贴纸打印机</h3>
-      <p>公司转型品牌化的关键一步，第一个AI玩具项目。半个CTO + PM角色，梳理AI玩具全技术链路，引入方案商移远通信，研究耗材盈利模式。</p>
+      <h3>AI 贴纸打印机</h3>
+      <p>公司转型品牌化的关键一步，第一个AI玩具项目。半个CTO + PM角色，梳理AI玩具全技术链路，引入方案商，研究耗材盈利模式，实现无需APP即可操作。</p>
       <div class="stack"><span class="chip">AI Sticker Box</span><span class="chip">耗材盈利</span><span class="chip">无需APP</span></div>
     </div>
 
     <div class="card reveal d1" data-cat="hw">
       <div class="cat">AI 硬件 · 在研项目</div>
       <div class="ph">[ 图片占位 · MathToy ]</div>
-      <h3>52059 MathToy — 离线数学学习玩具</h3>
-      <p>LCD段码屏、76文件音频映射，主打"50,000+ Math Questions"，面向Amazon US市场，$23.99定价。</p>
+      <h3>离线数学学习玩具</h3>
+      <p>LCD段码屏、76文件音频映射，主打"50,000+ Math Questions"，面向Amazon US市场。</p>
       <div class="stack"><span class="chip">LCD段码屏</span><span class="chip">离线运行</span><span class="chip">Amazon US</span></div>
     </div>
 
     <div class="card reveal d2" data-cat="hw">
       <div class="cat">AI 硬件 · 在研项目</div>
       <div class="ph">[ 图片占位 · DJMixer ]</div>
-      <h3>52060 DJMixer — 儿童DJ混音器</h3>
-      <p>独创"麦克风旋钮8音色+3推子独立控强度"无限组合玩法，面向Amazon US市场，$19.99定价。</p>
+      <h3>儿童DJ混音器</h3>
+      <p>独创"麦克风旋钮8音色+3推子独立控强度"无限组合玩法，面向Amazon US市场。</p>
       <div class="stack"><span class="chip">8音色</span><span class="chip">3推子</span><span class="chip">无限组合</span></div>
     </div>
 
@@ -587,6 +638,12 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
   </div>
 </section>
 
+<!-- Image Modal -->
+<div class="image-modal" id="imageModal">
+  <div class="close-btn" id="closeModal">×</div>
+  <img src="" alt="预览图片" id="modalImage">
+</div>
+
 <footer class="wrap">
   <div class="foot">
     <span class="logo"><span class="dot"></span>HU_QIANGBIN</span>
@@ -661,6 +718,34 @@ document.querySelectorAll('.demo-overlay').forEach(overlay=>{
   overlay.addEventListener('click',()=>{
     window.open('demo/52059-toy/index.html', '_blank');
   });
+});
+
+// Image modal - double click to enlarge
+const imageModal=document.getElementById('imageModal');
+const modalImage=document.getElementById('modalImage');
+const closeModal=document.getElementById('closeModal');
+
+document.querySelectorAll('.card-image').forEach(img=>{
+  img.addEventListener('dblclick',()=>{
+    modalImage.src=img.dataset.full||img.src;
+    imageModal.classList.add('active');
+  });
+});
+
+closeModal.addEventListener('click',()=>{
+  imageModal.classList.remove('active');
+});
+
+imageModal.addEventListener('click',(e)=>{
+  if(e.target===imageModal){
+    imageModal.classList.remove('active');
+  }
+});
+
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape'){
+    imageModal.classList.remove('active');
+  }
 });
 </script>
 </body>
