@@ -1,32 +1,25 @@
 // Cloudflare Worker - AI Chat Proxy
-// 用于代理小米mimo-2.5 API调用，隐藏API密钥
+// 用于代理小米mimo-2.5 API调用，隐藏API密钥，支持流式输出
 
 export default {
   async fetch(request, env) {
-    // 设置CORS头
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
-    // 处理OPTIONS请求
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // 只允许POST请求
     if (request.method !== 'POST') {
-      return new Response('Method not allowed', {
-        status: 405,
-        headers: corsHeaders
-      });
+      return new Response('Method not allowed', { status: 405, headers: corsHeaders });
     }
 
     try {
-      // 获取请求体
       const body = await request.json();
-      const { message, history = [] } = body;
+      const { message, history = [], stream = false } = body;
 
       if (!message) {
         return new Response(JSON.stringify({ error: 'Message is required' }), {
@@ -35,10 +28,48 @@ export default {
         });
       }
 
-      // 读取记忆文件
-      const memoryContent = await env.MEMORY.get('memory.md');
+      let memoryContent = null;
+      if (env.MEMORY) {
+        try {
+          memoryContent = await env.MEMORY.get('memory.md');
+        } catch (kvError) {
+          console.error('KV get error:', kvError);
+        }
+      }
 
-      // 构建系统提示词
+      if (!memoryContent) {
+        // 容错备份：当KV尚未绑定或为空时，使用本地内置备用记忆文件
+        memoryContent = `# 胡强斌 AI 助手记忆文件
+
+## 基本信息
+- **姓名**：胡强斌（Hu Qiangbin），英文名：Chopper
+- **职位**：AI 玩具 / 硬件产品经理
+- **现公司**：乐漾 JOYIN 集团 · Play-Act 品牌
+- **教育**：桂林理工大学 · 网络工程（计算机类）· 全日制本科
+- **认证**：讯飞/微软 AI Prompt 工程师
+
+## 核心能力
+- **AI 产品全链路**：从调研、竞品拆解、原型设计、原厂对接，到方案商管理、技术评估、量产落地及上市。
+- **AI 工具链**：PickFu、Perplexity、Codex/Qoder（构建网页交互模拟器）、Lovart、ElevenLabs、Suno、Claude/GPT、Hermes Agent（自建 NAS 知识库）、Claude Code 等。
+- **技术选型**：主导 ASR/TTS/LLM 全链路选型，对比 5+ 主流大模型，设计多模型混合架构。
+
+## 工作经历
+- **乐漾 JOYIN (2025.10 - 至今)**：作为新品类开拓者，负责 Play-Act 品牌全线下电子 / AI 玩具，同步推进 8-9 个面向 Amazon US 市场的在研项目。受邀作为百度 Create 2026 VIP 嘉宾。
+- **火火兔 (2024.04 - 2025.10)**：主导传统早教机向 AI 玩具转型，落地 5 个项目，销量百万级，登顶京东类目 TOP 1，参与制作《2025 AI 玩具白皮书》，技术获评价「国内领先」。
+- **亿道信息 (2023.02 - 2024.03)**：项目工程师，负责 28 个量产项目和 3 个研发项目。
+- **颜小芋奶茶 (2020.11 - 2022.07)**：校园创业项目创始人。
+
+## 核心项目
+- **AI 贴纸打印机**：公司转型关键项目，首个 AI 玩具产品，半个 CTO + PM 角色，无需 APP 轻松操作。
+- **AI 智能体 DIY 平台**：行业首个品牌方硬件 AI 智能体 DIY 小程序。
+- **离线数学学习玩具**：面向 Amazon US 市场的 LCD 段码屏极客数学玩具。
+- **儿童 DJ 混音器**：独创 8 音色 + 3 推子无线组合玩法。
+
+## 注意事项
+- 这是公开信息，可以自由分享，但不要透露身份证号、详细住址等个人敏感隐私项目。
+- 保持友好、专业、简练的回答语气。`;
+      }
+
       const systemPrompt = `你是胡强斌的AI助手，用于帮助访客了解胡强斌的信息。
 
 ## 记忆文件
@@ -58,29 +89,27 @@ ${memoryContent}
 - 电话：18476393224
 - 个人网站：https://me.chopperh.me`;
 
-      // 构建消息数组
       const messages = [
         { role: 'system', content: systemPrompt },
         ...history,
         { role: 'user', content: message }
       ];
 
-      // 调用小米mimo-2.5 API
-      const apiResponse = await fetch('https://api.xiaomi.com/v1/chat/completions', {
+      const apiResponse = await fetch('https://token-plan-cn.xiaomimimo.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${env.MIMO_API_KEY}`
         },
         body: JSON.stringify({
-          model: 'mimo-2.5',
+          model: 'mimo-v2.5',
           messages: messages,
           max_tokens: 1024,
-          temperature: 0.7
+          temperature: 0.7,
+          stream: stream
         })
       });
 
-      // 检查API响应
       if (!apiResponse.ok) {
         const errorText = await apiResponse.text();
         console.error('API Error:', errorText);
@@ -90,11 +119,89 @@ ${memoryContent}
         });
       }
 
-      // 解析API响应
+      // 流式输出
+      if (stream) {
+        const readable = new ReadableStream({
+          async start(controller) {
+            const reader = apiResponse.body.getReader();
+            const decoder = new TextDecoder();
+            let fullReply = '';
+            let buffer = '';
+
+            try {
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                  // 处理最后可能剩下的内容
+                  if (buffer.trim()) {
+                    const lines = buffer.split('\n');
+                    for (const line of lines) {
+                      const trimmed = line.trim();
+                      if (trimmed.startsWith('data: ')) {
+                        const data = trimmed.slice(6).trim();
+                        if (data && data !== '[DONE]') {
+                          try {
+                            const parsed = JSON.parse(data);
+                            const content = parsed.choices?.[0]?.delta?.content || '';
+                            if (content) {
+                              fullReply += content;
+                              controller.enqueue(`data: ${JSON.stringify({ content, done: false })}\n\n`);
+                            }
+                          } catch (e) {}
+                        }
+                      }
+                    }
+                  }
+                  break;
+                }
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); // 保留不完整的第一行
+
+                for (const line of lines) {
+                  const trimmed = line.trim();
+                  if (!trimmed) continue;
+                  if (trimmed.startsWith('data: ')) {
+                    const data = trimmed.slice(6).trim();
+                    if (data === '[DONE]') {
+                      controller.enqueue(`data: ${JSON.stringify({ done: true, fullReply })}\n\n`);
+                      break;
+                    }
+                    try {
+                      const parsed = JSON.parse(data);
+                      const content = parsed.choices?.[0]?.delta?.content || '';
+                      if (content) {
+                        fullReply += content;
+                        controller.enqueue(`data: ${JSON.stringify({ content, done: false })}\n\n`);
+                      }
+                    } catch (e) {
+                      // 忽略单行解析错误
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              console.error('Stream error:', e);
+            }
+            controller.close();
+          }
+        });
+
+        return new Response(readable, {
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+          }
+        });
+      }
+
+      // 非流式输出
       const apiData = await apiResponse.json();
       const reply = apiData.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
 
-      // 返回结果
       return new Response(JSON.stringify({
         reply,
         history: [...history, { role: 'user', content: message }, { role: 'assistant', content: reply }]
