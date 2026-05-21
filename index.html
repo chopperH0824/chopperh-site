@@ -191,6 +191,16 @@ nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
 .card .chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:5px;background:rgba(255,255,255,0.05);color:var(--text-dim);border:1px solid var(--border);}
 .card.hide{display:none;}
 
+/* Card image */
+.card-image{
+  width:100%;
+  height:96px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-bottom:18px;
+  border:1px solid var(--border);
+}
+
 /* Demo preview iframe */
 .demo-preview{
   position:relative;
@@ -315,7 +325,8 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
   </h1>
   <div class="hero-sub" id="typed"></div>
   <p class="hero-desc">
-    3 年 AI 硬件产品经理，主导消费级 AI 玩具从 0 到 1 落地。
+    从校园创业到 AI 硬件产品经理，擅长把 AI 技术落地为消费级产品。
+    兼具商业嗅觉和工程落地能力，正在带领公司完成从贴牌到品牌的关键转型。
     把 <strong>AI 工具链深度嵌入产品开发全流程</strong>——既懂产品定义与商业落地，也能亲手用 <strong>vibe coding</strong> 构建原型、模拟器与自动化工具。
   </p>
   <div class="hero-actions">
@@ -350,8 +361,9 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       </p>
       <div class="about-body">
         <p>从校园创业到 AI 硬件产品经理，我主导过火火兔由传统语音故事机向 AI 大模型玩具的战略转型，深度对接讯飞、字节、阿里、京东等头部 AI 原厂，参与制作京东《2025 AI 玩具白皮书》。</p>
-        <p>现在乐漾（JOYIN 集团）作为新品类开拓者，负责 Play-Act 品牌全线电子 / AI 玩具——从 0 到 1 规划立项、老品迭代到运营支持，同步推进 8–9 个研发中项目。</p>
+        <p>现在乐漾（JOYIN 集团）作为新品类开拓者，负责 Play-Act 品牌全线电子 / AI 玩具——从 0 到 1 规划立项、老品迭代到运营支持，同步推进 8–9 个研发中项目，覆盖 AI / 音频 / 电子学习 / 变声器品类，面向 Amazon US。</p>
         <p>我相信 PM 不该只停在「写需求」。我用 Codex、Claude Code、Qoder 亲手构建交互模拟器、自动化工具，甚至自建了一套跑在 NAS 上的 AI 知识库助手。</p>
+        <p>获讯飞/微软 AI Prompt 工程师认证，主导 ASR/TTS/LLM 全链路技术选型，深度对比 5+ 主流大模型，设计多模型混合架构支持服务热切换。</p>
       </div>
     </div>
     <div class="about-card reveal d1">
@@ -363,6 +375,8 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
         <li><b>认证</b><span>讯飞 / 微软 AI Prompt 工程师</span></li>
         <li><b>资源</b><span>6+ 头部大模型原厂深度合作</span></li>
         <li><b>玩法</b><span>Vibe Coding · 自建 AI Agent</span></li>
+        <li><b>荣誉</b><span>百度 Create 2026 VIP 嘉宾</span></li>
+        <li><b>成果</b><span>科学技术成果评价「国内领先」</span></li>
       </ul>
     </div>
   </div>
@@ -410,7 +424,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 产品线</div>
-      <div class="ph">[ 图片占位 · product line ]</div>
+      <img src="images/京东B3.jpg" alt="京东AI玩具产品线" class="card-image">
       <h3>儿童 AI 玩具产品线</h3>
       <p>主导火火兔由传统语音故事机向 AI 大模型玩具转型，2025 年产品线累计销量近百万台，京东 AI 早教类目登顶 TOP 1。</p>
       <div class="stack"><span class="chip">大模型选型</span><span class="chip">多模型热切换</span><span class="chip">量产落地</span></div>
@@ -418,7 +432,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal d1" data-cat="hw">
       <div class="cat">AI 硬件 · IP 联名</div>
-      <div class="ph">[ 图片占位 · F6S-AI ]</div>
+      <img src="images/f6s-ai京东南孔爷爷.jpg" alt="F6S-AI联名故事机" class="card-image">
       <h3>F6S-AI 联名故事机</h3>
       <p>制作京东 × 南孔爷爷 IP 联名款 AI 故事机，把 IP 内容与 AI 大模型对话能力结合落地量产。</p>
       <div class="stack"><span class="chip">IP 联名</span><span class="chip">京东</span><span class="chip">AI 故事机</span></div>
@@ -430,6 +444,30 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <h3>AI 智能体 DIY 平台</h3>
       <p>主导落地行业首个品牌方硬件 AI 智能体 DIY 小程序平台，让用户自定义专属 AI 角色。</p>
       <div class="stack"><span class="chip">行业首个</span><span class="chip">小程序</span><span class="chip">用户共创</span></div>
+    </div>
+
+    <div class="card reveal" data-cat="hw">
+      <div class="cat">AI 硬件 · 核心项目</div>
+      <div class="ph">[ 图片占位 · StickTalk ]</div>
+      <h3>52055 StickTalk — AI 贴纸打印机</h3>
+      <p>公司转型品牌化的关键一步，第一个AI玩具项目。半个CTO + PM角色，梳理AI玩具全技术链路，引入方案商移远通信，研究耗材盈利模式。</p>
+      <div class="stack"><span class="chip">AI Sticker Box</span><span class="chip">耗材盈利</span><span class="chip">无需APP</span></div>
+    </div>
+
+    <div class="card reveal d1" data-cat="hw">
+      <div class="cat">AI 硬件 · 在研项目</div>
+      <div class="ph">[ 图片占位 · MathToy ]</div>
+      <h3>52059 MathToy — 离线数学学习玩具</h3>
+      <p>LCD段码屏、76文件音频映射，主打"50,000+ Math Questions"，面向Amazon US市场，$23.99定价。</p>
+      <div class="stack"><span class="chip">LCD段码屏</span><span class="chip">离线运行</span><span class="chip">Amazon US</span></div>
+    </div>
+
+    <div class="card reveal d2" data-cat="hw">
+      <div class="cat">AI 硬件 · 在研项目</div>
+      <div class="ph">[ 图片占位 · DJMixer ]</div>
+      <h3>52060 DJMixer — 儿童DJ混音器</h3>
+      <p>独创"麦克风旋钮8音色+3推子独立控强度"无限组合玩法，面向Amazon US市场，$19.99定价。</p>
+      <div class="stack"><span class="chip">8音色</span><span class="chip">3推子</span><span class="chip">无限组合</span></div>
     </div>
 
     <div class="card reveal" data-cat="vibe">
@@ -471,7 +509,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal d1" data-cat="content">
       <div class="cat">AI 内容 · 多模态</div>
-      <div class="ph">[ 图片占位 · 内容拼贴 ]</div>
+      <img src="images/chatcut剪辑口播视频.png" alt="ChatCut工作提效" class="card-image">
       <h3>多模态内容生成链路</h3>
       <p>串联 Lovart（视觉）+ Suno（音乐）+ ElevenLabs（提示音）形成完整的产品音视频原型生成链路，直接服务工程评审。</p>
       <div class="stack"><span class="chip">Lovart</span><span class="chip">Suno</span><span class="chip">ElevenLabs</span></div>
@@ -521,6 +559,12 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
       <div class="tl-role">项目工程师 / 产品方案工程师</div>
       <div class="tl-co">亿道信息 · 三防 OEM/ODM 上市公司</div>
       <div class="tl-desc">负责 28 个量产项目 + 3 个研发项目，主导 ID/MD/SCH/Layout 设计评审，把控项目全流程。打下扎实的硬件方案与项目管理基础。</div>
+    </div>
+    <div class="tl-item reveal dim">
+      <div class="tl-date">2022.07 — 2022.09</div>
+      <div class="tl-role">市场推广实习生</div>
+      <div class="tl-co">vivo · 未来星成长训练营</div>
+      <div class="tl-desc">综合评分排名第一（3场策划活动均为第一），获秋招面试直通卡。自主策划活动，销量提升率最高600%，抖音直播5场，线上观众转化为进店客户100+。</div>
     </div>
     <div class="tl-item reveal dim">
       <div class="tl-date">2020.11 — 2022.07</div>
