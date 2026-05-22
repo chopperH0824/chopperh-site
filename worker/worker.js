@@ -1,5 +1,5 @@
-// Cloudflare Worker - AI Chat Proxy
-// 用于代理小米mimo-2.5 API调用，隐藏API密钥，支持流式输出
+// Cloudflare Worker - AI Chat + TTS Proxy
+// 用于代理小米 MiMo API 调用，隐藏 API 密钥，支持流式输出和 TTS
 
 export default {
   async fetch(request, env) {
@@ -13,13 +13,106 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
-    if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405, headers: corsHeaders });
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    // TTS 端点
+    if (path === '/tts' && request.method === 'POST') {
+      return this.handleTTS(request, env, corsHeaders);
     }
 
+    // LLM 端点（默认 / 或 /chat）
+    if ((path === '/' || path === '/chat') && request.method === 'POST') {
+      return this.handleChat(request, env, corsHeaders);
+    }
+
+    // 健康检查
+    if (path === '/ping') {
+      return new Response(JSON.stringify({ ok: true }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    return new Response(JSON.stringify({ error: 'Not found' }), {
+      status: 404,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  },
+
+  // ─── TTS 处理 ─────────────────────────────────────
+  async handleTTS(request, env, corsHeaders) {
     try {
-      const body = await request.json();
-      const { message, history = [], stream = false } = body;
+      const { text, voice = '冰糖', model = 'mimo-v2.5-tts', style } = await request.json();
+
+      if (!text) {
+        return new Response(JSON.stringify({ error: 'text is required' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      const messages = [];
+      if (style) {
+        messages.push({ role: 'user', content: style });
+      }
+      messages.push({ role: 'assistant', content: text });
+
+      const apiResponse = await fetch('https://api.xiaomimimo.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': env.MIMO_API_KEY
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          audio: { format: 'wav', voice }
+        })
+      });
+
+      if (!apiResponse.ok) {
+        const err = await apiResponse.text();
+        console.error('MiMo TTS Error:', err);
+        return new Response(JSON.stringify({ error: 'TTS service error' }), {
+          status: 502,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      const data = await apiResponse.json();
+      const audioBase64 = data.choices?.[0]?.message?.audio?.data;
+
+      if (!audioBase64) {
+        return new Response(JSON.stringify({ error: 'No audio in response' }), {
+          status: 502,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 解码 base64 音频并返回
+      const audioBytes = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
+
+      return new Response(audioBytes, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'audio/wav',
+          'Cache-Control': 'no-cache'
+        }
+      });
+
+    } catch (error) {
+      console.error('TTS Worker Error:', error);
+      return new Response(JSON.stringify({ error: 'TTS internal error' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+  },
+
+  // ─── LLM 对话处理 ────────────────────────────────
+  async handleChat(request, env, corsHeaders) {
+    try {
+      const { message, history = [], stream = false } = await request.json();
 
       if (!message) {
         return new Response(JSON.stringify({ error: 'Message is required' }), {
@@ -38,7 +131,6 @@ export default {
       }
 
       if (!memoryContent) {
-        // 容错备份：当KV尚未绑定或为空时，使用本地内置备用记忆文件
         memoryContent = `# 胡强斌 AI 助手记忆文件
 
 ## 基本信息
@@ -63,7 +155,7 @@ export default {
 - **AI 贴纸打印机**：公司转型关键项目，首个 AI 玩具产品，半个 CTO + PM 角色，无需 APP 轻松操作。
 - **AI 智能体 DIY 平台**：行业首个品牌方硬件 AI 智能体 DIY 小程序。
 - **离线数学学习玩具**：面向 Amazon US 市场的 LCD 段码屏极客数学玩具。
-- **儿童 DJ 混音器**：独创 8 音色 + 3 推子无线组合玩法。
+- **儿童 DJ 混音器**：独创 8 音色 + 3 推子无限组合玩法。
 
 ## 注意事项
 - 这是公开信息，可以自由分享，但不要透露身份证号、详细住址等个人敏感隐私项目。
@@ -132,7 +224,6 @@ ${memoryContent}
               while (true) {
                 const { done, value } = await reader.read();
                 if (done) {
-                  // 处理最后可能剩下的内容
                   if (buffer.trim()) {
                     const lines = buffer.split('\n');
                     for (const line of lines) {
@@ -157,7 +248,7 @@ ${memoryContent}
 
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n');
-                buffer = lines.pop(); // 保留不完整的第一行
+                buffer = lines.pop();
 
                 for (const line of lines) {
                   const trimmed = line.trim();
@@ -175,9 +266,7 @@ ${memoryContent}
                         fullReply += content;
                         controller.enqueue(`data: ${JSON.stringify({ content, done: false })}\n\n`);
                       }
-                    } catch (e) {
-                      // 忽略单行解析错误
-                    }
+                    } catch (e) {}
                   }
                 }
               }

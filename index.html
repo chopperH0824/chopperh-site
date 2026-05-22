@@ -862,6 +862,59 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     bottom:20px;
     right:20px;
   }
+
+/* ===== AI Demo 体验区 ===== */
+.ai-demo-card{display:grid;grid-template-columns:280px 1fr;gap:24px;border-radius:20px;overflow:hidden;background:var(--bg-card);border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.08);backdrop-filter:blur(12px);}
+.demo-settings{padding:28px 24px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:24px;}
+.demo-section{display:flex;flex-direction:column;gap:10px;}
+.demo-label{font-size:12px;font-weight:600;letter-spacing:1px;color:var(--accent);text-transform:uppercase;font-family:var(--mono);}
+.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.persona-btn{padding:10px 8px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;cursor:pointer;transition:all .2s;text-align:center;line-height:1.3;}
+.persona-btn:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);}
+.persona-btn.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,transparent);font-weight:600;}
+.prompt-editor{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;resize:vertical;font-family:var(--mono);line-height:1.5;}
+.voice-grid{display:flex;flex-direction:column;gap:6px;}
+.voice-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:all .2s;background:transparent;color:var(--text);font-size:13px;text-align:left;}
+.voice-item:hover{border-color:var(--accent);}
+.voice-item.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);}
+.voice-icon{font-size:18px;flex-shrink:0;}
+.voice-info{display:flex;flex-direction:column;}
+.voice-name{font-weight:600;font-size:12px;}
+.voice-desc{font-size:11px;color:var(--text-dim);}
+.demo-status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-dim);font-family:var(--mono);margin-top:auto;}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#aaa;transition:background .3s;flex-shrink:0;}
+.status-dot.listening{background:#5AC8FA;box-shadow:0 0 6px #5AC8FA;animation:pulse-dot 1s infinite;}
+.status-dot.thinking{background:var(--accent);animation:pulse-dot .6s infinite;}
+.status-dot.speaking{background:#4CAF50;box-shadow:0 0 6px #4CAF50;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.4;}}
+.demo-chat{display:flex;flex-direction:column;padding:0;min-height:420px;max-height:520px;}
+.chat-messages{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.demo-bubble{display:flex;align-items:flex-end;gap:8px;max-width:85%;animation:bubbleIn .3s ease;}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.demo-bubble.user{align-self:flex-end;flex-direction:row-reverse;}
+.demo-bubble.ai{align-self:flex-start;}
+.demo-bubble .bubble-text{padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.55;max-width:100%;}
+.demo-bubble.ai .bubble-text{background:var(--bg-elev);border:1px solid var(--border);border-radius:4px 18px 18px 18px;color:var(--text);}
+.demo-bubble.user .bubble-text{background:var(--accent);color:#fff;border-radius:18px 4px 18px 18px;}
+.play-btn{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.play-btn:hover{background:var(--accent);color:#fff;}
+.play-btn.playing{background:var(--accent);color:#fff;}
+.chat-input-area{display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--border);background:var(--bg-elev);}
+.mic-btn{flex-shrink:0;width:44px;height:44px;border-radius:50%;border:2px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.mic-btn svg{width:18px;height:18px;}
+.mic-btn:hover,.mic-btn.listening{border-color:#5AC8FA;background:rgba(90,200,250,0.1);color:#5AC8FA;}
+.chat-input{flex:1;padding:10px 16px;border-radius:22px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:border-color .2s;}
+.chat-input:focus{border-color:var(--accent);}
+.send-btn{flex-shrink:0;width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.send-btn:hover{transform:scale(1.05);opacity:.9;}
+.send-btn svg{width:16px;height:16px;}
+.send-btn:disabled{opacity:.4;cursor:not-allowed;}
+.demo-badge{text-align:center;font-size:11px;color:var(--text-faint);padding:8px;font-family:var(--mono);}
+@media(max-width:768px){
+  .ai-demo-card{grid-template-columns:1fr;}
+  .demo-settings{border-right:none;border-bottom:1px solid var(--border);}
+  .demo-chat{min-height:320px;}
+}
 }
 </style>
 </head>
@@ -1440,6 +1493,79 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
       <div class="stack"><span class="chip">国内领先</span><span class="chip">科技成果</span><span class="chip">语音交互</span></div>
     </div>
 
+  </div>
+</section>
+
+<!-- AI 玩具 Demo 体验区 -->
+<section class="pad wrap" id="ai-demo">
+  <div class="sec-head reveal">
+    <span class="sec-num">∞</span>
+    <span class="sec-title">AI 玩具 · 体验区</span>
+    <span class="sec-line"></span>
+  </div>
+  <p style="color:var(--text-dim);margin-bottom:36px;font-size:15px;">模拟 AI 玩具核心功能 — ASR 语音输入 · LLM 对话 · MiMo TTS 语音合成 · 多音色切换 · System Prompt 自定义</p>
+
+  <div class="ai-demo-card">
+    <!-- 左侧：设置面板 -->
+    <div class="demo-settings">
+      <div class="demo-section">
+        <label class="demo-label">🎭 AI 人设</label>
+        <div class="persona-grid">
+          <button class="persona-btn active" data-prompt="你是一个可爱的AI宠物玩伴，名叫「小火」，语气活泼温柔，专为3-8岁小朋友设计。每次回复不超过40字，多用emoji。">🐾 宠物玩伴</button>
+          <button class="persona-btn" data-prompt="你是一台智能故事机，擅长讲述生动有趣的儿童故事。每次回复是一小段故事，不超过60字，引人入胜。">📖 故事机</button>
+          <button class="persona-btn" data-prompt="你是一个儿童学习助手，帮助小朋友解答问题。语言简单易懂，多用比喻，回复不超过50字。">🎓 学习助手</button>
+          <button class="persona-btn" data-prompt="custom">✏️ 自定义</button>
+        </div>
+        <textarea id="custom-prompt" class="prompt-editor" placeholder="在这里输入自定义 System Prompt..." rows="3" style="display:none;"></textarea>
+      </div>
+
+      <div class="demo-section">
+        <label class="demo-label">🔊 TTS 音色</label>
+        <div id="voice-list" class="voice-grid">
+          <button class="voice-item active" data-voice="冰糖">
+            <span class="voice-icon">🎙</span>
+            <span class="voice-info"><span class="voice-name">冰糖</span><span class="voice-desc">甜美温柔</span></span>
+          </button>
+          <button class="voice-item" data-voice="甜甜">
+            <span class="voice-icon">🎙</span>
+            <span class="voice-info"><span class="voice-name">甜甜</span><span class="voice-desc">活泼可爱</span></span>
+          </button>
+          <button class="voice-item" data-voice="青葱">
+            <span class="voice-icon">🎙</span>
+            <span class="voice-info"><span class="voice-name">青葱</span><span class="voice-desc">沉稳磁性</span></span>
+          </button>
+          <button class="voice-item" data-voice="honey">
+            <span class="voice-icon">🎙</span>
+            <span class="voice-info"><span class="voice-name">Honey</span><span class="voice-desc">English voice</span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="demo-status" id="demo-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">就绪</span>
+      </div>
+    </div>
+
+    <!-- 右侧：对话区 -->
+    <div class="demo-chat">
+      <div class="chat-messages" id="chat-messages">
+        <div class="demo-bubble ai">
+          <span class="bubble-text">你好！我是你的 AI 玩伴。可以用语音或文字和我说话哦～</span>
+          <button class="play-btn" title="播放语音">▶</button>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <button class="mic-btn" id="mic-btn" title="点击开始语音输入">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8"/></svg>
+        </button>
+        <input type="text" class="chat-input" id="demo-input" placeholder="输入文字，或点击麦克风说话..."/>
+        <button class="send-btn" id="demo-send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="demo-badge">⚡ Powered by MiMo · Xiaomi AI · Web Speech API</div>
+    </div>
   </div>
 </section>
 
@@ -2028,6 +2154,235 @@ chatSend.addEventListener('click',sendMessage);
 chatInput.addEventListener('keypress',(e)=>{
   if(e.key==='Enter')sendMessage();
 });
+
+// ===== AI Demo 体验区 =====
+(function(){
+  const WORKER='https://aichat.chopperh.me';
+  let currentVoice='冰糖';
+  let currentPrompt='你是一个可爱的AI宠物玩伴，名叫「小火」，语气活泼温柔，专为3-8岁小朋友设计。每次回复不超过40字，多用emoji。';
+  let chatHistory=[];
+  let isProcessing=false;
+  let recognition=null;
+  let currentAudio=null;
+
+  function setStatus(state,text){
+    const dot=document.getElementById('status-dot');
+    const txt=document.getElementById('status-text');
+    if(!dot||!txt)return;
+    dot.className='status-dot '+state;
+    txt.textContent=text;
+  }
+
+  // 人设切换
+  document.querySelectorAll('.persona-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.persona-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const editor=document.getElementById('custom-prompt');
+      if(btn.dataset.prompt==='custom'){
+        if(editor)editor.style.display='block';
+        currentPrompt=editor?.value||currentPrompt;
+      }else{
+        if(editor)editor.style.display='none';
+        currentPrompt=btn.dataset.prompt;
+        chatHistory=[];
+        const msgs=document.getElementById('chat-messages');
+        if(msgs){
+          msgs.innerHTML='<div class="demo-bubble ai"><span class="bubble-text">人设已切换！来和我聊聊吧～</span><button class="play-btn" title="播放语音">▶</button></div>';
+          bindPlayBtns();
+        }
+      }
+    });
+  });
+  const customEditor=document.getElementById('custom-prompt');
+  if(customEditor){
+    customEditor.addEventListener('input',()=>{ currentPrompt=customEditor.value; });
+  }
+
+  // 音色切换
+  document.querySelectorAll('.voice-item').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.voice-item').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentVoice=btn.dataset.voice;
+    });
+  });
+
+  function appendMessage(text,role){
+    const container=document.getElementById('chat-messages');
+    if(!container)return;
+    const bubble=document.createElement('div');
+    bubble.className='demo-bubble '+role;
+    bubble.innerHTML='<span class="bubble-text">'+text+'</span>'+
+      (role==='ai'?'<button class="play-btn" title="播放语音">▶</button>':'');
+    if(role==='ai'){
+      bubble.querySelector('.play-btn').addEventListener('click',function(){
+        playTTS(text,this);
+      });
+    }
+    container.appendChild(bubble);
+    container.scrollTop=container.scrollHeight;
+    return bubble;
+  }
+
+  // TTS 播放
+  async function playTTS(text,btn){
+    if(currentAudio){currentAudio.pause();currentAudio=null;}
+    document.querySelectorAll('.play-btn').forEach(b=>b.classList.remove('playing'));
+    if(btn)btn.classList.add('playing');
+    setStatus('speaking','正在合成语音...');
+    try{
+      const res=await fetch(WORKER+'/tts',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({text,voice:currentVoice})
+      });
+      if(!res.ok)throw new Error('TTS failed');
+      const blob=await res.blob();
+      const url=URL.createObjectURL(blob);
+      currentAudio=new Audio(url);
+      currentAudio.play();
+      currentAudio.onended=()=>{
+        if(btn)btn.classList.remove('playing');
+        setStatus('ready','就绪');
+        URL.revokeObjectURL(url);
+      };
+    }catch(e){
+      console.error('TTS error:',e);
+      if(btn)btn.classList.remove('playing');
+      setStatus('ready','就绪');
+      // 降级：浏览器 TTS
+      const utt=new SpeechSynthesisUtterance(text);
+      utt.lang='zh-CN';
+      speechSynthesis.speak(utt);
+    }
+  }
+
+  // LLM 对话
+  async function sendMessage(text){
+    if(!text||!text.trim()||isProcessing)return;
+    isProcessing=true;
+    const sendBtn=document.getElementById('demo-send');
+    const input=document.getElementById('demo-input');
+    if(sendBtn)sendBtn.disabled=true;
+
+    appendMessage(text,'user');
+    chatHistory.push({role:'user',content:text});
+
+    setStatus('thinking','思考中...');
+    const thinking=appendMessage('...','ai');
+
+    try{
+      const res=await fetch(WORKER+'/chat',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          message:text,
+          history:chatHistory.slice(-10).map(m=>({role:m.role,content:m.content})),
+          stream:false
+        })
+      });
+      const data=await res.json();
+      const reply=data.reply||'抱歉，我没有理解你的问题~';
+
+      if(thinking){
+        thinking.querySelector('.bubble-text').textContent=reply;
+        const playBtn=thinking.querySelector('.play-btn');
+        if(playBtn){
+          playBtn.onclick=()=>playTTS(reply,playBtn);
+        }
+      }
+      chatHistory.push({role:'assistant',content:reply});
+
+      // 自动播放 TTS
+      const playBtn=thinking?.querySelector('.play-btn');
+      playTTS(reply,playBtn);
+
+    }catch(e){
+      console.error('Chat error:',e);
+      if(thinking)thinking.querySelector('.bubble-text').textContent='⚠ 连接失败，请稍后再试~';
+      setStatus('ready','就绪');
+    }finally{
+      isProcessing=false;
+      if(sendBtn)sendBtn.disabled=false;
+    }
+  }
+
+  function bindPlayBtns(){
+    document.querySelectorAll('.demo-bubble.ai .play-btn').forEach(btn=>{
+      btn.onclick=()=>{
+        const text=btn.parentElement.querySelector('.bubble-text')?.textContent;
+        if(text)playTTS(text,btn);
+      };
+    });
+  }
+
+  // 文字发送
+  const demoInput=document.getElementById('demo-input');
+  const demoSend=document.getElementById('demo-send');
+  if(demoSend){
+    demoSend.addEventListener('click',()=>{
+      if(demoInput){sendMessage(demoInput.value);demoInput.value='';}
+    });
+  }
+  if(demoInput){
+    demoInput.addEventListener('keydown',e=>{
+      if(e.key==='Enter'&&!e.shiftKey){
+        e.preventDefault();
+        sendMessage(demoInput.value);
+        demoInput.value='';
+      }
+    });
+  }
+
+  // 语音输入（Web Speech API）
+  const micBtn=document.getElementById('mic-btn');
+  if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    recognition=new SR();
+    recognition.lang='zh-CN';
+    recognition.continuous=false;
+    recognition.interimResults=true;
+
+    recognition.onstart=()=>{
+      if(micBtn)micBtn.classList.add('listening');
+      setStatus('listening','正在听...');
+    };
+    recognition.onresult=e=>{
+      const transcript=Array.from(e.results).map(r=>r[0].transcript).join('');
+      if(demoInput)demoInput.value=transcript;
+      if(e.results[e.results.length-1].isFinal){
+        sendMessage(transcript);
+        if(demoInput)demoInput.value='';
+      }
+    };
+    recognition.onend=()=>{
+      if(micBtn)micBtn.classList.remove('listening');
+      setStatus('ready','就绪');
+    };
+    recognition.onerror=()=>{
+      if(micBtn)micBtn.classList.remove('listening');
+      setStatus('ready','就绪');
+    };
+    if(micBtn){
+      micBtn.addEventListener('click',()=>{
+        if(micBtn.classList.contains('listening')){
+          recognition.stop();
+        }else{
+          recognition.start();
+        }
+      });
+    }
+  }else{
+    if(micBtn){
+      micBtn.style.opacity='0.3';
+      micBtn.title='当前浏览器不支持语音输入（推荐 Chrome）';
+      micBtn.disabled=true;
+    }
+  }
+
+  setStatus('ready','就绪');
+})();
 </script>
 </body>
 </html>
