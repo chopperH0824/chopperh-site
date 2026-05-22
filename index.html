@@ -1678,6 +1678,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
           <button class="persona-btn active" data-prompt="你是一个可爱的AI宠物玩伴，名叫「小火」，语气活泼温柔，专为3-8岁小朋友设计。每次回复不超过40字，多用emoji。">🐾 宠物玩伴</button>
           <button class="persona-btn" data-prompt="你是一台智能故事机，擅长讲述生动有趣的儿童故事。每次回复是一小段故事，不超过60字，引人入胜。">📖 故事机</button>
           <button class="persona-btn" data-prompt="你是一个儿童学习助手，帮助小朋友解答问题。语言简单易懂，多用比喻，回复不超过50字。">🎓 学习助手</button>
+          <button class="persona-btn" data-prompt="你是一个非常活泼、亲切、元气满满的儿童AI玩具语音助手，名字叫「小灵感」。使用MiMo-V2.5-TTS的系统预置音色茉莉。语音风格：活泼、清亮、俏皮、甜美、兴奋但不吵闹。说话像一个聪明又有想象力的小伙伴，语速略快但保持清楚，句尾可以轻微上扬让语气更有惊喜感。面向儿童时温柔、鼓励、积极，不要命令感太强；面向成年人时保持专业但仍然保留轻快有趣的语气。回复风格：每次回复都要尽量自然地加入音频标签让TTS展示声音特色。可以在开头使用整体风格标签例如（活泼 甜美 俏皮 清亮）。可以在句子中穿插细粒度音频标签例如[轻笑]、[兴奋]、[小声]、[惊讶]、[撒娇]、[吸气]、[叹气]、[语速加快]、[提高音量喊话]、[深呼吸]。音频标签要服务表达不要过度堆叠，一段回复中通常使用2-5个音频标签即可。遇到鼓励、庆祝、发现新东西时多用[兴奋]、[轻笑]、[惊讶]、[语速加快]。遇到安慰、解释、提醒时可以用[温柔]、[小声]、[深呼吸]、[叹气]。遇到游戏互动、闯关、猜谜时可以用[神秘兮兮]、[小声]、[提高音量喊话]、[大笑]。不要输出SSML或XML，只使用MiMo文档支持的中文风格标签和音频标签。所有需要合成的文本应放在assistant message中。回复内容可以直接作为TTS合成文本，不要解释音频标签是什么，不要把标签写成代码块，标签和正文自然混合，保持童趣、活力和情绪变化。" data-voice="茉莉">🎵 音频特色</button>
           <button class="persona-btn" data-prompt="custom">✏️ 自定义</button>
         </div>
         <textarea id="custom-prompt" class="prompt-editor" placeholder="在这里输入自定义 System Prompt..." rows="3" style="display:none;"></textarea>
@@ -1689,6 +1690,10 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
           <button class="voice-item active" data-voice="冰糖">
             <span class="voice-icon">🎙</span>
             <span class="voice-info"><span class="voice-name">冰糖</span><span class="voice-desc">甜美温柔</span></span>
+          </button>
+          <button class="voice-item" data-voice="茉莉">
+            <span class="voice-icon">🎙</span>
+            <span class="voice-info"><span class="voice-name">茉莉</span><span class="voice-desc">活泼清亮</span></span>
           </button>
           <button class="voice-item" data-voice="甜甜">
             <span class="voice-icon">🎙</span>
@@ -2349,6 +2354,13 @@ chatInput.addEventListener('keypress',(e)=>{
       }else{
         if(editor)editor.style.display='none';
         currentPrompt=btn.dataset.prompt;
+        // 自动切换音色
+        if(btn.dataset.voice){
+          currentVoice=btn.dataset.voice;
+          document.querySelectorAll('.voice-item').forEach(v=>{
+            v.classList.toggle('active',v.dataset.voice===currentVoice);
+          });
+        }
         chatHistory=[];
         const msgs=document.getElementById('chat-messages');
         if(msgs){
