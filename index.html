@@ -2392,7 +2392,7 @@ chatInput.addEventListener('keypress',(e)=>{
     if(!container)return;
     const bubble=document.createElement('div');
     bubble.className='demo-bubble '+role;
-    bubble.innerHTML='<span class="bubble-text">'+text+'</span>'+
+    bubble.innerHTML='<span class="bubble-text">'+(role==='ai'?formatMarkdown(text):text)+'</span>'+
       (role==='ai'?'<button class="play-btn" title="播放语音">▶</button>':'');
     if(role==='ai'){
       bubble.querySelector('.play-btn').addEventListener('click',function(){
@@ -2478,7 +2478,7 @@ chatInput.addEventListener('keypress',(e)=>{
       const reply=data.reply||'抱歉，我没有理解你的问题~';
 
       if(thinking){
-        thinking.querySelector('.bubble-text').textContent=reply;
+        thinking.querySelector('.bubble-text').innerHTML=formatMarkdown(reply);
         const playBtn=thinking.querySelector('.play-btn');
         if(playBtn){
           playBtn.onclick=()=>playTTS(reply,playBtn);
