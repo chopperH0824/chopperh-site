@@ -517,6 +517,37 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .reveal.d2{transition-delay:.16s;}
 .reveal.d3{transition-delay:.24s;}
 
+/* ===== Hermes diagram ===== */
+.hermes-diagram {
+  width: 100%;
+  border-radius: 14px;
+  padding: 16px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%,
+    rgba(245,159,47,0.06), transparent 70%);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.hermes-diagram svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== Workflow diagram ===== */
+.workflow-diagram {
+  width: 100%;
+  margin-bottom: 36px;
+  border-radius: 14px;
+  padding: 20px 12px 12px;
+  border: 1px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.23);
+}
+.workflow-diagram svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* ===== Responsive ===== */
 @media(max-width:900px){
   .about-grid{grid-template-columns:1fr;gap:36px;}
@@ -526,6 +557,8 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border);}
 }
 @media(max-width:640px){
+  .workflow-diagram{overflow-x:auto;padding:16px 8px 8px;}
+  .workflow-diagram svg{min-width:700px;}
   .hero-backdrop::after{background:linear-gradient(180deg,rgba(248,244,238,0.82),rgba(248,244,238,0.45) 46%,rgba(248,244,238,0.78));}
   .nav-links{position:fixed;top:62px;right:0;left:0;flex-direction:column;background:rgba(255,255,255,0.82);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);padding:24px 28px;gap:18px;border-bottom:1px solid var(--border);transform:translateY(-120%);transition:transform .3s;}
   .nav-links.open{transform:translateY(0);}
@@ -896,6 +929,120 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   <p class="reveal" style="color:var(--text-dim);max-width:600px;margin-bottom:40px;font-size:16px;">
     不是零散地用几个工具，而是形成了一套从调研 → 定义 → 原型 → 评审的完整 AI 辅助链路。6 个月产出 30+ 份产品文档，用 AI 模拟器省去 50+ 页交互说明书。
   </p>
+
+  <!-- AI 工作流全链路流程图 -->
+  <div class="workflow-diagram reveal">
+    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg"
+         role="img" aria-label="AI 驱动的产品开发全链路">
+      <defs>
+        <filter id="wglow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="arrow" markerWidth="8" markerHeight="8"
+                refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 Z" fill="rgba(255,255,255,0.5)" opacity="0.6"/>
+        </marker>
+      </defs>
+
+      <!-- 连线箭头 -->
+      <g stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"
+         opacity="0.5" marker-end="url(#arrow)">
+        <line x1="128" y1="76" x2="158" y2="76"/>
+        <line x1="278" y1="76" x2="308" y2="76"/>
+        <line x1="428" y1="76" x2="458" y2="76"/>
+        <line x1="578" y1="76" x2="608" y2="76"/>
+        <line x1="728" y1="76" x2="758" y2="76"/>
+      </g>
+
+      <!-- 流动光点 -->
+      <circle r="3.5" fill="#f59f2f" filter="url(#wglow)" opacity="0.9">
+        <animateMotion dur="5s" repeatCount="indefinite" path="M30,76 L870,76"/>
+      </circle>
+      <circle r="2.5" fill="#c58cf0" filter="url(#wglow)" opacity="0.7">
+        <animateMotion dur="5s" begin="1.5s" repeatCount="indefinite" path="M30,76 L870,76"/>
+      </circle>
+
+      <!-- 阶段 1：市场调研 -->
+      <g>
+        <rect x="18" y="42" width="112" height="68" rx="12"
+              fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.5"/>
+        <text x="74" y="68" text-anchor="middle"
+              fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">市场调研</text>
+        <text x="74" y="86" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">PickFu + AI</text>
+        <text x="74" y="101" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">Perplexity</text>
+      </g>
+
+      <!-- 阶段 2：产品定义 -->
+      <g>
+        <rect x="168" y="42" width="112" height="68" rx="12"
+              fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.2"/>
+        <text x="224" y="68" text-anchor="middle"
+              fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">产品定义</text>
+        <text x="224" y="86" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">Claude / GPT</text>
+        <text x="224" y="101" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">DBFA · CDCP</text>
+      </g>
+
+      <!-- 阶段 3：交互原型 -->
+      <g>
+        <rect x="318" y="42" width="112" height="68" rx="12"
+              fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.2"/>
+        <text x="374" y="68" text-anchor="middle"
+              fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">交互原型</text>
+        <text x="374" y="86" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">Codex · Qoder</text>
+        <text x="374" y="101" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">省 50+ 页说明书</text>
+      </g>
+
+      <!-- 阶段 4：视觉 & 音频 -->
+      <g>
+        <rect x="468" y="42" width="112" height="68" rx="12"
+              fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+        <text x="524" y="68" text-anchor="middle"
+              fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">视觉 &amp; 音频</text>
+        <text x="524" y="86" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">Lovart · Suno</text>
+        <text x="524" y="101" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">ElevenLabs</text>
+      </g>
+
+      <!-- 阶段 5：方案评审 -->
+      <g>
+        <rect x="618" y="42" width="112" height="68" rx="12"
+              fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+        <text x="674" y="68" text-anchor="middle"
+              fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">方案评审</text>
+        <text x="674" y="86" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">Claude Code</text>
+        <text x="674" y="101" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">OpenClaw</text>
+      </g>
+
+      <!-- 阶段 6：量产落地 -->
+      <g>
+        <rect x="768" y="42" width="112" height="68" rx="12"
+              fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.5"/>
+        <text x="824" y="68" text-anchor="middle"
+              fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">量产落地</text>
+        <text x="824" y="86" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">方案商对接</text>
+        <text x="824" y="101" text-anchor="middle"
+              fill="#555150" font-family="monospace" font-size="10">AI 原厂资源</text>
+      </g>
+
+      <!-- 底部标注 -->
+      <text x="450" y="148" text-anchor="middle"
+            fill="#555150" font-family="monospace" font-size="11" font-style="italic">
+        6 个月 · 30+ 份文档 · 8-9 个在研项目 · 全程 AI 辅助
+      </text>
+    </svg>
+  </div>
+
   <div class="tools">
     <div class="tool reveal"><div class="stage">调研 · 数据</div><div class="name">PickFu</div><div class="use">+ AI 设计问卷、分析结果、制定调研策略</div></div>
     <div class="tool reveal d1"><div class="stage">竞品分析</div><div class="name">Perplexity</div><div class="use">数据查询、竞品信息抓取</div></div>
@@ -927,6 +1074,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   </div>
   <div class="grid" id="grid">
 
+    <!-- Row 1: 创业项目 × 2 + 多模态内容 -->
     <div class="card reveal" data-cat="startup">
       <div class="cat">创业项目 · 助农产业链</div>
       <img src="https://assets.chopperh.me/images/yxy/industry_chain_model_clean.jpg" alt="颜小芋助农产业链模型" class="card-image" data-full="https://assets.chopperh.me/images/yxy/industry_chain_model_clean.jpg">
@@ -948,6 +1096,20 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
       <div class="stack"><span class="chip">品牌0→1</span><span class="chip">新媒体运营</span><span class="chip">商业闭环</span></div>
     </div>
 
+    <div class="card reveal d2" data-cat="content">
+      <div class="cat">AI 内容 · 多模态</div>
+      <div class="image-stack">
+        <img src="https://assets.chopperh.me/images/elevenlabs-prompt.png" class="stack-img" alt="ElevenLabs" data-full="https://assets.chopperh.me/images/elevenlabs-prompt.png">
+        <img src="https://assets.chopperh.me/images/suno-music.png" class="stack-img" alt="Suno" data-full="https://assets.chopperh.me/images/suno-music.png">
+        <img src="https://assets.chopperh.me/images/lovart-visual.png" class="stack-img" alt="Lovart" data-full="https://assets.chopperh.me/images/lovart-visual.png">
+        <img src="https://assets.chopperh.me/images/chatcut%E5%89%AA%E8%BE%91%E5%8F%A3%E6%92%AD%E8%A7%86%E9%A2%91.png" class="stack-img" alt="ChatCut" data-full="https://assets.chopperh.me/images/chatcut%E5%89%AA%E8%BE%91%E5%8F%A3%E6%92%AD%E8%A7%86%E9%A2%91.png">
+      </div>
+      <h3>多模态内容生成链路</h3>
+      <p>串联 Lovart（视觉）+ Suno（音乐）+ ElevenLabs（提示音）形成完整的产品音视频原型生成链路，直接服务工程评审。</p>
+      <div class="stack"><span class="chip">Lovart</span><span class="chip">Suno</span><span class="chip">ElevenLabs</span></div>
+    </div>
+
+    <!-- Row 2: AI 硬件产品线 -->
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 产品线</div>
       <img src="https://assets.chopperh.me/images/b3.jpg" alt="京东AI玩具产品线" class="card-image" data-full="https://assets.chopperh.me/images/b3.jpg">
@@ -972,6 +1134,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
       <div class="stack"><span class="chip">行业首个</span><span class="chip">小程序</span><span class="chip">用户共创</span></div>
     </div>
 
+    <!-- Row 3: 保密项目 -->
     <div class="card reveal" data-cat="hw">
       <div class="cat">保密项目 · AI 玩具架构</div>
       <div class="ph">[ 未上市项目 · 信息脱敏 ]</div>
@@ -996,6 +1159,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
       <div class="stack"><span class="chip">玩法设计</span><span class="chip">音频交互</span><span class="chip">供应商协同</span></div>
     </div>
 
+    <!-- Row 4: Vibe Coding -->
     <div class="card reveal" data-cat="vibe">
       <div class="cat">Vibe Coding · 工具</div>
       <div class="demo-preview">
@@ -1011,34 +1175,151 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
     <div class="card reveal d1" data-cat="vibe">
       <div class="cat">Vibe Coding · Infra</div>
-      <div class="ph">[ 图片占位 · Hermes 架构图 ]</div>
-      <h3>Hermes Agent</h3>
-      <p>自建跑在 NAS 上的 AI 知识库助手，AI 读写 Obsidian 知识库，支持微信随时调取项目资料，实现项目资料的 AI 自动化管理。</p>
-      <div class="stack"><span class="chip">NAS</span><span class="chip">Obsidian</span><span class="chip">Agent</span></div>
-    </div>
+      <div class="hermes-diagram">
+        <svg viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="Hermes Agent 系统架构图">
+          <defs>
+            <filter id="hglow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
 
-    <div class="card reveal d1" data-cat="content">
-      <div class="cat">AI 内容 · 多模态</div>
-      <div class="image-stack">
-        <img src="https://assets.chopperh.me/images/elevenlabs-prompt.png" class="stack-img" alt="ElevenLabs" data-full="https://assets.chopperh.me/images/elevenlabs-prompt.png">
-        <img src="https://assets.chopperh.me/images/suno-music.png" class="stack-img" alt="Suno" data-full="https://assets.chopperh.me/images/suno-music.png">
-        <img src="https://assets.chopperh.me/images/lovart-visual.png" class="stack-img" alt="Lovart" data-full="https://assets.chopperh.me/images/lovart-visual.png">
-        <img src="https://assets.chopperh.me/images/chatcut%E5%89%AA%E8%BE%91%E5%8F%A3%E6%92%AD%E8%A7%86%E9%A2%91.png" class="stack-img" alt="ChatCut" data-full="https://assets.chopperh.me/images/chatcut%E5%89%AA%E8%BE%91%E5%8F%A3%E6%92%AD%E8%A7%86%E9%A2%91.png">
+          <!-- 连线 -->
+          <g stroke-width="1.5" fill="none" opacity="0.45">
+            <path d="M150,90 L150,180" stroke="rgba(255,255,255,0.5)"/>
+            <path d="M150,260 L150,328" stroke="rgba(255,255,255,0.5)"/>
+            <path d="M260,370 L310,370" stroke="rgba(255,255,255,0.5)"/>
+            <path d="M480,370 L530,370" stroke="rgba(255,255,255,0.5)"/>
+            <path d="M520,140 L660,140 L660,328" stroke="rgba(255,255,255,0.5)"/>
+            <path d="M520,250 L620,250 L660,290" stroke="rgba(255,255,255,0.5)"/>
+          </g>
+
+          <!-- 流动光点 -->
+          <circle r="4" fill="#f59f2f" filter="url(#hglow)">
+            <animateMotion dur="2s" repeatCount="indefinite" path="M150,90 L150,180"/>
+          </circle>
+          <circle r="4" fill="#f59f2f" filter="url(#hglow)">
+            <animateMotion dur="2.4s" repeatCount="indefinite" path="M150,260 L150,328"/>
+          </circle>
+          <circle r="4" fill="#c58cf0" filter="url(#hglow)">
+            <animateMotion dur="3s" repeatCount="indefinite" path="M310,370 L480,370"/>
+          </circle>
+          <circle r="4" fill="#69c7e8" filter="url(#hglow)">
+            <animateMotion dur="3.4s" repeatCount="indefinite" path="M520,140 L660,140 L660,328"/>
+          </circle>
+
+          <!-- 节点：微信入口 -->
+          <rect x="70" y="40" width="160" height="52" rx="12"
+                fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.5"/>
+          <text x="150" y="63" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="14" font-weight="bold">微信入口</text>
+          <text x="150" y="81" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="10">随时提问 / 调取资料</text>
+
+          <!-- 节点：frp 隧道 -->
+          <rect x="70" y="180" width="160" height="52" rx="12"
+                fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.5"/>
+          <text x="150" y="203" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">frp 内网穿透</text>
+          <text x="150" y="221" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="10">腾讯云中继 · 公网可达</text>
+
+          <!-- 大容器：NAS -->
+          <rect x="60" y="328" width="615" height="128" rx="16"
+                fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <text x="80" y="350" fill="#f59f2f"
+                font-family="monospace" font-size="11" font-weight="bold">UGREEN NAS · Docker</text>
+
+          <!-- OpenClaw 网关 -->
+          <rect x="80" y="360" width="160" height="68" rx="10"
+                fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.2"/>
+          <text x="160" y="388" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="12" font-weight="bold">OpenClaw 网关</text>
+          <text x="160" y="406" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="9">openclaw-gateway-1</text>
+
+          <!-- MiMo 模型 -->
+          <rect x="320" y="360" width="150" height="68" rx="10"
+                fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+          <text x="395" y="388" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="12" font-weight="bold">MiMo 模型</text>
+          <text x="395" y="406" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="9">对话推理</text>
+
+          <!-- 向量检索 -->
+          <rect x="540" y="360" width="120" height="68" rx="10"
+                fill="rgba(255,255,255,0.38)" stroke="#69c7e8" stroke-width="1.2"/>
+          <text x="600" y="388" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="11" font-weight="bold">向量检索</text>
+          <text x="600" y="406" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="9">embedding-v4</text>
+
+          <!-- Obsidian 知识库 -->
+          <rect x="360" y="114" width="160" height="52" rx="12"
+                fill="rgba(255,255,255,0.38)" stroke="#f59f2f" stroke-width="1.5"/>
+          <text x="440" y="137" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">Obsidian 知识库</text>
+          <text x="440" y="155" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="10">PlayAct_Vault</text>
+
+          <!-- Syncthing -->
+          <rect x="360" y="224" width="160" height="52" rx="12"
+                fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.5"/>
+          <text x="440" y="247" text-anchor="middle"
+                fill="#211f1f" font-family="monospace" font-size="13" font-weight="bold">Syncthing 同步</text>
+          <text x="440" y="265" text-anchor="middle"
+                fill="#555150" font-family="monospace" font-size="10">本地 Mac ↔ NAS</text>
+        </svg>
       </div>
-      <h3>多模态内容生成链路</h3>
-      <p>串联 Lovart（视觉）+ Suno（音乐）+ ElevenLabs（提示音）形成完整的产品音视频原型生成链路，直接服务工程评审。</p>
-      <div class="stack"><span class="chip">Lovart</span><span class="chip">Suno</span><span class="chip">ElevenLabs</span></div>
+      <h3>Hermes Agent</h3>
+      <p>自建跑在 NAS 上的私人 AI 知识中枢。AI 读写 Obsidian 知识库，微信里随时调取任何项目资料——把「翻文档」变成「问一句」。</p>
+      <div class="stack"><span class="chip">NAS 自建</span><span class="chip">Docker</span><span class="chip">frp 穿透</span><span class="chip">OpenClaw</span><span class="chip">MiMo</span><span class="chip">向量检索</span><span class="chip">微信接入</span></div>
     </div>
 
-    <div class="card reveal d2" data-cat="impact">
+    <div class="card reveal d2" data-cat="vibe">
+      <div class="cat">Vibe Coding · 自动化基建</div>
+      <div class="ph">
+        <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"
+             style="width:100%;height:100%;opacity:0.7">
+          <circle cx="60" cy="40" r="14" fill="none"
+                  stroke="#f59f2f" stroke-width="2"/>
+          <circle cx="60" cy="40" r="5" fill="#f59f2f"/>
+          <line x1="60" y1="26" x2="60" y2="10"
+                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
+          <line x1="60" y1="54" x2="60" y2="70"
+                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
+          <line x1="46" y1="40" x2="20" y2="40"
+                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
+          <line x1="74" y1="40" x2="100" y2="40"
+                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="60" cy="10" r="4" fill="none" stroke="#c58cf0" stroke-width="1.5"/>
+          <circle cx="60" cy="70" r="4" fill="none" stroke="#c58cf0" stroke-width="1.5"/>
+          <circle cx="20" cy="40" r="4" fill="none" stroke="#69c7e8" stroke-width="1.5"/>
+          <circle cx="100" cy="40" r="4" fill="none" stroke="#69c7e8" stroke-width="1.5"/>
+          <circle r="3" fill="#f59f2f">
+            <animateMotion dur="1.8s" repeatCount="indefinite" path="M60,26 L60,10"/>
+          </circle>
+          <circle r="3" fill="#c58cf0">
+            <animateMotion dur="2.2s" repeatCount="indefinite" path="M46,40 L20,40"/>
+          </circle>
+        </svg>
+      </div>
+      <h3>OpenClaw 自动化网关</h3>
+      <p>部署在 NAS 上的本地 AI 网关，统一接管多模型调用与路由。Hermes Agent 的底层基建——让所有 AI 工具通过同一个入口调度，实现 PRD 多版本对齐、文档批量归档等办公自动化流程。</p>
+      <div class="stack"><span class="chip">OpenClaw</span><span class="chip">NAS 部署</span><span class="chip">多模型路由</span><span class="chip">办公自动化</span></div>
+    </div>
+
+    <!-- Row 5: 行业影响力 -->
+    <div class="card reveal" data-cat="impact">
       <div class="cat">行业观察 · 受访支持</div>
-      <div class="ph">[ 图片占位 · 白皮书封面 ]</div>
+      <img src="https://assets.chopperh.me/images/京东白皮书.webp" alt="京东2025 AI玩具白皮书" class="card-image" data-full="https://assets.chopperh.me/images/京东白皮书.webp">
       <h3>AI 玩具行业调研受访</h3>
       <p>以火火兔项目侧成员身份参与京东《2025 AI 玩具白皮书》相关采访与资料支持。该部分仅作为行业参与经历补充，不作为个人主导成果展示。</p>
       <div class="stack"><span class="chip">行业调研</span><span class="chip">项目侧视角</span><span class="chip">弱化展示</span></div>
     </div>
 
-    <div class="card reveal" data-cat="impact">
+    <div class="card reveal d1" data-cat="impact">
       <div class="cat">行业影响力 · 科技成果</div>
       <img src="https://assets.chopperh.me/images/science-evaluation-certificate.png" alt="科学技术成果评价证书" class="card-image" data-full="https://assets.chopperh.me/images/science-evaluation-certificate.png">
       <h3>AI 多模态语音交互模组</h3>
