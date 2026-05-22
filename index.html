@@ -491,7 +491,10 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
 /* ===== Timeline ===== */
 .timeline{position:relative;padding-left:34px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:28px;padding:34px 34px 34px 58px;box-shadow:var(--glass-shadow);}
-.timeline::before{content:'';position:absolute;left:34px;top:36px;bottom:36px;width:2px;background:linear-gradient(var(--accent),var(--border));}
+.timeline::before{content:'';position:absolute;left:34px;top:36px;bottom:36px;width:2px;background:var(--border);z-index:0;}
+.timeline-fill{position:absolute;left:34px;top:36px;width:2px;height:0;background:linear-gradient(180deg,var(--accent),rgba(245,159,47,0.3));z-index:1;transition:height .08s linear;border-radius:1px;}
+.timeline-fill::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent),0 0 24px rgba(245,159,47,0.3);transition:opacity .3s;}
+.tl-item.active::before{border-color:var(--accent);background:rgba(255,255,255,0.9);box-shadow:0 0 10px rgba(245,159,47,0.4);}
 .tl-item{position:relative;padding-bottom:44px;}
 .tl-item:last-child{padding-bottom:0;}
 .tl-item::before{content:'';position:absolute;left:-52px;top:5px;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.72);border:2px solid var(--accent);}
@@ -1338,6 +1341,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     <span class="sec-line"></span>
   </div>
   <div class="timeline">
+    <div class="timeline-fill" id="timelineFill"></div>
     <div class="tl-item reveal">
       <div class="tl-date">2025.10 — 至今</div>
       <div class="tl-role">AI 玩具 / 硬件产品经理</div>
@@ -1605,6 +1609,26 @@ const io=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Timeline scroll progress
+const timelineEl=document.querySelector('.timeline');
+const timelineFill=document.getElementById('timelineFill');
+if(timelineEl&&timelineFill){
+  const tlItems=timelineEl.querySelectorAll('.tl-item');
+  function updateTimeline(){
+    const top=timelineEl.getBoundingClientRect().top;
+    const h=timelineEl.offsetHeight;
+    const progress=clamp((-top+window.innerHeight*0.4)/(h-window.innerHeight*0.6),0,1);
+    timelineFill.style.height=(progress*(h-72))+'px';
+    const fillBottom=timelineEl.getBoundingClientRect().top+36+(progress*(h-72));
+    tlItems.forEach(item=>{
+      const dot=item.getBoundingClientRect().top+5;
+      item.classList.toggle('active',dot<=fillBottom);
+    });
+  }
+  addEventListener('scroll',updateTimeline,{passive:true});
+  updateTimeline();
+}
 
 // Animated counter
 const counters=document.querySelectorAll('[data-count]');
