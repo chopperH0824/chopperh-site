@@ -870,10 +870,10 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   position:relative;
   display:grid;grid-template-columns:280px 1fr;gap:0;
   border-radius:28px;overflow:hidden;
-  background:var(--glass-bg);
+  background:linear-gradient(135deg,rgba(255,255,255,0.72),rgba(255,255,255,0.48));
   backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
-  border:1px solid var(--border);
-  box-shadow:var(--glass-shadow);
+  border:1px solid rgba(255,255,255,0.65);
+  box-shadow:var(--glass-shadow),0 0 0 1px rgba(245,159,47,0.08);
 }
 .ai-demo-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -882,9 +882,9 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 }
 .demo-settings{
   padding:28px 24px;
-  border-right:1px solid var(--border);
+  border-right:1px solid rgba(255,255,255,0.5);
   display:flex;flex-direction:column;gap:22px;
-  background:rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.25);
 }
 .demo-section{display:flex;flex-direction:column;gap:10px;}
 .demo-label{
@@ -962,7 +962,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .demo-chat{
   display:flex;flex-direction:column;padding:0;
   min-height:440px;max-height:540px;
-  background:rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.15);
 }
 .chat-messages{
   flex:1;overflow-y:auto;padding:24px;
