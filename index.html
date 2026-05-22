@@ -2401,9 +2401,16 @@ chatInput.addEventListener('keypress',(e)=>{
     return bubble;
   }
 
-  // TTS 播放
+  // TTS 播放（Web Audio API 兼容移动端）
+  let audioCtx=null;
+  function getAudioCtx(){
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
   async function playTTS(text,btn){
-    if(currentAudio){currentAudio.pause();currentAudio=null;}
+    if(currentAudio){try{currentAudio.pause();}catch(e){}currentAudio=null;}
     document.querySelectorAll('.play-btn').forEach(b=>b.classList.remove('playing'));
     if(btn)btn.classList.add('playing');
     setStatus('speaking','正在合成语音...');
@@ -2413,24 +2420,30 @@ chatInput.addEventListener('keypress',(e)=>{
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({text,voice:currentVoice})
       });
-      if(!res.ok)throw new Error('TTS failed');
-      const blob=await res.blob();
-      const url=URL.createObjectURL(blob);
-      currentAudio=new Audio(url);
-      currentAudio.play();
-      currentAudio.onended=()=>{
+      if(!res.ok)throw new Error('TTS failed: '+res.status);
+      const arrayBuf=await res.arrayBuffer();
+      const ctx=getAudioCtx();
+      const audioBuffer=await ctx.decodeAudioData(arrayBuf);
+      const source=ctx.createBufferSource();
+      source.buffer=audioBuffer;
+      source.connect(ctx.destination);
+      currentAudio={pause:()=>{try{source.stop();}catch(e){}}};
+      source.onended=()=>{
         if(btn)btn.classList.remove('playing');
         setStatus('ready','就绪');
-        URL.revokeObjectURL(url);
+        currentAudio=null;
       };
+      source.start(0);
     }catch(e){
       console.error('TTS error:',e);
       if(btn)btn.classList.remove('playing');
       setStatus('ready','就绪');
       // 降级：浏览器 TTS
-      const utt=new SpeechSynthesisUtterance(text);
-      utt.lang='zh-CN';
-      speechSynthesis.speak(utt);
+      try{
+        const utt=new SpeechSynthesisUtterance(text);
+        utt.lang='zh-CN';
+        speechSynthesis.speak(utt);
+      }catch(e2){}
     }
   }
 

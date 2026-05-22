@@ -57,11 +57,11 @@ export default {
       }
       messages.push({ role: 'assistant', content: text });
 
-      const apiResponse = await fetch('https://api.xiaomimimo.com/v1/chat/completions', {
+      const apiResponse = await fetch('https://token-plan-cn.xiaomimimo.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': env.MIMO_API_KEY
+          'Authorization': `Bearer ${env.MIMO_API_KEY}`
         },
         body: JSON.stringify({
           model,
@@ -72,8 +72,8 @@ export default {
 
       if (!apiResponse.ok) {
         const err = await apiResponse.text();
-        console.error('MiMo TTS Error:', err);
-        return new Response(JSON.stringify({ error: 'TTS service error' }), {
+        console.error('MiMo TTS Error:', apiResponse.status, err);
+        return new Response(JSON.stringify({ error: 'TTS service error', detail: err, status: apiResponse.status }), {
           status: 502,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
