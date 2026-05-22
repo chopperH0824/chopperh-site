@@ -814,18 +814,24 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   gap:10px;
   background:rgba(255,255,255,0.26);
 }
-.chat-input input{
+.chat-input textarea{
   flex:1;
-  padding:12px 16px;
+  padding:10px 16px;
   border-radius:16px;
   border:1px solid rgba(255,255,255,0.62);
   background:rgba(255,255,255,0.66);
   color:var(--text);
   font-size:14px;
+  font-family:var(--body);
+  line-height:1.5;
   outline:none;
   transition:border-color .2s;
+  resize:none;
+  min-height:42px;
+  max-height:calc(42px * 5);
+  overflow-y:auto;
 }
-.chat-input input:focus{
+.chat-input textarea:focus{
   border-color:var(--accent);
 }
 .chat-input button{
@@ -1833,7 +1839,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     <div class="message bot">你好！我是胡强斌的AI助手。你可以问我关于他的工作经历、技能、项目等方面的问题。</div>
   </div>
   <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="输入你的问题..." />
+    <textarea id="chatInput" placeholder="输入你的问题..." rows="1"></textarea>
     <button id="chatSend">发送</button>
   </div>
 </div>
@@ -2216,6 +2222,7 @@ async function sendMessage(){
   chatHistory.push({role:'user',content:message});
   appendMessage('user',message);
   chatInput.value='';
+  chatInput.style.height='auto';
   chatSend.disabled=true;
 
   // 创建带加载动画的bot消息用于流式填充
@@ -2321,8 +2328,12 @@ function appendMessage(role,content,isLoading=false){
 }
 
 chatSend.addEventListener('click',sendMessage);
-chatInput.addEventListener('keypress',(e)=>{
-  if(e.key==='Enter')sendMessage();
+chatInput.addEventListener('keydown',(e)=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+});
+chatInput.addEventListener('input',()=>{
+  chatInput.style.height='auto';
+  chatInput.style.height=Math.min(chatInput.scrollHeight,parseInt(getComputedStyle(chatInput).maxHeight))+'px';
 });
 
 // ===== AI Demo 体验区 =====
