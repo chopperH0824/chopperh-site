@@ -268,6 +268,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   color:rgba(59,49,41,0.62);
   text-align:center;
   padding:12px;
+  white-space:nowrap;
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.62);
 }
 .card h3{font-family:var(--display);font-weight:700;font-size:20px;margin:16px 0 10px;letter-spacing:-.3px;}
@@ -529,12 +530,53 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   background: radial-gradient(circle at 50% 40%,
     rgba(245,159,47,0.06), transparent 70%);
   border: 1px solid rgba(255,255,255,0.5);
+  cursor:pointer;
+  transition:border-color .3s;
 }
+.hermes-diagram:hover{border-color:var(--accent);}
 .hermes-diagram svg {
   width: 100%;
   height: auto;
   display: block;
+  pointer-events:none;
 }
+
+/* ===== OpenClaw diagram ===== */
+.openclaw-diagram {
+  width:100%;
+  height:160px;
+  border-radius:14px;
+  overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,rgba(245,159,47,0.06),transparent 70%);
+  border:1px dashed rgba(245,159,47,0.38);
+  cursor:pointer;
+  transition:border-color .3s;
+  margin:0 auto 16px;
+}
+.openclaw-diagram:hover{border-color:var(--accent);border-style:solid;}
+.openclaw-diagram svg{width:100%;height:100%;display:block;pointer-events:none;}
+
+/* SVG enlarge modal */
+.svg-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.92);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;opacity:0;visibility:hidden;
+  transition:opacity .3s,visibility .3s;cursor:pointer;
+}
+.svg-modal.active{opacity:1;visibility:visible;}
+.svg-modal .svg-wrap{
+  width:90vw;max-width:960px;background:var(--bg);
+  border-radius:20px;padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  cursor:default;position:relative;
+}
+.svg-modal .svg-wrap svg{width:100%;height:auto;display:block;}
+.svg-modal .close-btn{
+  position:absolute;top:12px;right:16px;font-size:28px;color:var(--text);
+  cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.15);border-radius:50%;transition:background .2s;z-index:10;
+}
+.svg-modal .close-btn:hover{background:rgba(255,255,255,0.25);}
 
 /* ===== Workflow diagram ===== */
 .workflow-diagram {
@@ -1282,30 +1324,98 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
     <div class="card reveal d2" data-cat="vibe">
       <div class="cat">Vibe Coding · 自动化基建</div>
-      <div class="ph">
-        <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"
-             style="width:100%;height:100%;opacity:0.7">
-          <circle cx="60" cy="40" r="14" fill="none"
-                  stroke="#f59f2f" stroke-width="2"/>
-          <circle cx="60" cy="40" r="5" fill="#f59f2f"/>
-          <line x1="60" y1="26" x2="60" y2="10"
-                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
-          <line x1="60" y1="54" x2="60" y2="70"
-                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
-          <line x1="46" y1="40" x2="20" y2="40"
-                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
-          <line x1="74" y1="40" x2="100" y2="40"
-                stroke="#f59f2f" stroke-width="1.5" opacity="0.6"/>
-          <circle cx="60" cy="10" r="4" fill="none" stroke="#c58cf0" stroke-width="1.5"/>
-          <circle cx="60" cy="70" r="4" fill="none" stroke="#c58cf0" stroke-width="1.5"/>
-          <circle cx="20" cy="40" r="4" fill="none" stroke="#69c7e8" stroke-width="1.5"/>
-          <circle cx="100" cy="40" r="4" fill="none" stroke="#69c7e8" stroke-width="1.5"/>
-          <circle r="3" fill="#f59f2f">
-            <animateMotion dur="1.8s" repeatCount="indefinite" path="M60,26 L60,10"/>
+      <div class="openclaw-diagram">
+        <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="OpenClaw 多模型路由架构图">
+          <defs>
+            <filter id="oglow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- 左侧：模型输入 -->
+          <rect x="12" y="18" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+          <text x="52" y="39" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="11" font-weight="bold">Claude</text>
+
+          <rect x="12" y="60" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+          <text x="52" y="81" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="11" font-weight="bold">GPT-5</text>
+
+          <rect x="12" y="102" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+          <text x="52" y="123" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="11" font-weight="bold">MiMo</text>
+
+          <rect x="12" y="144" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+          <text x="52" y="165" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="11" font-weight="bold">Gemini</text>
+
+          <rect x="12" y="186" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#c58cf0" stroke-width="1.2"/>
+          <text x="52" y="207" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="11" font-weight="bold">DeepSeek</text>
+
+          <!-- 中间：OpenClaw 网关 -->
+          <rect x="140" y="50" width="120" height="140" rx="14" fill="rgba(255,255,255,0.45)" stroke="#f59f2f" stroke-width="2"/>
+          <text x="200" y="80" text-anchor="middle" fill="#f59f2f" font-family="monospace" font-size="12" font-weight="bold">OpenClaw</text>
+          <text x="200" y="98" text-anchor="middle" fill="#555150" font-family="monospace" font-size="9">多模型路由网关</text>
+
+          <!-- 网关内部：路由逻辑 -->
+          <line x1="155" y1="115" x2="245" y2="115" stroke="#f59f2f" stroke-width="0.8" opacity="0.4"/>
+          <text x="200" y="132" text-anchor="middle" fill="#555150" font-family="monospace" font-size="8">负载均衡 · 热切换</text>
+          <text x="200" y="145" text-anchor="middle" fill="#555150" font-family="monospace" font-size="8">失败自动重试</text>
+          <text x="200" y="158" text-anchor="middle" fill="#555150" font-family="monospace" font-size="8">Token 用量追踪</text>
+          <text x="200" y="175" text-anchor="middle" fill="#f59f2f" font-family="monospace" font-size="9" font-weight="bold">→ 统一 API 出口</text>
+
+          <!-- 右侧：输出场景 -->
+          <rect x="308" y="18" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#69c7e8" stroke-width="1.2"/>
+          <text x="348" y="39" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="10" font-weight="bold">PRD 生成</text>
+
+          <rect x="308" y="60" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#69c7e8" stroke-width="1.2"/>
+          <text x="348" y="81" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="10" font-weight="bold">文档归档</text>
+
+          <rect x="308" y="102" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#69c7e8" stroke-width="1.2"/>
+          <text x="348" y="123" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="10" font-weight="bold">版本对齐</text>
+
+          <rect x="308" y="144" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#69c7e8" stroke-width="1.2"/>
+          <text x="348" y="165" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="10" font-weight="bold">Hermes</text>
+
+          <rect x="308" y="186" width="80" height="32" rx="8" fill="rgba(255,255,255,0.38)" stroke="#69c7e8" stroke-width="1.2"/>
+          <text x="348" y="207" text-anchor="middle" fill="#211f1f" font-family="monospace" font-size="10" font-weight="bold">微信接入</text>
+
+          <!-- 连线：左侧→网关 -->
+          <g stroke="#c58cf0" stroke-width="1" fill="none" opacity="0.5">
+            <line x1="92" y1="34" x2="140" y2="80"/>
+            <line x1="92" y1="76" x2="140" y2="100"/>
+            <line x1="92" y1="118" x2="140" y2="120"/>
+            <line x1="92" y1="160" x2="140" y2="140"/>
+            <line x1="92" y1="202" x2="140" y2="160"/>
+          </g>
+
+          <!-- 连线：网关→右侧 -->
+          <g stroke="#69c7e8" stroke-width="1" fill="none" opacity="0.5">
+            <line x1="260" y1="80" x2="308" y2="34"/>
+            <line x1="260" y1="100" x2="308" y2="76"/>
+            <line x1="260" y1="120" x2="308" y2="118"/>
+            <line x1="260" y1="140" x2="308" y2="160"/>
+            <line x1="260" y1="160" x2="308" y2="202"/>
+          </g>
+
+          <!-- 流动光点：左→中 -->
+          <circle r="3" fill="#c58cf0" filter="url(#oglow)">
+            <animateMotion dur="1.6s" repeatCount="indefinite" path="M92,118 L140,120"/>
           </circle>
-          <circle r="3" fill="#c58cf0">
-            <animateMotion dur="2.2s" repeatCount="indefinite" path="M46,40 L20,40"/>
+          <circle r="2.5" fill="#f59f2f" filter="url(#oglow)">
+            <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite" path="M92,76 L140,100"/>
           </circle>
+
+          <!-- 流动光点：中→右 -->
+          <circle r="3" fill="#69c7e8" filter="url(#oglow)">
+            <animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" path="M260,120 L308,118"/>
+          </circle>
+          <circle r="2.5" fill="#f59f2f" filter="url(#oglow)">
+            <animateMotion dur="2s" begin="1.2s" repeatCount="indefinite" path="M260,140 L308,160"/>
+          </circle>
+
+          <!-- 底部标注 -->
+          <text x="200" y="232" text-anchor="middle" fill="#555150" font-family="monospace" font-size="9" font-style="italic">
+            NAS 本地部署 · 5+ 模型统一路由 · 办公自动化
+          </text>
         </svg>
       </div>
       <h3>OpenClaw 自动化网关</h3>
@@ -1393,6 +1503,14 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   <button class="nav-btn prev-btn" id="prevImage">‹</button>
   <img src="" alt="预览图片" id="modalImage">
   <button class="nav-btn next-btn" id="nextImage">›</button>
+</div>
+
+<!-- SVG Enlarge Modal -->
+<div class="svg-modal" id="svgModal">
+  <div class="svg-wrap">
+    <div class="close-btn" id="closeSvgModal">×</div>
+    <div id="svgModalContent"></div>
+  </div>
 </div>
 
 <!-- AI Chat -->
@@ -1746,6 +1864,34 @@ document.addEventListener('keydown',(e)=>{
       updateModalImage();
     }
   }
+  if(svgModal.classList.contains('active')&&e.key==='Escape'){
+    svgModal.classList.remove('active');
+  }
+});
+
+// SVG enlarge modal
+const svgModal=document.getElementById('svgModal');
+const svgModalContent=document.getElementById('svgModalContent');
+
+function openSvgModal(container){
+  const svg=container.querySelector('svg');
+  if(!svg)return;
+  svgModalContent.innerHTML='';
+  const clone=svg.cloneNode(true);
+  clone.style.pointerEvents='auto';
+  svgModalContent.appendChild(clone);
+  svgModal.classList.add('active');
+}
+
+document.querySelectorAll('.hermes-diagram, .openclaw-diagram').forEach(el=>{
+  el.addEventListener('dblclick',()=>openSvgModal(el));
+});
+
+document.getElementById('closeSvgModal').addEventListener('click',()=>{
+  svgModal.classList.remove('active');
+});
+svgModal.addEventListener('click',(e)=>{
+  if(e.target===svgModal)svgModal.classList.remove('active');
 });
 
 // AI Chat
