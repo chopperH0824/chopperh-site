@@ -13,21 +13,27 @@
 
 <style>
 :root{
-  --bg:#0a0a0b;
-  --bg-elev:#131316;
-  --bg-card:#16161a;
-  --text:#ECECE8;
-  --text-dim:#8C8C86;
-  --text-faint:#5A5A55;
-  --accent:#D4FF3F;        /* electric lime — vibe-coding signal */
-  --accent-2:#FF6B4A;      /* warm coral — secondary */
-  --accent-3:#5AC8FA;      /* cool cyan — tertiary */
-  --border:rgba(255,255,255,0.09);
-  --border-bright:rgba(212,255,63,0.35);
-  --maxw:1180px;
+  --bg:#f8f8fb;             /* Soft, luminous glass backdrop */
+  --bg-elev:#ffffff;
+  --bg-card:rgba(255,255,255,0.48);
+  --text:#1d1d1f;           /* Elegant deep neutral */
+  --text-dim:#515154;
+  --text-faint:#86868b;
+  --accent:#FF9F0A;        /* Warm Sunset Orange — Play & Energy */
+  --accent-2:#AF52DE;      /* Playful Lavender — Dreamy Imagination */
+  --accent-3:#5AC8FA;      /* Sky Blue — Interaction & Voice */
+  --border:rgba(0,0,0,0.06);
+  --border-bright:rgba(255,159,10,0.3);
+  --maxw:1120px;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --display:'Syne','Noto Sans SC',sans-serif;
   --body:'Manrope','Noto Sans SC',-apple-system,sans-serif;
+
+  --glass-bg:rgba(255,255,255,0.44);
+  --glass-bg-strong:rgba(255,255,255,0.65);
+  --glass-border:rgba(255,255,255,0.6);
+  --glass-shadow:0 24px 80px rgba(56, 72, 100, 0.08);
+  --glass-blur:blur(24px) saturate(175%);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -47,23 +53,23 @@ body{
 .bg-grid{
   position:absolute;inset:-50%;
   background-image:
-    linear-gradient(var(--border) 1px,transparent 1px),
-    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+    linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px);
   background-size:54px 54px;
-  opacity:0.4;
+  opacity:0.6;
   mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
   animation:gridDrift 40s linear infinite;
 }
 @keyframes gridDrift{from{transform:translate(0,0);}to{transform:translate(54px,54px);}}
 .bg-glow{
-  position:absolute;border-radius:50%;filter:blur(120px);opacity:0.25;
+  position:absolute;border-radius:50%;filter:blur(180px);opacity:0.35;
 }
-.bg-glow.g1{width:600px;height:600px;background:var(--accent);top:-200px;left:-150px;animation:floaty 18s ease-in-out infinite;}
-.bg-glow.g2{width:500px;height:500px;background:var(--accent-3);top:40%;right:-180px;animation:floaty 22s ease-in-out infinite reverse;}
-.bg-glow.g3{width:400px;height:400px;background:var(--accent-2);bottom:-100px;left:30%;opacity:0.15;animation:floaty 26s ease-in-out infinite;}
-@keyframes floaty{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,-60px);}}
+.bg-glow.g1{width:700px;height:700px;background:radial-gradient(circle, rgba(255,159,10,0.4) 0%, transparent 70%);top:-200px;left:-150px;animation:floaty 18s ease-in-out infinite;}
+.bg-glow.g2{width:600px;height:600px;background:radial-gradient(circle, rgba(90,200,250,0.35) 0%, transparent 70%);top:40%;right:-180px;animation:floaty 22s ease-in-out infinite reverse;}
+.bg-glow.g3{width:500px;height:500px;background:radial-gradient(circle, rgb(175,82,222,0.3) 0%, transparent 70%);bottom:-100px;left:30%;animation:floaty 26s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-50px);}}
 .grain{
-  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.04;
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.025;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -75,71 +81,156 @@ section{position:relative;}
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px 28px;
-  backdrop-filter:blur(12px);
-  background:rgba(10,10,11,0.55);
-  border-bottom:1px solid transparent;
-  transition:border-color .3s,background .3s;
+  padding:16px 28px;
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  background:rgba(255,255,255,0.4);
+  border-bottom:1px solid rgba(255,255,255,0.3);
+  transition:all .3s ease-in-out;
 }
-nav.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,0.85);}
-.logo{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:1px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+nav.scrolled{
+  background:rgba(255,255,255,0.72);
+  border-bottom-color:rgba(0,0,0,0.05);
+  box-shadow:0 8px 30px rgba(0,0,0,0.02);
+}
+.logo{font-family:var(--mono);font-weight:800;font-size:15px;letter-spacing:1px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
 .logo .dot{width:9px;height:9px;background:var(--accent);border-radius:2px;box-shadow:0 0 12px var(--accent);animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 .nav-links{display:flex;gap:30px;align-items:center;}
 .nav-links a{font-family:var(--mono);font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .2s;position:relative;}
-.nav-links a:hover{color:var(--accent);}
+.nav-links a:hover{color:var(--text);}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s;}
 .nav-links a:hover::after{width:100%;}
-.nav-cta{padding:8px 16px;border:1px solid var(--border);border-radius:6px;color:var(--text)!important;transition:all .25s;}
-.nav-cta:hover{border-color:var(--accent);background:rgba(212,255,63,0.08);}
+.nav-cta{
+  padding:8px 16px;
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:20px;
+  color:var(--text)!important;
+  background:rgba(255,255,255,0.4);
+  backdrop-filter:blur(8px);
+  transition:all .25s;
+}
+.nav-cta:hover{
+  border-color:var(--accent);
+  background:var(--accent);
+  color:#ffffff !important;
+}
 .nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;}
 
-/* ===== Hero ===== */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:80px;}
-.hero-tag{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:2px;margin-bottom:24px;opacity:0;animation:fadeUp .8s .2s forwards;}
-.hero h1{
-  font-family:var(--display);font-weight:800;
-  font-size:clamp(46px,9vw,118px);line-height:0.95;letter-spacing:-2px;
-  margin-bottom:8px;
+/* ===== Hero Scroll Controlled Section ===== */
+.hero-scroll {
+  position: relative;
+  height: 195vh;
 }
-.hero h1 .line{display:block;overflow:hidden;}
-.hero h1 .line span{display:inline-block;transform:translateY(110%);animation:lineUp .9s cubic-bezier(.16,1,.3,1) forwards;}
-.hero h1 .line:nth-child(1) span{animation-delay:.35s;}
-.hero h1 .line:nth-child(2) span{animation-delay:.5s;color:var(--text-faint);}
-@keyframes lineUp{to{transform:translateY(0);}}
-.hero-nickname{
-  font-family:var(--mono);
-  font-size:clamp(14px,2vw,18px);
-  color:var(--accent);
-  margin-top:12px;
-  opacity:0;
-  animation:fadeUp .8s .8s forwards;
+.hero-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
-.hero-nickname strong{
-  font-weight:700;
-  color:var(--text);
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
 }
-.hero-sub{font-family:var(--mono);font-size:clamp(15px,2vw,19px);color:var(--text-dim);margin-top:30px;min-height:28px;}
-.hero-sub .cursor{display:inline-block;width:9px;height:18px;background:var(--accent);margin-left:2px;vertical-align:middle;animation:blink 1s step-end infinite;}
-@keyframes blink{50%{opacity:0;}}
-.hero-desc{max-width:560px;margin-top:28px;color:var(--text-dim);font-size:16px;opacity:0;animation:fadeUp .8s 1.2s forwards;}
-.hero-desc strong{color:var(--text);font-weight:600;}
-.hero-actions{display:flex;gap:16px;margin-top:40px;opacity:0;animation:fadeUp .8s 1.4s forwards;flex-wrap:wrap;}
-.btn{font-family:var(--mono);font-size:14px;padding:13px 24px;border-radius:8px;text-decoration:none;transition:all .25s;cursor:pointer;border:1px solid var(--border);}
-.btn-primary{background:var(--accent);color:#0a0a0b;font-weight:700;border-color:var(--accent);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(212,255,63,0.35);}
-.btn-ghost{color:var(--text);}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
-.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--text-faint);letter-spacing:2px;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 1s 1.8s forwards;}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(248,248,251,0.92) 20%, rgba(248,248,251,0.65) 50%, rgba(248,248,251,0) 80%);
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  text-align: left;
+}
+.hero-text-box {
+  max-width: 580px;
+}
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.hero-text-box h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(38px, 5.5vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.hero-desc {
+  font-size: clamp(16px, 1.8vw, 19px);
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-bottom: 34px;
+}
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Glass Buttons */
+.glass-btn {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 13px 26px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.glass-btn.btn-primary {
+  background: var(--accent);
+  color: white;
+  border: 1px solid var(--accent);
+  box-shadow: 0 8px 30px rgba(255,159,10,0.25);
+}
+.glass-btn.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255,159,10,0.35);
+}
+.glass-btn.btn-secondary {
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+.glass-btn.btn-secondary:hover {
+  background: rgba(255,255,255,0.6);
+  border-color: rgba(255,255,255,0.8);
+  transform: translateY(-2px);
+}
+
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--text-faint);letter-spacing:2px;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0.8;z-index:3;}
 .scroll-hint .bar{width:1px;height:40px;background:linear-gradient(var(--accent),transparent);animation:scrollBar 2s ease-in-out infinite;}
 @keyframes scrollBar{0%,100%{transform:scaleY(.4);opacity:.4;}50%{transform:scaleY(1);opacity:1;}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
 /* ===== Section heading ===== */
 .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:48px;}
-.sec-num{font-family:var(--mono);font-size:13px;color:var(--accent);}
-.sec-title{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.5vw,46px);letter-spacing:-1px;}
-.sec-line{flex:1;height:1px;background:var(--border);}
+.sec-num{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700;}
+.sec-title{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.5vw,40px);letter-spacing:-1.2px;}
+.sec-line{flex:1;height:1px;background:rgba(0,0,0,0.08);}
 .pad{padding:110px 0;}
 
 /* ===== Stats ===== */
@@ -766,36 +857,35 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#top" class="logo"><span class="dot"></span>HU_QIANGBIN</a>
+  <a href="#top" class="logo"><span class="dot"></span>CHOPPER</a>
   <button class="nav-toggle" id="navToggle">☰</button>
   <div class="nav-links" id="navLinks">
-    <a href="#about">关于</a>
-    <a href="#stack">AI 工具链</a>
-    <a href="#work">作品集</a>
-    <a href="#journey">经历</a>
-    <a href="#contact" class="nav-cta">联系我</a>
+    <a href="#work">Projects</a>
+    <a href="#journey">Experience</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-cta">Contact</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero wrap" id="top">
-  <div class="hero-tag">// AI PRODUCT MANAGER · AI BUILDER · 2026</div>
-  <h1>
-    <span class="line"><span>胡强斌</span></span>
-    <span class="line"><span>Hu Qiangbin</span></span>
-  </h1>
-  <div class="hero-nickname">aka <strong>Chopper</strong></div>
-  <div class="hero-sub" id="typed"></div>
-  <p class="hero-desc">
-    从校园创业到 AI 硬件产品经理，擅长把 AI 技术落地为消费级产品。
-    兼具商业嗅觉和工程落地能力，正在带领公司完成从贴牌到品牌的关键转型。
-    把 <strong>AI 工具链深度嵌入产品开发全流程</strong>——既懂产品定义与商业落地，也能亲手用 <strong>vibe coding</strong> 构建原型、模拟器与自动化工具。
-  </p>
-  <div class="hero-actions">
-    <a href="#work" class="btn btn-primary">查看作品集 →</a>
-    <a href="#contact" class="btn btn-ghost">联系我</a>
+<section class="hero-scroll" id="top">
+  <div class="hero-sticky">
+    <video id="heroVideo" class="hero-video" poster="https://assets.chopperh.me/toy-ai-hero-poster.png" muted playsinline preload="auto">
+      <source src="https://assets.chopperh.me/toy-ai-hero-scroll.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content wrap">
+      <div class="hero-text-box">
+        <div class="hero-tag">AI Toy Product Manager</div>
+        <h1>Crafting Imagination<br>Into Intelligent Toys</h1>
+        <p class="hero-desc">I connect AI, hardware, interaction design, and children’s play into meaningful toy products.</p>
+        <div class="hero-actions">
+          <a href="#work" class="glass-btn btn-primary">View Projects</a>
+          <a href="#about" class="glass-btn btn-secondary">About Me</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="scroll-hint"><span>SCROLL</span><span class="bar"></span></div>
 </section>
 
 <!-- STATS -->
@@ -812,20 +902,28 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 <section class="pad wrap" id="about">
   <div class="sec-head reveal">
     <span class="sec-num">01</span>
-    <span class="sec-title">关于我</span>
+    <span class="sec-title">About My Workshop</span>
     <span class="sec-line"></span>
   </div>
   <div class="about-grid">
     <div class="reveal">
       <p class="about-lead">
-        我把 AI 技术<span class="hl">落地为消费级硬件产品</span>，
-        也用 AI 工具<span class="hl">重构自己的工作方式</span>。
+        Crafting next-generation <span class="hl">AI toys & tangible play experiences</span>.
       </p>
       <div class="about-body">
-        <p>从校园创业到 AI 硬件产品经理，我主导过火火兔由传统语音故事机向 AI 大模型玩具的战略转型，深度对接讯飞、字节、阿里、京东等头部 AI 原厂，参与制作京东《2025 AI 玩具白皮书》。</p>
-        <p>现在乐漾（JOYIN 集团）作为新品类开拓者，负责 Play-Act 品牌全线电子 / AI 玩具——从 0 到 1 规划立项、老品迭代到运营支持，同步推进 8–9 个研发中项目，覆盖 AI / 音频 / 电子学习 / 变声器品类，面向 Amazon US。</p>
-        <p>我相信 PM 不该只停在「写需求」。我用 Codex、Claude Code、Qoder 亲手构建交互模拟器、自动化工具，甚至自建了一套跑在 NAS 上的 AI 知识库助手。</p>
-        <p>获讯飞/微软 AI Prompt 工程师认证，主导 ASR/TTS/LLM 全链路技术选型，深度对比 5+ 主流大模型，设计多模型混合架构支持服务热切换。</p>
+        <p>I am a hands-on AI hardware product manager specializing in transitioning traditional child’s play into smart, modern, multi-modal conversational companions.</p>
+        <p>Currently, as a core product creator at JOYIN Group's Play-Act brand, I spearhead global product planning, industrial design reviews, and engineering coordination. I manage a pipeline of 8-9 concurrent active developments ranging from LCD educational gaming toys to high-speed kids’ talk tablets targeting Amazon US.</p>
+        <p>I believe a true Product Manager shouldn't just write specs—I actively build interactive mockups, API proxies, and local workspace agents to accelerate iteration and bypass communication overhead.</p>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:30px;">
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(255,159,10,0.1); color:var(--accent); border:1px solid rgba(255,159,10,0.2);"># children's play</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(175,82,222,0.1); color:var(--accent-2); border:1px solid rgba(175,82,222,0.2);"># hardware interaction</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(90,200,250,0.1); color:var(--accent-3); border:1px solid rgba(90,200,250,0.2);"># content design</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(255,159,10,0.1); color:var(--accent); border:1px solid rgba(255,159,10,0.2);"># Amazon market research</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(175,82,222,0.1); color:var(--accent-2); border:1px solid rgba(175,82,222,0.2);"># product roadmap</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(90,200,250,0.1); color:var(--accent-3); border:1px solid rgba(90,200,250,0.2);"># interactive prototype</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; background:rgba(255,159,10,0.1); color:var(--accent); border:1px solid rgba(255,159,10,0.2);"># user play feedback</span>
       </div>
     </div>
     <div class="about-card reveal d1">
@@ -848,11 +946,45 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
   </div>
 </section>
 
+<!-- WHAT I BUILD -->
+<section class="pad wrap" id="what-i-build">
+  <div class="sec-head reveal">
+    <span class="sec-num">02</span>
+    <span class="sec-title">What I Build</span>
+    <span class="sec-line"></span>
+  </div>
+  <p class="reveal" style="color:var(--text-dim);max-width:600px;margin-bottom:40px;font-size:16px;">
+    I conceptualize and deliver playful AI agents, physical computing toys, and meaningful voice-interaction workflows for kids worldwide.
+  </p>
+  <div class="tools" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+    <div class="tool reveal">
+      <div class="stage" style="color:var(--accent-2);">Concept · Generative</div>
+      <div class="name">AI Toy Concepts</div>
+      <div class="use">Blending generative media, custom avatars, and multi-modal storytelling feeds directly into consumer hardware form factors.</div>
+    </div>
+    <div class="tool reveal d1">
+      <div class="stage" style="color:var(--accent-3);">Physical · Electronics</div>
+      <div class="name">Electronic Play</div>
+      <div class="use">Designing tactile, screens-off puzzle experiences, LCD matrix challenges, and smart printed learning aids.</div>
+    </div>
+    <div class="tool reveal d2">
+      <div class="stage" style="color:var(--accent);">ASR & TTS · Voice</div>
+      <div class="name">Interaction Design</div>
+      <div class="use">Orchestrating conversational flows, latency reduction strategies, and custom-tuned child-speech speech models.</div>
+    </div>
+    <div class="tool reveal d3">
+      <div class="stage" style="color:var(--accent-2);">Global · Growth</div>
+      <div class="name">Product Strategy</div>
+      <div class="use">Driving global roadmap alignment, Amazon US quantitative validation, and low-cost embedded bill-of-materials sourcing.</div>
+    </div>
+  </div>
+</section>
+
 <!-- TOOL STACK -->
 <section class="pad wrap" id="stack">
   <div class="sec-head reveal">
-    <span class="sec-num">02</span>
-    <span class="sec-title">AI 实战工具链</span>
+    <span class="sec-num">03</span>
+    <span class="sec-title">My AI Copilot Stack</span>
     <span class="sec-line"></span>
   </div>
   <p class="reveal" style="color:var(--text-dim);max-width:600px;margin-bottom:40px;font-size:16px;">
@@ -875,8 +1007,8 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 <!-- PORTFOLIO -->
 <section class="pad wrap" id="work">
   <div class="sec-head reveal">
-    <span class="sec-num">03</span>
-    <span class="sec-title">作品集</span>
+    <span class="sec-num">04</span>
+    <span class="sec-title">Selected Projects</span>
     <span class="sec-line"></span>
   </div>
   <div class="filters reveal">
@@ -936,24 +1068,24 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 核心项目</div>
-      <div class="ph">[ 图片占位 · StickTalk ]</div>
-      <h3>AI 贴纸打印机</h3>
+      <div class="ph">[ AI Sticker Printer ]</div>
+      <h3>AI Sticker Printer Toy</h3>
       <p>公司转型品牌化的关键一步，第一个AI玩具项目。半个CTO + PM角色，梳理AI玩具全技术链路，引入方案商，研究耗材盈利模式，实现无需APP即可操作。</p>
       <div class="stack"><span class="chip">AI Sticker Box</span><span class="chip">耗材盈利</span><span class="chip">无需APP</span></div>
     </div>
 
     <div class="card reveal d1" data-cat="hw">
       <div class="cat">AI 硬件 · 在研项目</div>
-      <div class="ph">[ 图片占位 · MathToy ]</div>
-      <h3>离线数学学习玩具</h3>
+      <div class="ph">[ MathToy ]</div>
+      <h3>Math Learning Game Toy</h3>
       <p>LCD段码屏、76文件音频映射，主打"50,000+ Math Questions"，面向Amazon US市场。</p>
       <div class="stack"><span class="chip">LCD段码屏</span><span class="chip">离线运行</span><span class="chip">Amazon US</span></div>
     </div>
 
     <div class="card reveal d2" data-cat="hw">
       <div class="cat">AI 硬件 · 在研项目</div>
-      <div class="ph">[ 图片占位 · DJMixer ]</div>
-      <h3>儿童DJ混音器</h3>
+      <div class="ph">[ DJMixer ]</div>
+      <h3>Sound Puzzle Pad / DJ Mixer</h3>
       <p>独创"麦克风旋钮8音色+3推子独立控强度"无限组合玩法，面向Amazon US市场。</p>
       <div class="stack"><span class="chip">8音色</span><span class="chip">3推子</span><span class="chip">无限组合</span></div>
     </div>
@@ -981,10 +1113,10 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
     <div class="card reveal d2" data-cat="vibe">
       <div class="cat">Vibe Coding · 全栈</div>
-      <div class="ph">[ 图片占位 · 小程序截图 ]</div>
-      <h3>Gemini 微信小程序</h3>
-      <p>自建海外服务器代理 + Nginx + HTTPS，让微信小程序直连 Gemini 多模型（含生图），全流程自主部署上线。</p>
-      <div class="stack"><span class="chip">Node.js</span><span class="chip">Nginx</span><span class="chip">微信小程序</span></div>
+      <div class="ph">[ Kids Learning Tablet ]</div>
+      <h3>Kids Talking Learning Tablet</h3>
+      <p>自建海外服务器代理 + Nginx + HTTPS，让仿平板设备直连 Gemini Talking 多模型大屏动画交互与双语多模态发音。</p>
+      <div class="stack"><span class="chip">Gemini API</span><span class="chip">Nginx Proxy</span><span class="chip">Interactive TTS</span></div>
     </div>
 
     <div class="card reveal" data-cat="vibe content">
@@ -1027,11 +1159,62 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
   </div>
 </section>
 
+<!-- PRODUCT THINKING -->
+<section class="pad wrap" id="thinking" style="padding-bottom: 40px;">
+  <div class="sec-head reveal">
+    <span class="sec-num">05</span>
+    <span class="sec-title">My Product Thinking</span>
+    <span class="sec-line"></span>
+  </div>
+  <p class="reveal" style="color:var(--text-dim);max-width:600px;margin-bottom:40px;font-size:16px;">
+    The framework I follow to ensure a concept blossoms from a simple seed of curiosity into a robust, global kid-tech product.
+  </p>
+  <div class="reveal" style="display:flex; flex-direction:row; gap:20px; flex-wrap:wrap; justify-content:space-between; position:relative; padding: 20px 0;">
+
+    <div style="flex:1; min-width:140px; text-align:center; padding: 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--glass-border); backdrop-filter:var(--glass-blur); box-shadow:var(--glass-shadow); position:relative;">
+      <div style="font-family:var(--mono); color:var(--accent); font-size:24px; font-weight:800; margin-bottom:10px;">01</div>
+      <div style="font-family:var(--display); font-weight:700; font-size:16px; margin-bottom:8px;">Insight</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.4;">Research play patterns & educational objectives.</p>
+    </div>
+
+    <div style="flex:1; min-width:140px; text-align:center; padding: 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--glass-border); backdrop-filter:var(--glass-blur); box-shadow:var(--glass-shadow);">
+      <div style="font-family:var(--mono); color:var(--accent-2); font-size:24px; font-weight:800; margin-bottom:10px;">02</div>
+      <div style="font-family:var(--display); font-weight:700; font-size:16px; margin-bottom:8px;">Concept</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.4;">Bridge AI capabilities and tactile form factors.</p>
+    </div>
+
+    <div style="flex:1; min-width:140px; text-align:center; padding: 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--glass-border); backdrop-filter:var(--glass-blur); box-shadow:var(--glass-shadow);">
+      <div style="font-family:var(--mono); color:var(--accent-3); font-size:24px; font-weight:800; margin-bottom:10px;">03</div>
+      <div style="font-family:var(--display); font-weight:700; font-size:16px; margin-bottom:8px;">Interaction</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.4;">Design screens-off physical voice interfaces.</p>
+    </div>
+
+    <div style="flex:1; min-width:140px; text-align:center; padding: 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--glass-border); backdrop-filter:var(--glass-blur); box-shadow:var(--glass-shadow);">
+      <div style="font-family:var(--mono); color:var(--accent); font-size:24px; font-weight:800; margin-bottom:10px;">04</div>
+      <div style="font-family:var(--display); font-weight:700; font-size:16px; margin-bottom:8px;">Feasibility</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.4;">BOM costing, hardware prototyping, & sourcing.</p>
+    </div>
+
+    <div style="flex:1; min-width:140px; text-align:center; padding: 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--glass-border); backdrop-filter:var(--glass-blur); box-shadow:var(--glass-shadow);">
+      <div style="font-family:var(--mono); color:var(--accent-2); font-size:24px; font-weight:800; margin-bottom:10px;">05</div>
+      <div style="font-family:var(--display); font-weight:700; font-size:16px; margin-bottom:8px;">Content</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.4;">Multi-modal systems, TTS voice tuning.</p>
+    </div>
+
+    <div style="flex:1; min-width:140px; text-align:center; padding: 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--glass-border); backdrop-filter:var(--glass-blur); box-shadow:var(--glass-shadow);">
+      <div style="font-family:var(--mono); color:var(--accent-3); font-size:24px; font-weight:800; margin-bottom:10px;">06</div>
+      <div style="font-family:var(--display); font-weight:700; font-size:16px; margin-bottom:8px;">Launch</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.4;">Amazon US launch, retail loop, & play feedback.</p>
+    </div>
+
+  </div>
+</section>
+
 <!-- JOURNEY -->
 <section class="pad wrap" id="journey">
   <div class="sec-head reveal">
-    <span class="sec-num">04</span>
-    <span class="sec-title">经历</span>
+    <span class="sec-num">06</span>
+    <span class="sec-title">Experience Timeline</span>
     <span class="sec-line"></span>
   </div>
   <div class="timeline">
@@ -1071,8 +1254,8 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 <!-- CONTACT -->
 <section class="contact wrap" id="contact">
   <div class="reveal">
-    <h2>一起把 AI<br>变成<span class="hl">真实的产品</span>。</h2>
-    <p class="sub">// 寻找 AI 产品经理 / AI 硬件 / AI 玩具 方向的机会与合作</p>
+    <h2>Let’s create<br>something <span class="hl">intelligent together</span>.</h2>
+    <p class="sub">// Open for AI Product design, Kids' Smart Hardware, & Global Sourcing Opportunities</p>
     <div class="contact-links">
       <a href="mailto:18476393224@163.com" class="clink">✉ 18476393224@163.com</a>
       <a href="tel:18476393224" class="clink">☎ 18476393224</a>
@@ -1090,7 +1273,7 @@ footer{border-top:1px solid var(--border);padding:34px 0;}
 
 <footer class="wrap">
   <div class="foot">
-    <span class="logo"><span class="dot"></span>HU_QIANGBIN</span>
+    <span class="logo"><span class="dot"></span>CHOPPER</span>
     <span class="made">Built with <span class="accent">vibe coding</span> · Claude + Codex · 2026</span>
   </div>
 </footer>
@@ -1230,18 +1413,57 @@ const toggle=document.getElementById('navToggle'),links=document.getElementById(
 toggle.addEventListener('click',()=>links.classList.toggle('open'));
 links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
 
-// Typing effect
-const phrases=['AI 硬件产品经理','把 AI 技术落地为消费级产品','用 vibe coding 构建一切','AI Product Manager & Builder'];
-const typed=document.getElementById('typed');
-let pi=0,ci=0,deleting=false;
-function type(){
-  const p=phrases[pi];
-  typed.innerHTML=(deleting?p.slice(0,ci--):p.slice(0,ci++))+'<span class="cursor"></span>';
-  if(!deleting&&ci===p.length+1){deleting=true;setTimeout(type,1600);return;}
-  if(deleting&&ci===0){deleting=false;pi=(pi+1)%phrases.length;}
-  setTimeout(type,deleting?40:90);
+// Hero Scroll Controlled Video Logic (with LERP requestAnimationFrame interpolation)
+const video = document.getElementById('heroVideo');
+const scrollSection = document.querySelector('.hero-scroll');
+let targetTime = 0;
+let currentTime = 0;
+const ease = 0.08; // Damping smooth coeff
+
+window.addEventListener('scroll', () => {
+  if (!video || !scrollSection) return;
+  const rect = scrollSection.getBoundingClientRect();
+  const scrollTotalHeight = scrollSection.clientHeight - window.innerHeight;
+  if (scrollTotalHeight <= 0) return;
+
+  // Progress ratio (0 - 1)
+  let ratio = -rect.top / scrollTotalHeight;
+  ratio = Math.max(0, Math.min(1, ratio));
+
+  if (video.duration) {
+    targetTime = ratio * video.duration;
+  }
+});
+
+function animateVideoScroll() {
+  if (video && video.duration) {
+    // Linear interpolation
+    currentTime += (targetTime - currentTime) * ease;
+    if (Math.abs(currentTime - targetTime) < 0.005) {
+      currentTime = targetTime;
+    }
+    video.currentTime = currentTime;
+  }
+  requestAnimationFrame(animateVideoScroll);
 }
-setTimeout(type,1400);
+
+// Set initial frame and run loop on loaded metadata
+if (video) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    video.autoplay = true;
+    video.loop = true;
+    video.play();
+  } else {
+    video.addEventListener('loadedmetadata', () => {
+      video.currentTime = 0;
+    });
+    // Fallback load trigger if loadedmetadata already fired
+    if (video.readyState >= 1) {
+      video.currentTime = 0;
+    }
+    requestAnimationFrame(animateVideoScroll);
+  }
+}
 
 // Reveal on scroll
 const io=new IntersectionObserver(es=>{
