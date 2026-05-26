@@ -2744,15 +2744,16 @@ adjustChatInputHeight();
     recognition.continuous=true;
     recognition.interimResults=true;
 
+    let isListening=false;
     let committedText=''; // 已确认的文字（final results 累积）
 
     recognition.onstart=()=>{
+      isListening=true;
       committedText='';
-      if(micBtn)micBtn.classList.add('listening');
+      if(micBtn){micBtn.classList.add('listening');micBtn.title='点击停止';}
       setStatus('listening','正在听...');
     };
     recognition.onresult=e=>{
-      // 累积所有 final 结果
       let finalText='';
       let interimText='';
       for(let i=0;i<e.results.length;i++){
@@ -2766,21 +2767,31 @@ adjustChatInputHeight();
       if(demoInput)demoInput.value=committedText+interimText;
     };
     recognition.onend=()=>{
-      if(micBtn)micBtn.classList.remove('listening');
+      isListening=false;
+      if(micBtn){micBtn.classList.remove('listening');micBtn.title='点击开始语音输入';}
       setStatus('ready','就绪');
-      // 文字留在输入框，不自动发送
     };
     recognition.onerror=(ev)=>{
-      if(ev.error==='no-speech')return; // 无声音时静默忽略
-      if(micBtn)micBtn.classList.remove('listening');
-      setStatus('ready','就绪');
+      isListening=false;
+      if(micBtn){micBtn.classList.remove('listening');micBtn.title='点击开始语音输入';}
+      if(ev.error==='no-speech'){setStatus('ready','没听到，再试一次');return;}
+      if(ev.error==='not-allowed'||ev.error==='service-not-allowed'){
+        setStatus('ready','麦克风权限被拒绝');
+      }else{
+        setStatus('ready','识别出错：'+ev.error);
+      }
     };
     if(micBtn){
       micBtn.addEventListener('click',()=>{
-        if(micBtn.classList.contains('listening')){
-          recognition.stop();
+        if(isListening){
+          try{recognition.stop();}catch(e){}
         }else{
-          recognition.start();
+          try{recognition.start();}
+          catch(e){
+            // 已经在运行时再次 start 会抛 InvalidStateError，先 stop 再重启
+            try{recognition.stop();}catch(_){}
+            setStatus('ready','无法启动：'+e.message);
+          }
         }
       });
     }
