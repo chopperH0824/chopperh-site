@@ -2741,26 +2741,37 @@ adjustChatInputHeight();
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     recognition=new SR();
     recognition.lang='zh-CN';
-    recognition.continuous=false;
+    recognition.continuous=true;
     recognition.interimResults=true;
 
+    let committedText=''; // 已确认的文字（final results 累积）
+
     recognition.onstart=()=>{
+      committedText='';
       if(micBtn)micBtn.classList.add('listening');
       setStatus('listening','正在听...');
     };
     recognition.onresult=e=>{
-      const transcript=Array.from(e.results).map(r=>r[0].transcript).join('');
-      if(demoInput)demoInput.value=transcript;
-      if(e.results[e.results.length-1].isFinal){
-        sendMessage(transcript);
-        if(demoInput)demoInput.value='';
+      // 累积所有 final 结果
+      let finalText='';
+      let interimText='';
+      for(let i=0;i<e.results.length;i++){
+        if(e.results[i].isFinal){
+          finalText+=e.results[i][0].transcript;
+        }else{
+          interimText+=e.results[i][0].transcript;
+        }
       }
+      committedText=finalText;
+      if(demoInput)demoInput.value=committedText+interimText;
     };
     recognition.onend=()=>{
       if(micBtn)micBtn.classList.remove('listening');
       setStatus('ready','就绪');
+      // 文字留在输入框，不自动发送
     };
-    recognition.onerror=()=>{
+    recognition.onerror=(ev)=>{
+      if(ev.error==='no-speech')return; // 无声音时静默忽略
       if(micBtn)micBtn.classList.remove('listening');
       setStatus('ready','就绪');
     };
