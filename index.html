@@ -702,19 +702,6 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   object-fit:cover;
 }
 
-.chat-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:98;
-  visibility:hidden;
-  pointer-events:none;
-  background:rgba(255,255,255,0.001);
-}
-.chat-backdrop.active{
-  visibility:visible;
-  pointer-events:auto;
-}
-
 .chat-window{
   position:fixed;
   bottom:100px;
@@ -782,6 +769,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
 .chat-messages{
   flex:1;
+  min-height:0;
   overflow-y:auto;
   padding:16px;
   display:flex;
@@ -855,8 +843,9 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   padding:16px;
   border-top:1px solid rgba(255,255,255,0.48);
   display:flex;
-  align-items:flex-start;
+  align-items:flex-end;
   gap:10px;
+  margin-top:auto;
   background:rgba(255,255,255,0.26);
 }
 .chat-input textarea{
@@ -1901,7 +1890,6 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 </div>
 
 <!-- AI Chat -->
-<div class="chat-backdrop" id="chatBackdrop"></div>
 <div class="chat-hint">
   <span>ask me</span>
   <svg class="hint-arrow" width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2288,7 +2276,6 @@ svgModal.addEventListener('click',(e)=>{
 
 // AI Chat
 const chatToggle=document.getElementById('chatToggle');
-const chatBackdrop=document.getElementById('chatBackdrop');
 const chatWindow=document.getElementById('chatWindow');
 const chatMessages=document.getElementById('chatMessages');
 const chatInput=document.getElementById('chatInput');
@@ -2307,7 +2294,6 @@ function adjustChatInputHeight(){
 
 function closeChatWindow(){
   chatWindow.classList.remove('active');
-  chatBackdrop.classList.remove('active');
 }
 
 // Cloudflare Worker URL
@@ -2315,30 +2301,24 @@ const WORKER_URL='https://aichat.chopperh.me';
 
 let chatHistory=[];
 
-chatToggle.addEventListener('click',()=>{
+chatToggle.addEventListener('click',(e)=>{
+  e.stopPropagation();
   const shouldOpen=!chatWindow.classList.contains('active');
   chatWindow.classList.toggle('active',shouldOpen);
-  chatBackdrop.classList.toggle('active',shouldOpen);
   if(shouldOpen){
     adjustChatInputHeight();
     chatInput.focus();
   }
 });
 
-['pointerdown','mousedown','touchstart','click'].forEach(eventName=>{
-  chatBackdrop.addEventListener(eventName,(e)=>{
-    e.preventDefault();
-    closeChatWindow();
-  });
+chatWindow.addEventListener('click',(e)=>{
+  e.stopPropagation();
 });
 
-function closeChatOnOutsidePress(e){
+document.addEventListener('click',(e)=>{
   if(!chatWindow.classList.contains('active'))return;
   if(chatWindow.contains(e.target)||chatToggle.contains(e.target))return;
   closeChatWindow();
-}
-['pointerdown','mousedown','touchstart'].forEach(eventName=>{
-  document.addEventListener(eventName,closeChatOnOutsidePress,true);
 });
 
 async function sendMessage(){
