@@ -702,6 +702,19 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   object-fit:cover;
 }
 
+.chat-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:98;
+  visibility:hidden;
+  pointer-events:none;
+  background:rgba(255,255,255,0.001);
+}
+.chat-backdrop.active{
+  visibility:visible;
+  pointer-events:auto;
+}
+
 .chat-window{
   position:fixed;
   bottom:100px;
@@ -1888,6 +1901,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 </div>
 
 <!-- AI Chat -->
+<div class="chat-backdrop" id="chatBackdrop"></div>
 <div class="chat-hint">
   <span>ask me</span>
   <svg class="hint-arrow" width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2274,6 +2288,7 @@ svgModal.addEventListener('click',(e)=>{
 
 // AI Chat
 const chatToggle=document.getElementById('chatToggle');
+const chatBackdrop=document.getElementById('chatBackdrop');
 const chatWindow=document.getElementById('chatWindow');
 const chatMessages=document.getElementById('chatMessages');
 const chatInput=document.getElementById('chatInput');
@@ -2290,17 +2305,40 @@ function adjustChatInputHeight(){
   chatSend.style.height=nextHeight+'px';
 }
 
+function closeChatWindow(){
+  chatWindow.classList.remove('active');
+  chatBackdrop.classList.remove('active');
+}
+
 // Cloudflare Worker URL
 const WORKER_URL='https://aichat.chopperh.me';
 
 let chatHistory=[];
 
 chatToggle.addEventListener('click',()=>{
-  chatWindow.classList.toggle('active');
-  if(chatWindow.classList.contains('active')){
+  const shouldOpen=!chatWindow.classList.contains('active');
+  chatWindow.classList.toggle('active',shouldOpen);
+  chatBackdrop.classList.toggle('active',shouldOpen);
+  if(shouldOpen){
     adjustChatInputHeight();
     chatInput.focus();
   }
+});
+
+['pointerdown','mousedown','touchstart','click'].forEach(eventName=>{
+  chatBackdrop.addEventListener(eventName,(e)=>{
+    e.preventDefault();
+    closeChatWindow();
+  });
+});
+
+function closeChatOnOutsidePress(e){
+  if(!chatWindow.classList.contains('active'))return;
+  if(chatWindow.contains(e.target)||chatToggle.contains(e.target))return;
+  closeChatWindow();
+}
+['pointerdown','mousedown','touchstart'].forEach(eventName=>{
+  document.addEventListener(eventName,closeChatOnOutsidePress,true);
 });
 
 async function sendMessage(){
