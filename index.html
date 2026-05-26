@@ -491,22 +491,29 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   border:1px solid var(--accent);
 }
 
-/* ===== Hero Exp Logos (首屏漂浮快跳) ===== */
-.hero-exp-logos{position:absolute;right:0;bottom:120px;display:flex;flex-direction:column;align-items:flex-end;gap:14px;opacity:0;animation:fadeUp .8s 1.8s forwards;}
-.hero-logos-label{font-family:var(--mono);font-size:11px;color:var(--text-faint);letter-spacing:1px;margin-bottom:2px;}
-.float-logo{display:flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:18px;background:rgba(255,255,255,0.68);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.85);box-shadow:0 4px 20px rgba(0,0,0,0.08);cursor:pointer;text-decoration:none;transition:transform .25s,box-shadow .25s;}
-.float-logo:hover{transform:scale(1.12) translateX(-4px);box-shadow:0 8px 32px rgba(245,159,47,0.35),0 0 0 2px var(--accent);}
-.float-logo img{width:50px;height:50px;object-fit:contain;pointer-events:none;}
-@keyframes floatA{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-@keyframes floatB{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes floatC{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
-@keyframes floatD{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
-@keyframes floatE{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-#fl-leyang{animation:floatA 4s ease-in-out infinite;}
-#fl-hhtu{animation:floatB 5s ease-in-out infinite 0.6s;}
-#fl-vivo{animation:floatC 3.8s ease-in-out infinite 1.2s;}
-#fl-yidao{animation:floatD 4.5s ease-in-out infinite 0.3s;}
-#fl-yxy{animation:floatE 4.2s ease-in-out infinite 0.9s;}
+/* ===== Hero Exp Logos (首屏不规则漂浮) ===== */
+.hero-exp-logos{position:absolute;inset:0;pointer-events:none;}
+.float-logo{position:absolute;display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:20px;background:rgba(255,255,255,0.65);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.88);box-shadow:0 6px 24px rgba(0,0,0,0.09);cursor:pointer;text-decoration:none;pointer-events:auto;opacity:0;transition:box-shadow .25s,transform .25s;}
+.float-logo.fl-visible{opacity:1;transition:opacity .6s ease, box-shadow .25s, transform .25s;}
+.float-logo:hover{box-shadow:0 10px 36px rgba(245,159,47,0.38),0 0 0 2px var(--accent);transform:scale(1.14) !important;}
+.float-logo img{width:52px;height:52px;object-fit:contain;pointer-events:none;}
+/* 各 logo 不规则位置：右侧无文字区（left>52%） */
+#fl-leyang{left:58%;top:22%;}
+#fl-hhtu  {left:72%;top:52%;}
+#fl-vivo  {left:62%;top:65%;}
+#fl-yidao {left:82%;top:30%;}
+#fl-yxy   {left:78%;top:70%;}
+/* 各自独立浮动轨迹（XY 双轴 + 轻微旋转，周期和相位错开） */
+@keyframes floatA{0%,100%{transform:translate(0,0) rotate(-1.5deg);}30%{transform:translate(8px,-14px) rotate(1deg);}65%{transform:translate(-6px,8px) rotate(-0.5deg);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) rotate(2deg);}40%{transform:translate(-10px,12px) rotate(-1.5deg);}70%{transform:translate(12px,-8px) rotate(1deg);}}
+@keyframes floatC{0%,100%{transform:translate(0,0) rotate(-2deg);}35%{transform:translate(14px,-10px) rotate(1.5deg);}75%{transform:translate(-8px,14px) rotate(-1deg);}}
+@keyframes floatD{0%,100%{transform:translate(0,0) rotate(1deg);}45%{transform:translate(-12px,-12px) rotate(-2deg);}80%{transform:translate(10px,8px) rotate(0.5deg);}}
+@keyframes floatE{0%,100%{transform:translate(0,0) rotate(-1deg);}50%{transform:translate(10px,16px) rotate(2deg);}}
+#fl-leyang{animation:floatA 7s ease-in-out infinite;}
+#fl-hhtu  {animation:floatB 8.5s ease-in-out infinite 1s;}
+#fl-vivo  {animation:floatC 6.5s ease-in-out infinite 0.4s;}
+#fl-yidao {animation:floatD 9s ease-in-out infinite 2s;}
+#fl-yxy   {animation:floatE 7.5s ease-in-out infinite 1.5s;}
 /* ===== Experience Cards ===== */
 .exp-cards{display:flex;flex-direction:column;gap:20px;}
 .exp-card{display:flex;align-items:flex-start;gap:28px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:28px;padding:32px;box-shadow:var(--glass-shadow);transition:transform .25s,box-shadow .25s;}
@@ -1154,9 +1161,8 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   </div>
   <div class="scroll-hint"><span>SCROLL</span><span class="bar"></span></div>
 
-  <!-- 经历快跳 logos（漂浮在首屏右下角） -->
+  <!-- 经历快跳 logos（不规则漂浮在首屏右侧） -->
   <div class="hero-exp-logos" aria-label="经历快速跳转">
-    <span class="hero-logos-label">// 工作经历</span>
     <a class="float-logo" id="fl-leyang" href="#exp-leyang" aria-label="乐漾JOYIN"><img src="images/logos/logo-leyang.png" alt="乐漾JOYIN"></a>
     <a class="float-logo" id="fl-hhtu" href="#exp-hhtu" aria-label="火火兔"><img src="images/logos/logo-hhtu.png" alt="火火兔"></a>
     <a class="float-logo" id="fl-vivo" href="#exp-vivo" aria-label="vivo"><img src="images/logos/logo-vivo.svg" alt="vivo"></a>
@@ -2073,8 +2079,9 @@ const io=new IntersectionObserver(es=>{
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-// Float logo smooth scroll
-document.querySelectorAll('.float-logo').forEach(a=>{
+// Float logo smooth scroll + staggered fade-in
+document.querySelectorAll('.float-logo').forEach((a,i)=>{
+  setTimeout(()=>a.classList.add('fl-visible'), 1800 + i*150);
   a.addEventListener('click',e=>{
     e.preventDefault();
     const target=document.querySelector(a.getAttribute('href'));
