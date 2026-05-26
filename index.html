@@ -2451,6 +2451,8 @@ adjustChatInputHeight();
   let isProcessing=false;
   let recognition=null;
   let currentAudio=null;
+  let activePlayBtn=null;
+  let playbackToken=0;
 
   function setStatus(state,text){
     const dot=document.getElementById('status-dot');
@@ -2463,6 +2465,7 @@ adjustChatInputHeight();
   // 人设切换
   document.querySelectorAll('.persona-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
+      stopCurrentAudio();
       document.querySelectorAll('.persona-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       const editor=document.getElementById('custom-prompt');
@@ -2484,6 +2487,7 @@ adjustChatInputHeight();
         if(msgs){
           msgs.innerHTML='<div class="demo-bubble ai"><span class="bubble-text">人设已切换！来和我聊聊吧～</span><button class="play-btn" title="播放语音">▶</button></div>';
           bindPlayBtns();
+          prefetchTTS('人设已切换！来和我聊聊吧～');
         }
       }
     });
@@ -2496,6 +2500,7 @@ adjustChatInputHeight();
   // 音色切换
   document.querySelectorAll('.voice-item').forEach(btn=>{
     btn.addEventListener('click',()=>{
+      stopCurrentAudio();
       document.querySelectorAll('.voice-item').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       currentVoice=btn.dataset.voice;
@@ -2509,11 +2514,6 @@ adjustChatInputHeight();
     bubble.className='demo-bubble '+role;
     bubble.innerHTML='<span class="bubble-text">'+(role==='ai'?formatMarkdown(text):text)+'</span>'+
       (role==='ai'?'<button class="play-btn" title="播放语音">▶</button>':'');
-    if(role==='ai'){
-      bubble.querySelector('.play-btn').addEventListener('click',function(){
-        playTTS(text,this);
-      });
-    }
     container.appendChild(bubble);
     container.scrollTop=container.scrollHeight;
     return bubble;
@@ -2521,7 +2521,11 @@ adjustChatInputHeight();
 
   // TTS — 后台预取缓存 + 手动点击播放
   let audioCtx=null;
-  const ttsCache=new Map(); // text → Promise<AudioBuffer>
+  const ttsCache=new Map(); // voice + text → Promise<AudioBuffer>
+
+  function getTTSCacheKey(text,voice=currentVoice){
+    return voice+'::'+text;
+  }
 
   function getAudioCtx(){
     if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
@@ -2531,7 +2535,8 @@ adjustChatInputHeight();
 
   // 静默预取：AI 回复后立即在后台拉音频并解码，不播放
   async function prefetchTTS(text){
-    if(!text||ttsCache.has(text))return;
+    const cacheKey=getTTSCacheKey(text);
+    if(!text||ttsCache.has(cacheKey))return;
     const p=fetch(WORKER+'/tts',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2543,10 +2548,10 @@ adjustChatInputHeight();
       return ctx.decodeAudioData(buf);
     }).catch(e=>{
       console.warn('TTS prefetch failed:',e);
-      ttsCache.delete(text); // 失败清缓存，允许重试
+      ttsCache.delete(cacheKey); // 失败清缓存，允许重试
       return null;
     });
-    ttsCache.set(text,p);
+    ttsCache.set(cacheKey,p);
     // 缓存成功后让按钮变为"就绪可点击"状态
     p.then(buf=>{
       if(buf){
@@ -2562,13 +2567,40 @@ adjustChatInputHeight();
   }
 
   // 点击播放：优先用缓存 AudioBuffer，没缓存则实时拉取
+  function setPlayBtnState(btn,isPlaying){
+    if(!btn)return;
+    btn.classList.toggle('playing',isPlaying);
+    btn.textContent=isPlaying?'⏸':'▶';
+    btn.title=isPlaying?'暂停语音':'播放语音';
+  }
+
+  function stopCurrentAudio(){
+    playbackToken++;
+    if(currentAudio){
+      try{currentAudio.pause();}catch(e){}
+      currentAudio=null;
+    }
+    try{speechSynthesis.cancel();}catch(e){}
+    if(activePlayBtn){
+      setPlayBtnState(activePlayBtn,false);
+      activePlayBtn=null;
+    }
+    setStatus('ready','就绪');
+  }
+
   async function playTTS(text,btn){
-    if(currentAudio){try{currentAudio.pause();}catch(e){}currentAudio=null;}
-    document.querySelectorAll('.play-btn').forEach(b=>b.classList.remove('playing'));
-    if(btn)btn.classList.add('playing');
+    if(btn&&btn===activePlayBtn&&btn.classList.contains('playing')){
+      stopCurrentAudio();
+      return;
+    }
+    stopCurrentAudio();
+    const token=playbackToken;
+    activePlayBtn=btn||null;
+    if(btn)setPlayBtnState(btn,true);
     setStatus('speaking','▶ 播放中...');
     try{
-      let bufferPromise=ttsCache.get(text);
+      const cacheKey=getTTSCacheKey(text);
+      let bufferPromise=ttsCache.get(cacheKey);
       if(!bufferPromise){
         // 无缓存，实时拉取
         setStatus('speaking','合成语音...');
@@ -2582,9 +2614,10 @@ adjustChatInputHeight();
           const ctx=getAudioCtx();
           return ctx.decodeAudioData(buf);
         });
-        ttsCache.set(text,bufferPromise);
+        ttsCache.set(cacheKey,bufferPromise);
       }
       const audioBuffer=await bufferPromise;
+      if(token!==playbackToken)return;
       if(!audioBuffer)throw new Error('empty buffer');
       const ctx=getAudioCtx();
       const source=ctx.createBufferSource();
@@ -2592,21 +2625,36 @@ adjustChatInputHeight();
       source.connect(ctx.destination);
       currentAudio={pause:()=>{try{source.stop();}catch(e){}}};
       source.onended=()=>{
-        if(btn){btn.classList.remove('playing');btn.classList.add('cached');}
+        if(token!==playbackToken)return;
+        if(btn){setPlayBtnState(btn,false);btn.classList.add('cached');}
         setStatus('ready','就绪');
         currentAudio=null;
+        activePlayBtn=null;
       };
       source.start(0);
       setStatus('speaking','▶ 播放中...');
     }catch(e){
       console.error('TTS play error:',e);
-      if(btn)btn.classList.remove('playing');
-      setStatus('ready','就绪');
+      if(token!==playbackToken)return;
       try{
         const utt=new SpeechSynthesisUtterance(text);
         utt.lang='zh-CN';
+        currentAudio={pause:()=>speechSynthesis.cancel()};
+        utt.onend=()=>{
+          if(token!==playbackToken)return;
+          if(btn)setPlayBtnState(btn,false);
+          currentAudio=null;
+          activePlayBtn=null;
+          setStatus('ready','就绪');
+        };
+        utt.onerror=utt.onend;
         speechSynthesis.speak(utt);
-      }catch(e2){}
+      }catch(e2){
+        if(btn)setPlayBtnState(btn,false);
+        currentAudio=null;
+        activePlayBtn=null;
+        setStatus('ready','就绪');
+      }
     }
   }
 
@@ -2639,10 +2687,6 @@ adjustChatInputHeight();
 
       if(thinking){
         thinking.querySelector('.bubble-text').innerHTML=formatMarkdown(reply);
-        const playBtn=thinking.querySelector('.play-btn');
-        if(playBtn){
-          playBtn.onclick=()=>playTTS(reply,playBtn);
-        }
       }
       chatHistory.push({role:'assistant',content:reply});
 
@@ -2660,13 +2704,18 @@ adjustChatInputHeight();
   }
 
   function bindPlayBtns(){
-    document.querySelectorAll('.demo-bubble.ai .play-btn').forEach(btn=>{
-      btn.onclick=()=>{
-        const text=btn.parentElement.querySelector('.bubble-text')?.textContent;
-        if(text)playTTS(text,btn);
-      };
+    const container=document.getElementById('chat-messages');
+    if(!container||container.dataset.playBound)return;
+    container.dataset.playBound='true';
+    container.addEventListener('click',e=>{
+      const btn=e.target.closest('.play-btn');
+      if(!btn||!container.contains(btn))return;
+      const text=btn.parentElement.querySelector('.bubble-text')?.textContent?.trim();
+      if(text)playTTS(text,btn);
     });
   }
+  bindPlayBtns();
+  prefetchTTS('你好！我是你的 AI 玩伴。可以用语音或文字和我说话哦～');
 
   // 文字发送
   const demoInput=document.getElementById('demo-input');
