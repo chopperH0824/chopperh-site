@@ -490,20 +490,35 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   border:1px solid var(--accent);
 }
 
-/* ===== Timeline ===== */
-.timeline{position:relative;padding-left:34px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:28px;padding:34px 34px 34px 58px;box-shadow:var(--glass-shadow);}
-.timeline::before{content:'';position:absolute;left:34px;top:36px;bottom:36px;width:2px;background:var(--border);z-index:0;}
-.timeline-fill{position:absolute;left:34px;top:36px;width:2px;height:0;background:linear-gradient(180deg,var(--accent),rgba(245,159,47,0.3));z-index:1;transition:height .08s linear;border-radius:1px;}
-.timeline-fill::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent),0 0 24px rgba(245,159,47,0.3);transition:opacity .3s;}
-.tl-item.active::before{border-color:var(--accent);background:rgba(255,255,255,0.9);box-shadow:0 0 10px rgba(245,159,47,0.4);}
-.tl-item{position:relative;padding-bottom:44px;}
-.tl-item:last-child{padding-bottom:0;}
-.tl-item::before{content:'';position:absolute;left:-52px;top:5px;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.72);border:2px solid var(--accent);}
-.tl-item.dim::before{border-color:var(--text-faint);}
-.tl-date{font-family:var(--mono);font-size:12px;color:var(--accent);}
-.tl-role{font-family:var(--display);font-weight:700;font-size:22px;margin:6px 0 2px;}
-.tl-co{font-size:14px;color:var(--text-dim);margin-bottom:12px;}
-.tl-desc{font-size:14px;color:var(--text-dim);max-width:620px;}
+/* ===== Logo Float Stage ===== */
+.logo-float-stage{position:relative;height:380px;margin-bottom:56px;overflow:hidden;border-radius:28px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);box-shadow:var(--glass-shadow);}
+.float-logo{position:absolute;display:flex;align-items:center;justify-content:center;width:88px;height:88px;border-radius:22px;background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.85);box-shadow:0 4px 20px rgba(0,0,0,0.08);cursor:pointer;text-decoration:none;transition:box-shadow .25s;}
+.float-logo:hover{box-shadow:0 8px 36px rgba(245,159,47,0.35),0 0 0 2px var(--accent);}
+.float-logo img,.float-logo object{width:60px;height:60px;object-fit:contain;pointer-events:none;}
+@keyframes floatA{0%,100%{transform:translate(0,0) rotate(-2deg);}40%{transform:translate(14px,-20px) rotate(2deg);}70%{transform:translate(-6px,12px) rotate(-1deg);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) rotate(2deg);}35%{transform:translate(-16px,18px) rotate(-2deg);}65%{transform:translate(10px,-14px) rotate(1deg);}}
+@keyframes floatC{0%,100%{transform:translate(0,0) rotate(-1deg);}45%{transform:translate(18px,14px) rotate(3deg);}75%{transform:translate(-10px,-16px) rotate(-2deg);}}
+@keyframes floatD{0%,100%{transform:translate(0,0) rotate(3deg);}30%{transform:translate(-12px,-18px) rotate(-2deg);}65%{transform:translate(16px,10px) rotate(1deg);}}
+@keyframes floatE{0%,100%{transform:translate(0,0) rotate(-2deg);}50%{transform:translate(10px,20px) rotate(2deg);}}
+#fl-leyang{left:10%;top:16%;animation:floatA 7s ease-in-out infinite;}
+#fl-hhtu{left:32%;top:52%;animation:floatB 8.5s ease-in-out infinite 1s;}
+#fl-vivo{left:52%;top:14%;animation:floatC 6.5s ease-in-out infinite 0.4s;}
+#fl-yidao{left:68%;top:54%;animation:floatD 9s ease-in-out infinite 2s;}
+#fl-yxy{left:84%;top:22%;animation:floatE 7.5s ease-in-out infinite 1.5s;}
+.float-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--text-faint);white-space:nowrap;animation:scrollBar 2.2s ease-in-out infinite;}
+/* ===== Experience Cards ===== */
+.exp-cards{display:flex;flex-direction:column;gap:20px;}
+.exp-card{display:flex;align-items:flex-start;gap:28px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:28px;padding:32px;box-shadow:var(--glass-shadow);transition:transform .25s,box-shadow .25s;}
+.exp-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.1);}
+.exp-logo{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center;border-radius:18px;background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.9);padding:10px;}
+.exp-logo img,.exp-logo object{width:100%;height:100%;object-fit:contain;}
+.exp-body{flex:1;}
+.exp-date{font-family:var(--mono);font-size:12px;color:var(--accent);}
+.exp-role{font-family:var(--display);font-weight:700;font-size:20px;margin:6px 0 2px;}
+.exp-co{font-size:14px;color:var(--text-dim);margin-bottom:12px;}
+.exp-desc{font-size:14px;color:var(--text-dim);line-height:1.65;max-width:640px;}
+.exp-card.dim .exp-role{color:var(--text-dim);}
+@media(max-width:640px){.logo-float-stage{height:280px;}.float-logo{width:64px;height:64px;border-radius:16px;}.float-logo img,.float-logo object{width:44px;height:44px;}.exp-card{flex-direction:column;gap:16px;padding:22px;}.exp-logo{width:64px;height:64px;}}
 
 /* ===== Contact ===== */
 .contact{text-align:center;padding:120px 0;}
@@ -1752,37 +1767,73 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     <span class="sec-title">经历</span>
     <span class="sec-line"></span>
   </div>
-  <div class="timeline">
-    <div class="timeline-fill" id="timelineFill"></div>
-    <div class="tl-item reveal">
-      <div class="tl-date">2025.10 — 至今</div>
-      <div class="tl-role">AI 玩具 / 硬件产品经理</div>
-      <div class="tl-co">乐漾 JOYIN 集团 · Play-Act 品牌</div>
-      <div class="tl-desc">新品类开拓者，负责全线电子 / AI 玩具产品。主导公司首个 AI 玩具项目（半个 CTO + PM），同步推进 8–9 个研发中项目，覆盖 AI / 音频 / 电子学习 / 变声器品类，面向 Amazon US。受邀百度 Create 2026 VIP 嘉宾。</div>
+
+  <!-- Floating logos stage -->
+  <div class="logo-float-stage reveal">
+    <a class="float-logo" id="fl-leyang" href="#exp-leyang" aria-label="乐漾JOYIN">
+      <img src="images/logos/logo-leyang.png" alt="乐漾JOYIN">
+    </a>
+    <a class="float-logo" id="fl-hhtu" href="#exp-hhtu" aria-label="火火兔">
+      <img src="images/logos/logo-hhtu.png" alt="火火兔">
+    </a>
+    <a class="float-logo" id="fl-vivo" href="#exp-vivo" aria-label="vivo">
+      <img src="images/logos/logo-vivo.svg" alt="vivo">
+    </a>
+    <a class="float-logo" id="fl-yidao" href="#exp-yidao" aria-label="亿道信息">
+      <img src="images/logos/logo-yidao.png" alt="亿道信息">
+    </a>
+    <a class="float-logo" id="fl-yxy" href="#exp-yxy" aria-label="颜小芋">
+      <img src="images/logos/logo-yxy.png" alt="颜小芋">
+    </a>
+    <div class="float-hint">↓ 点击 logo 直达，或继续下滑</div>
+  </div>
+
+  <!-- Experience cards -->
+  <div class="exp-cards">
+    <div class="exp-card reveal" id="exp-leyang">
+      <div class="exp-logo"><img src="images/logos/logo-leyang.png" alt="乐漾JOYIN"></div>
+      <div class="exp-body">
+        <div class="exp-date">2025.10 — 至今</div>
+        <div class="exp-role">AI 玩具 / 硬件产品经理</div>
+        <div class="exp-co">乐漾 JOYIN 集团 · Play-Act 品牌</div>
+        <div class="exp-desc">新品类开拓者，负责全线电子 / AI 玩具产品。主导公司首个 AI 玩具项目（半个 CTO + PM），同步推进 8–9 个研发中项目，覆盖 AI / 音频 / 电子学习 / 变声器品类，面向 Amazon US。受邀百度 Create 2026 VIP 嘉宾。</div>
+      </div>
     </div>
-    <div class="tl-item reveal d1">
-      <div class="tl-date">2024.04 — 2025.10</div>
-      <div class="tl-role">AI 玩具产品经理</div>
-      <div class="tl-co">火火兔</div>
-      <div class="tl-desc">主导公司向 AI 大模型玩具战略转型，落地 4 个方案商项目 + 1 个自研项目。深度对接讯飞 / 字节 / 阿里 / 京东等原厂，主导 ASR/TTS/LLM 全链路选型与多模型混合架构。产品线 2025 销量近百万台。</div>
+    <div class="exp-card reveal d1" id="exp-hhtu">
+      <div class="exp-logo"><img src="images/logos/logo-hhtu.png" alt="火火兔"></div>
+      <div class="exp-body">
+        <div class="exp-date">2024.04 — 2025.10</div>
+        <div class="exp-role">AI 玩具产品经理</div>
+        <div class="exp-co">火火兔</div>
+        <div class="exp-desc">主导公司向 AI 大模型玩具战略转型，落地 4 个方案商项目 + 1 个自研项目。深度对接讯飞 / 字节 / 阿里 / 京东等原厂，主导 ASR/TTS/LLM 全链路选型与多模型混合架构。产品线 2025 销量近百万台。</div>
+      </div>
     </div>
-    <div class="tl-item reveal d2 dim">
-      <div class="tl-date">2023.02 — 2024.03</div>
-      <div class="tl-role">项目工程师 / 产品方案工程师</div>
-      <div class="tl-co">亿道信息 · 三防 OEM/ODM 上市公司</div>
-      <div class="tl-desc">负责 28 个量产项目 + 3 个研发项目，主导 ID/MD/SCH/Layout 设计评审，把控项目全流程。打下扎实的硬件方案与项目管理基础。</div>
+    <div class="exp-card reveal d2 dim" id="exp-yidao">
+      <div class="exp-logo"><img src="images/logos/logo-yidao.png" alt="亿道信息"></div>
+      <div class="exp-body">
+        <div class="exp-date">2023.02 — 2024.03</div>
+        <div class="exp-role">项目工程师 / 产品方案工程师</div>
+        <div class="exp-co">亿道信息 · 三防 OEM/ODM 上市公司</div>
+        <div class="exp-desc">负责 28 个量产项目 + 3 个研发项目，主导 ID/MD/SCH/Layout 设计评审，把控项目全流程。打下扎实的硬件方案与项目管理基础。</div>
+      </div>
     </div>
-    <div class="tl-item reveal dim">
-      <div class="tl-date">2022.07 — 2022.09</div>
-      <div class="tl-role">市场推广实习生</div>
-      <div class="tl-co">vivo · 未来星成长训练营</div>
-      <div class="tl-desc">综合评分排名第一（3场策划活动均为第一），获秋招面试直通卡。自主策划活动，销量提升率最高600%，抖音直播5场，线上观众转化为进店客户100+。</div>
+    <div class="exp-card reveal dim" id="exp-vivo">
+      <div class="exp-logo"><img src="images/logos/logo-vivo.svg" alt="vivo"></div>
+      <div class="exp-body">
+        <div class="exp-date">2022.07 — 2022.09</div>
+        <div class="exp-role">市场推广实习生</div>
+        <div class="exp-co">vivo · 未来星成长训练营</div>
+        <div class="exp-desc">综合评分排名第一（3场策划活动均为第一），获秋招面试直通卡。自主策划活动，销量提升率最高600%，抖音直播5场，线上观众转化为进店客户100+。</div>
+      </div>
     </div>
-    <div class="tl-item reveal dim">
-      <div class="tl-date">2020.11 — 2022.07</div>
-      <div class="tl-role">创始人 / 项目负责人</div>
-      <div class="tl-co">颜小芋 · 荔浦芋乡村振兴助农项目</div>
-      <div class="tl-desc">从 0 搭建「种植帮扶 → 自建加工厂 → 线下体验店 → 品牌传播」完整助农产业链。项目累计收购荔浦芋 780 吨，帮助芋农每户年增收约 2100 元，并获得 CCTV4、中新网等媒体报道。</div>
+    <div class="exp-card reveal dim" id="exp-yxy">
+      <div class="exp-logo"><img src="images/logos/logo-yxy.png" alt="颜小芋"></div>
+      <div class="exp-body">
+        <div class="exp-date">2020.11 — 2022.07</div>
+        <div class="exp-role">创始人 / 项目负责人</div>
+        <div class="exp-co">颜小芋 · 荔浦芋乡村振兴助农项目</div>
+        <div class="exp-desc">从 0 搭建「种植帮扶 → 自建加工厂 → 线下体验店 → 品牌传播」完整助农产业链。项目累计收购荔浦芋 780 吨，帮助芋农每户年增收约 2100 元，并获得 CCTV4、中新网等媒体报道。</div>
+      </div>
     </div>
   </div>
 </section>
@@ -2030,25 +2081,14 @@ const io=new IntersectionObserver(es=>{
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-// Timeline scroll progress
-const timelineEl=document.querySelector('.timeline');
-const timelineFill=document.getElementById('timelineFill');
-if(timelineEl&&timelineFill){
-  const tlItems=timelineEl.querySelectorAll('.tl-item');
-  function updateTimeline(){
-    const top=timelineEl.getBoundingClientRect().top;
-    const h=timelineEl.offsetHeight;
-    const progress=clamp((-top+window.innerHeight*0.4)/(h-window.innerHeight*0.6),0,1);
-    timelineFill.style.height=(progress*(h-72))+'px';
-    const fillBottom=timelineEl.getBoundingClientRect().top+36+(progress*(h-72));
-    tlItems.forEach(item=>{
-      const dot=item.getBoundingClientRect().top+5;
-      item.classList.toggle('active',dot<=fillBottom);
-    });
-  }
-  addEventListener('scroll',updateTimeline,{passive:true});
-  updateTimeline();
-}
+// Float logo smooth scroll
+document.querySelectorAll('.float-logo').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target)target.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+});
 
 // Animated counter
 const counters=document.querySelectorAll('[data-count]');
