@@ -1039,6 +1039,9 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   animation:pulse-play 1.2s ease-in-out infinite;
 }
 @keyframes pulse-play{0%,100%{box-shadow:0 0 8px rgba(245,159,47,0.3);}50%{box-shadow:0 0 20px rgba(245,159,47,0.5);}}
+/* 音频已缓存就绪：绿色小圆点提示 */
+.play-btn.cached{border-color:rgba(100,200,120,0.6);position:relative;}
+.play-btn.cached::after{content:'';position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:#4cd96a;box-shadow:0 0 4px #4cd96a;}
 
 /* 输入区 */
 .chat-input-area{
@@ -2466,44 +2469,89 @@ chatInput.addEventListener('input',()=>{
     return bubble;
   }
 
-  // TTS 播放（Web Audio API 兼容移动端）
+  // TTS — 后台预取缓存 + 手动点击播放
   let audioCtx=null;
+  const ttsCache=new Map(); // text → Promise<AudioBuffer>
+
   function getAudioCtx(){
     if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==='suspended') audioCtx.resume();
     return audioCtx;
   }
 
+  // 静默预取：AI 回复后立即在后台拉音频并解码，不播放
+  async function prefetchTTS(text){
+    if(!text||ttsCache.has(text))return;
+    const p=fetch(WORKER+'/tts',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({text,voice:currentVoice})
+    }).then(async res=>{
+      if(!res.ok)throw new Error('TTS '+res.status);
+      const buf=await res.arrayBuffer();
+      const ctx=getAudioCtx();
+      return ctx.decodeAudioData(buf);
+    }).catch(e=>{
+      console.warn('TTS prefetch failed:',e);
+      ttsCache.delete(text); // 失败清缓存，允许重试
+      return null;
+    });
+    ttsCache.set(text,p);
+    // 缓存成功后让按钮变为"就绪可点击"状态
+    p.then(buf=>{
+      if(buf){
+        // 找到对应这条文本的播放按钮，加 cached 样式
+        document.querySelectorAll('.demo-bubble.ai').forEach(bubble=>{
+          const t=bubble.querySelector('.bubble-text')?.textContent?.trim();
+          if(t===text.trim()){
+            bubble.querySelector('.play-btn')?.classList.add('cached');
+          }
+        });
+      }
+    });
+  }
+
+  // 点击播放：优先用缓存 AudioBuffer，没缓存则实时拉取
   async function playTTS(text,btn){
     if(currentAudio){try{currentAudio.pause();}catch(e){}currentAudio=null;}
     document.querySelectorAll('.play-btn').forEach(b=>b.classList.remove('playing'));
     if(btn)btn.classList.add('playing');
-    setStatus('speaking','正在合成语音...');
+    setStatus('speaking','▶ 播放中...');
     try{
-      const res=await fetch(WORKER+'/tts',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({text,voice:currentVoice})
-      });
-      if(!res.ok)throw new Error('TTS failed: '+res.status);
-      const arrayBuf=await res.arrayBuffer();
+      let bufferPromise=ttsCache.get(text);
+      if(!bufferPromise){
+        // 无缓存，实时拉取
+        setStatus('speaking','合成语音...');
+        bufferPromise=fetch(WORKER+'/tts',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({text,voice:currentVoice})
+        }).then(async res=>{
+          if(!res.ok)throw new Error('TTS '+res.status);
+          const buf=await res.arrayBuffer();
+          const ctx=getAudioCtx();
+          return ctx.decodeAudioData(buf);
+        });
+        ttsCache.set(text,bufferPromise);
+      }
+      const audioBuffer=await bufferPromise;
+      if(!audioBuffer)throw new Error('empty buffer');
       const ctx=getAudioCtx();
-      const audioBuffer=await ctx.decodeAudioData(arrayBuf);
       const source=ctx.createBufferSource();
       source.buffer=audioBuffer;
       source.connect(ctx.destination);
       currentAudio={pause:()=>{try{source.stop();}catch(e){}}};
       source.onended=()=>{
-        if(btn)btn.classList.remove('playing');
+        if(btn){btn.classList.remove('playing');btn.classList.add('cached');}
         setStatus('ready','就绪');
         currentAudio=null;
       };
       source.start(0);
+      setStatus('speaking','▶ 播放中...');
     }catch(e){
-      console.error('TTS error:',e);
+      console.error('TTS play error:',e);
       if(btn)btn.classList.remove('playing');
       setStatus('ready','就绪');
-      // 降级：浏览器 TTS
       try{
         const utt=new SpeechSynthesisUtterance(text);
         utt.lang='zh-CN';
@@ -2548,9 +2596,8 @@ chatInput.addEventListener('input',()=>{
       }
       chatHistory.push({role:'assistant',content:reply});
 
-      // 自动播放 TTS
-      const playBtn=thinking?.querySelector('.play-btn');
-      playTTS(reply,playBtn);
+      // 后台静默预取 TTS，不自动播放
+      prefetchTTS(reply);
 
     }catch(e){
       console.error('Chat error:',e);
