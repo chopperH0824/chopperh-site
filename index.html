@@ -643,74 +643,111 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 /* ===== AI Chat ===== */
 .chat-hint{
   position:fixed;
-  bottom:100px;
-  right:18px;
+  bottom:98px;
+  right:30px;
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
   align-items:center;
-  gap:2px;
+  gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,0.62);
+  border-radius:999px;
+  background:rgba(255,255,255,0.58);
+  backdrop-filter:blur(18px) saturate(145%);
+  -webkit-backdrop-filter:blur(18px) saturate(145%);
+  box-shadow:0 12px 32px rgba(56,72,100,0.12),inset 0 1px 0 rgba(255,255,255,0.66);
   z-index:99;
-  animation:hintFloat 3s ease-in-out infinite;
+  pointer-events:none;
+  transition:opacity .25s,transform .25s;
 }
 .chat-hint span{
-  font-family:'Caveat',cursive;
-  font-size:16px;
-  font-weight:700;
-  color:#3b3129;
-  text-shadow:0 1px 10px rgba(255,255,255,0.72);
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:600;
+  color:var(--text-dim);
+  letter-spacing:.2px;
 }
-.hint-arrow{
-  font-size:28px;
-  line-height:1;
-  animation:arrowSpin 3s ease-in-out infinite;
-  transform-origin:center bottom;
-}
-@keyframes hintFloat{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-6px);}
-}
-@keyframes arrowSpin{
-  0%,100%{transform:rotate(-10deg);}
-  50%{transform:rotate(10deg);}
+.chat-hint::before{
+  content:'';
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4CAF50;
+  box-shadow:0 0 0 4px rgba(76,175,80,0.12);
 }
 
 .chat-toggle{
   position:fixed;
   bottom:30px;
   right:30px;
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  background:rgba(245,159,47,0.92);
-  border:1px solid rgba(255,255,255,0.62);
+  min-width:176px;
+  height:64px;
+  padding:8px 14px 8px 8px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.7);
+  color:var(--text);
+  border:1px solid rgba(255,255,255,0.72);
   cursor:pointer;
-  overflow:hidden;
-  box-shadow:0 14px 42px rgba(245,159,47,0.28),inset 0 1px 0 rgba(255,255,255,0.55);
-  transition:all .3s;
+  box-shadow:0 18px 48px rgba(56,72,100,0.18),inset 0 1px 0 rgba(255,255,255,0.72);
+  transition:transform .25s,box-shadow .25s,background .25s;
   z-index:99;
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-start;
+  gap:10px;
+  backdrop-filter:blur(22px) saturate(160%);
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
 }
 .chat-toggle:hover{
-  transform:scale(1.1);
-  box-shadow:0 18px 50px rgba(245,159,47,0.34),inset 0 1px 0 rgba(255,255,255,0.7);
+  transform:translateY(-2px);
+  background:rgba(255,255,255,0.82);
+  box-shadow:0 22px 58px rgba(56,72,100,0.22),0 0 0 1px rgba(245,159,47,0.18),inset 0 1px 0 rgba(255,255,255,0.76);
 }
 .chat-avatar{
-  width:100%;
-  height:100%;
+  width:48px;
+  height:48px;
+  border-radius:16px;
   object-fit:cover;
+  border:1px solid rgba(255,255,255,0.74);
+  box-shadow:0 10px 24px rgba(56,72,100,0.12);
+}
+.chat-toggle-copy{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:1px;
+  text-align:left;
+  line-height:1.2;
+}
+.chat-toggle-copy b{
+  font-family:var(--body);
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:0;
+}
+.chat-toggle-copy small{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--text-faint);
+}
+.chat-status{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#4CAF50;
+  box-shadow:0 0 0 4px rgba(76,175,80,0.12);
+  margin-left:auto;
 }
 
 .chat-window{
   position:fixed;
-  bottom:100px;
+  bottom:112px;
   right:30px;
-  width:380px;
-  height:520px;
-  background:linear-gradient(135deg,rgba(255,255,255,0.72),rgba(255,255,255,0.38));
+  width:392px;
+  height:540px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.82),rgba(255,255,255,0.58));
   border:1px solid rgba(255,255,255,0.66);
-  border-radius:28px;
+  border-radius:24px;
   display:flex;
   flex-direction:column;
   overflow:hidden;
@@ -730,12 +767,12 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 }
 
 .chat-header{
-  padding:16px 20px;
+  padding:16px 18px;
   border-bottom:1px solid rgba(255,255,255,0.48);
   display:flex;
   align-items:center;
   gap:12px;
-  background:rgba(255,255,255,0.26);
+  background:rgba(255,255,255,0.34);
 }
 .chat-header .avatar{
   width:40px;
@@ -750,24 +787,42 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .header-avatar{
   width:40px;
   height:40px;
-  border-radius:50%;
+  border-radius:14px;
   object-fit:cover;
-  border:2px solid rgba(245,159,47,0.88);
-  box-shadow:0 8px 24px rgba(245,159,47,0.18);
+  border:1px solid rgba(255,255,255,0.74);
+  box-shadow:0 8px 22px rgba(56,72,100,0.12);
 }
 .chat-header .info h3{
-  font-family:var(--mono);
+  font-family:var(--body);
   font-size:14px;
   color:var(--text);
   margin:0;
+  letter-spacing:0;
 }
 .chat-header .info p{
   font-size:12px;
   color:var(--text-dim);
   margin:0;
 }
+.chat-close{
+  margin-left:auto;
+  width:32px;
+  height:32px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,0.45);
+  color:var(--text-dim);
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.chat-close:hover{
+  background:rgba(245,159,47,0.14);
+  color:var(--text);
+}
 
-.chat-messages{
+.chat-window .chat-messages{
   flex:1;
   min-height:0;
   overflow-y:auto;
@@ -799,6 +854,30 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   border-bottom-left-radius:4px;
   border:1px solid rgba(255,255,255,0.62);
   box-shadow:0 10px 30px rgba(56,72,100,0.1),inset 0 1px 0 rgba(255,255,255,0.72);
+}
+.chat-suggestions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:0 16px 14px;
+  background:rgba(255,255,255,0.16);
+}
+.chat-suggestions button{
+  border:1px solid rgba(255,255,255,0.58);
+  border-radius:999px;
+  padding:8px 11px;
+  background:rgba(255,255,255,0.5);
+  color:var(--text-dim);
+  font-family:var(--body);
+  font-size:12px;
+  cursor:pointer;
+  transition:background .2s,color .2s,border-color .2s,transform .2s;
+}
+.chat-suggestions button:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,0.78);
+  color:var(--text);
+  border-color:rgba(245,159,47,0.36);
 }
 .message.bot p{
   margin:0;
@@ -897,16 +976,33 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 }
 
 @media(max-width:640px){
+  .chat-hint{
+    display:none;
+  }
   .chat-window{
     width:calc(100% - 20px);
     height:60vh;
-    bottom:80px;
+    bottom:92px;
     right:10px;
     left:10px;
   }
   .chat-toggle{
     bottom:20px;
     right:20px;
+    min-width:156px;
+    height:58px;
+    border-radius:20px;
+  }
+  .chat-avatar{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+  }
+  .chat-toggle-copy b{
+    font-size:13px;
+  }
+  .chat-toggle-copy small{
+    font-size:9px;
   }
 }
 
@@ -1868,26 +1964,32 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
 <!-- AI Chat -->
 <div class="chat-hint">
-  <span>ask me</span>
-  <svg class="hint-arrow" width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M32 8C32 8 20 8 20 20C20 28 28 32 32 32C36 32 44 28 44 20C44 8 32 8 32 8Z" stroke="#D4FF3F" stroke-width="3" stroke-linecap="round" fill="none"/>
-    <path d="M32 32L32 56" stroke="#D4FF3F" stroke-width="3" stroke-linecap="round"/>
-    <path d="M24 48L32 56L40 48" stroke="#D4FF3F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
+  <span>作品档案在线</span>
 </div>
-<button class="chat-toggle" id="chatToggle">
-  <img src="https://assets.chopperh.me/images/ai-icon.webp" alt="AI" class="chat-avatar">
+<button class="chat-toggle" id="chatToggle" aria-label="打开作品档案问答">
+  <img src="https://assets.chopperh.me/images/chopper-avatar.webp" alt="" class="chat-avatar">
+  <span class="chat-toggle-copy">
+    <b>问作品档案</b>
+    <small>经历 / 项目 / 合作</small>
+  </span>
+  <span class="chat-status" aria-hidden="true"></span>
 </button>
 <div class="chat-window" id="chatWindow">
   <div class="chat-header">
     <img src="https://assets.chopperh.me/images/chopper-avatar.webp" alt="Chopper" class="header-avatar">
     <div class="info">
-      <h3>Chopper AI</h3>
-      <p>问我关于胡强斌的问题</p>
+      <h3>作品档案助手</h3>
+      <p>基于主页内容回答，不替代本人判断</p>
     </div>
+    <button class="chat-close" id="chatClose" aria-label="关闭作品档案问答">×</button>
   </div>
   <div class="chat-messages" id="chatMessages">
-    <div class="message bot">你好！我是胡强斌的AI助手。你可以问我关于他的工作经历、技能、项目等方面的问题。</div>
+    <div class="message bot">你好，我整理了胡强斌的经历、项目和工具链。你可以直接问某段经历、某个作品，或让它帮你快速判断岗位匹配度。</div>
+  </div>
+  <div class="chat-suggestions" aria-label="快捷问题">
+    <button type="button" data-question="用 3 句话介绍胡强斌最适合什么岗位？">适合岗位</button>
+    <button type="button" data-question="他最能代表能力的 3 个项目是什么？">代表项目</button>
+    <button type="button" data-question="如果要合作或面试，建议重点聊哪些问题？">合作/面试</button>
   </div>
   <div class="chat-input">
     <textarea id="chatInput" placeholder="输入你的问题..." rows="2"></textarea>
@@ -2257,6 +2359,7 @@ const chatWindow=document.getElementById('chatWindow');
 const chatMessages=document.getElementById('chatMessages');
 const chatInput=document.getElementById('chatInput');
 const chatSend=document.getElementById('chatSend');
+const chatClose=document.getElementById('chatClose');
 
 function adjustChatInputHeight(){
   const styles=getComputedStyle(chatInput);
@@ -2286,6 +2389,11 @@ chatToggle.addEventListener('click',(e)=>{
     adjustChatInputHeight();
     chatInput.focus();
   }
+});
+
+chatClose.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  closeChatWindow();
 });
 
 chatWindow.addEventListener('click',(e)=>{
@@ -2416,6 +2524,13 @@ chatInput.addEventListener('keydown',(e)=>{
 });
 chatInput.addEventListener('input',()=>{
   adjustChatInputHeight();
+});
+document.querySelectorAll('.chat-suggestions button').forEach((button)=>{
+  button.addEventListener('click',()=>{
+    chatInput.value=button.dataset.question||button.textContent.trim();
+    adjustChatInputHeight();
+    sendMessage();
+  });
 });
 adjustChatInputHeight();
 
