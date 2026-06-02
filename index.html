@@ -275,6 +275,17 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 }
 .card h3{font-family:var(--display);font-weight:700;font-size:20px;margin:16px 0 10px;letter-spacing:-.3px;}
 .card p{font-size:13.5px;color:var(--text-dim);line-height:1.55;}
+.product-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.product-link{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  padding:7px 11px;border-radius:999px;text-decoration:none;
+  color:#fffaf3;background:rgba(245,159,47,0.86);
+  border:1px solid rgba(255,255,255,0.56);
+  box-shadow:0 8px 22px rgba(245,159,47,0.16);
+  transition:transform .22s,box-shadow .22s,background .22s;
+}
+.product-link:hover{transform:translateY(-1px);background:rgba(245,159,47,0.96);box-shadow:0 12px 28px rgba(245,159,47,0.22);}
 .card .stack{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;}
 .card .chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,0.34);color:var(--text-dim);border:1px solid rgba(255,255,255,0.42);}
 .card.hide{display:none;}
@@ -341,6 +352,11 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   z-index:4;
   opacity:1;
 }
+.stack-img:nth-child(5){
+  transform:translateY(-5px) rotate(2deg);
+  z-index:5;
+  opacity:1;
+}
 
 /* Hover fanning out effect */
 .image-stack:hover .stack-img:nth-child(1){
@@ -356,7 +372,11 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   opacity:0.95;
 }
 .image-stack:hover .stack-img:nth-child(4){
-  transform:translate(30px, -6px) rotate(8deg);
+  transform:translate(24px, -6px) rotate(6deg);
+  opacity:0.98;
+}
+.image-stack:hover .stack-img:nth-child(5){
+  transform:translate(44px, -10px) rotate(10deg);
   opacity:1;
 }
 
@@ -1502,9 +1522,22 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     <!-- Row 2: AI 硬件产品线 -->
     <div class="card reveal" data-cat="hw">
       <div class="cat">AI 硬件 · 产品线</div>
-      <img loading="lazy" src="https://assets.chopperh.me/images/b3.webp" alt="京东AI玩具产品线" class="card-image" data-full="https://assets.chopperh.me/images/b3.webp">
+      <div class="image-stack">
+        <img loading="lazy" src="" data-src="https://assets.chopperh.me/images/hhtu-ai-toy-line-01.webp" class="stack-img" alt="火火兔 AI 智能闹钟时间宝机器人" data-full="https://assets.chopperh.me/images/hhtu-ai-toy-line-01.webp">
+        <img loading="lazy" src="" data-src="https://assets.chopperh.me/images/hhtu-ai-toy-line-02.webp" class="stack-img" alt="火火兔 AI 拍学机儿童相机" data-full="https://assets.chopperh.me/images/hhtu-ai-toy-line-02.webp">
+        <img loading="lazy" src="" data-src="https://assets.chopperh.me/images/hhtu-ai-toy-line-03.webp" class="stack-img" alt="火火兔元气娃娃狐狸毛绒玩具" data-full="https://assets.chopperh.me/images/hhtu-ai-toy-line-03.webp">
+        <img loading="lazy" src="" data-src="https://assets.chopperh.me/images/hhtu-ai-toy-line-04.webp" class="stack-img" alt="火火兔 G6 Pro AI 智能早教机" data-full="https://assets.chopperh.me/images/hhtu-ai-toy-line-04.webp">
+        <img loading="lazy" src="" data-src="https://assets.chopperh.me/images/hhtu-ai-toy-line-05.webp" class="stack-img" alt="火火兔 F6S-AI 早教机器人" data-full="https://assets.chopperh.me/images/hhtu-ai-toy-line-05.webp">
+      </div>
       <h3>儿童 AI 玩具产品线</h3>
       <p>主导火火兔由传统语音故事机向 AI 大模型玩具转型，2025 年产品线累计销量近百万台，京东 AI 早教类目登顶 TOP 1。</p>
+      <div class="product-links">
+        <a class="product-link" href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=985414353206&amp;rn=13b0d5efa22e7cc543ee04ad4ffb2ae4&amp;spm=a1z10.3-b.w4011-14432416400.79.2257330dHpbzk3&amp;skuId=6222032966168" target="_blank" rel="noopener noreferrer">商品 1 ↗</a>
+        <a class="product-link" href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=922887277954&amp;rn=13b0d5efa22e7cc543ee04ad4ffb2ae4&amp;spm=a1z10.3-b.w4011-14432416400.75.2257330dHpbzk3&amp;skuId=5966897259280" target="_blank" rel="noopener noreferrer">商品 2 ↗</a>
+        <a class="product-link" href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=944752016758&amp;rn=13b0d5efa22e7cc543ee04ad4ffb2ae4&amp;spm=a1z10.3-b.w4011-14432416400.55.2257330dHpbzk3" target="_blank" rel="noopener noreferrer">商品 3 ↗</a>
+        <a class="product-link" href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=953027279729&amp;rn=13b0d5efa22e7cc543ee04ad4ffb2ae4&amp;spm=a1z10.3-b.w4011-14432416400.71.2257330dHpbzk3" target="_blank" rel="noopener noreferrer">商品 4 ↗</a>
+        <a class="product-link" href="https://detail.tmall.com/item.htm?spm=a1z10.3-b.w4011-14432416400.147.2257330dHpbzk3&amp;id=41904101315&amp;rn=13b0d5efa22e7cc543ee04ad4ffb2ae4&amp;abbucket=0" target="_blank" rel="noopener noreferrer">商品 5 ↗</a>
+      </div>
       <div class="stack"><span class="chip">大模型选型</span><span class="chip">多模型热切换</span><span class="chip">量产落地</span></div>
     </div>
 
@@ -1513,6 +1546,9 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
       <img loading="lazy" src="https://assets.chopperh.me/images/f6s-ai.webp" alt="F6S-AI联名故事机" class="card-image" data-full="https://assets.chopperh.me/images/f6s-ai.webp">
       <h3>F6S-AI 联名故事机</h3>
       <p>制作京东 × 南孔爷爷 IP 联名款 AI 故事机，把 IP 内容与 AI 大模型对话能力结合落地量产。</p>
+      <div class="product-links">
+        <a class="product-link" href="https://item.jd.com/100153826196.html?pcdk=6sFjkBc7czZO3sdsRbUZovg6YWuqAmsZIu_szytgC9cjPjvkPtSrFqpuMVy4rRSo.3z6a.aI3x&amp;spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3ODAzNjY1MDk0NjclMjMxNzY4Mzg3MjA0NDIyMTk1MDM4ODU1OSUyMzkyNjcxNDI1MyUyQ2EwMjQwLmIwMDI0OTMuYzAwMDA0MDI3LjIlMjNza3VfY2FyZCU0MDE3ODAzNjY1MTI0NzMlMjMxNzY4Mzg3MjA0NDIyMTk1MDM4ODU1OSUyMzEzNjY2NTM1OTY" target="_blank" rel="noopener noreferrer">京东商品页 ↗</a>
+      </div>
       <div class="stack"><span class="chip">IP 联名</span><span class="chip">京东</span><span class="chip">AI 故事机</span></div>
     </div>
 
@@ -1526,6 +1562,9 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
       </div>
       <h3>W1 白噪音哄睡宝 · 波兰国际获奖</h3>
       <p>以「高音质」切入欧美白噪音哄睡市场，主导出海全链路，荣获波兰 Kids' Time Star 2026 大奖；升级版加入「哭声唤醒」算法。</p>
+      <div class="product-links">
+        <a class="product-link" href="https://aliloai.com/products/pocket-soother" target="_blank" rel="noopener noreferrer">Alilo 商品页 ↗</a>
+      </div>
       <div class="stack"><span class="chip">Kids' Time Star 2026</span><span class="chip">出海选品</span><span class="chip">哭声唤醒算法</span><span class="chip">波兰定制</span></div>
     </div>
 
