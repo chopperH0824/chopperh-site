@@ -182,28 +182,31 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .stat .label{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:12px;line-height:1.5;}
 
 /* ===== About ===== */
-.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:stretch;}
+.about-grid{display:grid;grid-template-columns:1.25fr .95fr;gap:52px;align-items:start;}
 .about-grid>div:first-child{display:flex;flex-direction:column;}
 .about-lead{font-family:var(--display);font-weight:600;font-size:clamp(22px,3vw,32px);line-height:1.4;letter-spacing:-.5px;}
 .about-lead .hl{color:var(--accent);}
 .about-body{color:var(--text-dim);font-size:16px;margin-top:24px;}
 .about-body p{margin-bottom:16px;}
-.about-card{background:var(--glass-bg);border:1px solid var(--border);border-radius:28px;padding:28px;box-shadow:var(--glass-shadow);}
-.about-card h4{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:18px;letter-spacing:1px;}
-.about-card ul{list-style:none;}
-.about-card li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.38);font-size:14px;color:var(--text-dim);}
-.about-card li:last-child{border-bottom:none;}
-.about-card li b{color:var(--text);font-weight:600;min-width:74px;font-family:var(--mono);font-size:12px;}
+.about-highlights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px;}
+.about-highlights span{display:flex;align-items:center;min-height:48px;padding:12px 16px;border:1px solid rgba(255,255,255,0.48);border-radius:16px;background:rgba(255,255,255,0.28);box-shadow:0 12px 32px rgba(92,62,28,0.06);font-family:var(--mono);font-size:12px;line-height:1.35;color:var(--text);letter-spacing:.3px;}
+.about-highlights span::before{content:"";width:7px;height:7px;margin-right:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(245,159,47,0.12);flex:0 0 auto;}
+.about-card{background:var(--glass-bg);border:1px solid var(--border);border-radius:28px;padding:24px;box-shadow:var(--glass-shadow);}
+.about-card h4{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:14px;letter-spacing:1px;}
+.about-card ul{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;}
+.about-card li{display:block;min-width:0;padding:12px 12px;border:1px solid rgba(255,255,255,0.38);border-radius:14px;background:rgba(255,255,255,0.18);font-size:13px;color:var(--text-dim);}
+.about-card li b{display:block;color:var(--text);font-weight:600;margin-bottom:6px;font-family:var(--mono);font-size:11px;letter-spacing:.4px;}
+.about-card li span{display:block;line-height:1.45;}
 .about-photo-wrapper {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid var(--border);
 }
 .about-photo {
   width: 100%;
-  height: 280px;
+  height: 240px;
   object-fit: cover;
   display: block;
   filter: saturate(0.85) contrast(1.02) brightness(0.9);
@@ -642,6 +645,8 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 /* ===== Responsive ===== */
 @media(max-width:900px){
   .about-grid{grid-template-columns:1fr;gap:36px;}
+  .about-highlights{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .about-card ul{grid-template-columns:repeat(2,minmax(0,1fr));}
   .grid{grid-template-columns:repeat(2,1fr);}
   .stats{grid-template-columns:repeat(2,1fr);}
   .stat:nth-child(2){border-right:none;}
@@ -656,6 +661,11 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   .nav-toggle{display:block;}
   .grid{grid-template-columns:1fr;}
   .pad{padding:72px 0;}
+  .about-highlights{grid-template-columns:1fr;gap:10px;}
+  .about-card{padding:18px;border-radius:22px;}
+  .about-card ul{grid-template-columns:1fr;gap:8px;}
+  .about-card li{padding:11px 12px;}
+  .about-photo{height:220px;}
   .hero{min-height:100vh;}
   .hero h1{font-size:clamp(44px,18vw,76px);}
 }
@@ -678,7 +688,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   box-shadow:0 12px 32px rgba(56,72,100,0.12),inset 0 1px 0 rgba(255,255,255,0.66);
   z-index:99;
   pointer-events:none;
-  transition:opacity .25s,transform .25s;
+  transition:opacity .25s,transform .25s,background .25s,border-color .25s;
 }
 .chat-hint span{
   font-family:var(--mono);
@@ -686,6 +696,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   font-weight:600;
   color:var(--text-dim);
   letter-spacing:.2px;
+  transition:color .25s;
 }
 .chat-hint::before{
   content:'';
@@ -694,6 +705,16 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   border-radius:50%;
   background:#4CAF50;
   box-shadow:0 0 0 4px rgba(76,175,80,0.12);
+  transition:background .25s,box-shadow .25s;
+}
+.chat-hint.is-offline{
+  border-color:rgba(239,68,68,0.28);
+  background:rgba(255,241,241,0.72);
+}
+.chat-hint.is-offline span{color:#B42318;}
+.chat-hint.is-offline::before{
+  background:#EF4444;
+  box-shadow:0 0 0 4px rgba(239,68,68,0.14),0 0 16px rgba(239,68,68,0.28);
 }
 
 .chat-toggle{
@@ -718,10 +739,19 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   backdrop-filter:blur(22px) saturate(160%);
   -webkit-backdrop-filter:blur(22px) saturate(160%);
 }
+.chat-toggle.is-offline{
+  border-color:rgba(239,68,68,0.28);
+  background:rgba(255,246,246,0.78);
+  box-shadow:0 18px 48px rgba(123,36,36,0.14),inset 0 1px 0 rgba(255,255,255,0.72);
+}
 .chat-toggle:hover{
   transform:translateY(-2px);
   background:rgba(255,255,255,0.82);
   box-shadow:0 22px 58px rgba(56,72,100,0.22),0 0 0 1px rgba(245,159,47,0.18),inset 0 1px 0 rgba(255,255,255,0.76);
+}
+.chat-toggle.is-offline:hover{
+  background:rgba(255,246,246,0.9);
+  box-shadow:0 22px 58px rgba(123,36,36,0.18),0 0 0 1px rgba(239,68,68,0.16),inset 0 1px 0 rgba(255,255,255,0.76);
 }
 .chat-avatar{
   width:48px;
@@ -757,6 +787,11 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   background:#4CAF50;
   box-shadow:0 0 0 4px rgba(76,175,80,0.12);
   margin-left:auto;
+  transition:background .25s,box-shadow .25s;
+}
+.chat-toggle.is-offline .chat-status{
+  background:#EF4444;
+  box-shadow:0 0 0 4px rgba(239,68,68,0.14),0 0 16px rgba(239,68,68,0.28);
 }
 
 .chat-window{
@@ -1307,6 +1342,12 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
         <p>现在乐漾（JOYIN 集团）作为新品类开拓者，负责 Play-Act 品牌全线电子 / AI 玩具——从 0 到 1 规划立项、老品迭代到运营支持，同步推进 8–9 个研发中项目，覆盖 AI / 音频 / 电子学习 / 变声器品类，面向 Amazon US。</p>
         <p>我相信 PM 不该只停在「写需求」。我用 Codex、Claude Code、Qoder 亲手构建交互模拟器、自动化工具，甚至自建了一套跑在 NAS 上的 AI 知识库助手。</p>
         <p>获讯飞/微软 AI Prompt 工程师认证，主导 ASR/TTS/LLM 全链路技术选型，深度对比 5+ 主流大模型，设计多模型混合架构支持服务热切换。</p>
+      </div>
+      <div class="about-highlights" aria-label="核心能力关键词">
+        <span>0→1 AI 硬件</span>
+        <span>Amazon US 市场</span>
+        <span>ASR/TTS/LLM 选型</span>
+        <span>Vibe Coding · AI Agent</span>
       </div>
     </div>
     <div class="about-card reveal d1">
@@ -2003,7 +2044,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
 <!-- AI Chat -->
 <div class="chat-hint">
-  <span>作品档案在线</span>
+  <span id="chatServiceStatusText">作品档案在线</span>
 </div>
 <button class="chat-toggle" id="chatToggle" aria-label="打开作品档案问答">
   <img src="https://assets.chopperh.me/images/chopper-avatar.webp" alt="" class="chat-avatar">
@@ -2399,6 +2440,8 @@ const chatMessages=document.getElementById('chatMessages');
 const chatInput=document.getElementById('chatInput');
 const chatSend=document.getElementById('chatSend');
 const chatClose=document.getElementById('chatClose');
+const chatHint=document.querySelector('.chat-hint');
+const chatServiceStatusText=document.getElementById('chatServiceStatusText');
 
 function adjustChatInputHeight(){
   const styles=getComputedStyle(chatInput);
@@ -2417,8 +2460,60 @@ function closeChatWindow(){
 
 // Cloudflare Worker URL
 const WORKER_URL='https://aichat.chopperh.me';
+const CHAT_HEALTH_CHECK_INTERVAL=120000;
+const CHAT_HEALTH_TIMEOUT=8000;
 
 let chatHistory=[];
+let chatHealthTimer=null;
+let chatHealthRequestId=0;
+
+function setChatServiceStatus(isOnline){
+  chatToggle.classList.toggle('is-offline',!isOnline);
+  chatHint?.classList.toggle('is-offline',!isOnline);
+  if(chatServiceStatusText){
+    chatServiceStatusText.textContent=isOnline?'作品档案在线':'作品档案离线';
+  }
+  chatToggle.setAttribute('aria-label',isOnline?'打开作品档案问答':'打开作品档案问答（服务离线）');
+  chatToggle.title=isOnline?'AI 对话服务在线':'AI 对话服务暂时离线';
+}
+
+async function checkChatServiceHealth(){
+  const requestId=++chatHealthRequestId;
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),CHAT_HEALTH_TIMEOUT);
+
+  try{
+    const response=await fetch(WORKER_URL+'/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      cache:'no-store',
+      signal:controller.signal,
+      body:JSON.stringify({
+        message:'健康检查，请只回复 OK',
+        history:[],
+        stream:false
+      })
+    });
+    if(!response.ok)throw new Error('Health check '+response.status);
+    await response.json();
+    if(requestId===chatHealthRequestId)setChatServiceStatus(true);
+  }catch(error){
+    if(requestId===chatHealthRequestId)setChatServiceStatus(false);
+    console.warn('Chat health check failed:',error);
+  }finally{
+    clearTimeout(timeout);
+  }
+}
+
+function startChatServiceHealthCheck(){
+  checkChatServiceHealth();
+  if(chatHealthTimer)clearInterval(chatHealthTimer);
+  chatHealthTimer=setInterval(checkChatServiceHealth,CHAT_HEALTH_CHECK_INTERVAL);
+  window.addEventListener('online',checkChatServiceHealth);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible')checkChatServiceHealth();
+  });
+}
 
 chatToggle.addEventListener('click',(e)=>{
   e.stopPropagation();
@@ -2470,6 +2565,8 @@ async function sendMessage(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({message,history:chatHistory.slice(-10),stream:true})
     });
+    if(!response.ok)throw new Error('Chat '+response.status);
+    setChatServiceStatus(true);
 
     const reader=response.body.getReader();
     const decoder=new TextDecoder();
@@ -2536,6 +2633,7 @@ async function sendMessage(){
       botDiv.innerHTML='抱歉，暂时无法回答。请稍后再试。';
     }
   }catch(error){
+    setChatServiceStatus(false);
     botDiv.innerHTML='连接失败，请检查网络或稍后再试。';
     console.error('Chat error:',error);
   }
@@ -2572,6 +2670,7 @@ document.querySelectorAll('.chat-suggestions button').forEach((button)=>{
   });
 });
 adjustChatInputHeight();
+startChatServiceHealthCheck();
 
 // ===== AI Demo 体验区 =====
 (function(){
