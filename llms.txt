@@ -1,0 +1,11 @@
+# Chopper（胡强斌）
+> AI 硬件 / AI 玩具 产品经理。主导火火兔百万级 AI 玩具产品线，JD.com 品类登顶，获国家级科技成果认证，搭建行业首个品牌侧 AI Agent DIY 平台。
+
+## 关键页面
+- 首页: https://me.chopperh.me/ — 胡强斌 Chopper 的个人简历中心站，展示 AI 硬件、AI 玩具、AI Agent、产品管理经历与作品集。
+- 儿童口算机 HTML Demo: https://me.chopperh.me/demo/52059-toy/ — 用 HTML/JS 复刻儿童口算机段码屏、玩法状态机和音频触发规则的交互模拟器。
+
+## 联系与外链
+- GitHub: https://github.com/chopperH0824
+- 邮箱: 18476393224@163.com
+- 主页: https://me.chopperh.me/
