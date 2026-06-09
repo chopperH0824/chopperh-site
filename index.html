@@ -137,15 +137,14 @@ body{
   background-size:54px 54px;
   opacity:0.22;
   mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
-  animation:gridDrift 40s linear infinite;
 }
 @keyframes gridDrift{from{transform:translate(0,0);}to{transform:translate(54px,54px);}}
 .bg-glow{
-  position:absolute;border-radius:50%;filter:blur(130px);opacity:0.22;
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:0.16;
 }
-.bg-glow.g1{width:600px;height:600px;background:#ffd899;top:-200px;left:-150px;animation:floaty 18s ease-in-out infinite;}
-.bg-glow.g2{width:500px;height:500px;background:#9fe3f7;top:40%;right:-180px;animation:floaty 22s ease-in-out infinite reverse;}
-.bg-glow.g3{width:400px;height:400px;background:#dfb7ff;bottom:-100px;left:30%;opacity:0.16;animation:floaty 26s ease-in-out infinite;}
+.bg-glow.g1{width:600px;height:600px;background:#ffd899;top:-200px;left:-150px;}
+.bg-glow.g2{width:500px;height:500px;background:#9fe3f7;top:40%;right:-180px;}
+.bg-glow.g3{width:400px;height:400px;background:#dfb7ff;bottom:-100px;left:30%;opacity:0.12;}
 @keyframes floaty{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,-60px);}}
 .grain{
   position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:0.025;
@@ -181,7 +180,7 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;}
 
 /* ===== Hero ===== */
-.hero{min-height:118vh;display:flex;flex-direction:column;justify-content:center;padding-top:80px;max-width:var(--maxw);position:relative;}
+.hero{min-height:112vh;display:flex;flex-direction:column;justify-content:center;padding-top:80px;max-width:var(--maxw);position:relative;}
 .hero-tag{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:2px;margin-bottom:24px;opacity:0;animation:fadeUp .8s .2s forwards;}
 .hero h1{
   font-family:var(--display);font-weight:800;
@@ -209,15 +208,20 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .hero-sub{font-family:var(--mono);font-size:clamp(15px,2vw,19px);color:var(--text-dim);margin-top:30px;min-height:28px;}
 .hero-sub .cursor{display:inline-block;width:9px;height:18px;background:var(--accent);margin-left:2px;vertical-align:middle;animation:blink 1s step-end infinite;}
 @keyframes blink{50%{opacity:0;}}
-.hero-desc{max-width:560px;margin-top:28px;color:var(--text-dim);font-size:16px;opacity:0;animation:fadeUp .8s 1.2s forwards;background:rgba(255,255,255,0.22);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.38);border-radius:28px;padding:22px 24px;box-shadow:0 18px 60px rgba(56,72,100,0.12);}
+.hero-desc{max-width:600px;margin-top:24px;color:var(--text-dim);font-size:17px;line-height:1.72;opacity:0;animation:fadeUp .8s 1.05s forwards;background:rgba(255,255,255,0.22);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.38);border-radius:28px;padding:22px 24px;box-shadow:0 18px 60px rgba(56,72,100,0.12);}
 .hero-desc strong{color:var(--text);font-weight:600;}
-.hero-actions{display:flex;gap:16px;margin-top:40px;opacity:0;animation:fadeUp .8s 1.4s forwards;flex-wrap:wrap;}
+.hero-proof{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;max-width:620px;opacity:0;animation:fadeUp .8s 1.2s forwards;}
+.hero-proof span{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.46);border:1px solid rgba(255,255,255,0.58);box-shadow:0 10px 26px rgba(56,72,100,0.08);font-family:var(--mono);font-size:12px;color:var(--text);white-space:nowrap;}
+.hero-proof span::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(245,159,47,0.13);}
+.hero-actions{display:flex;gap:16px;margin-top:34px;opacity:0;animation:fadeUp .8s 1.38s forwards;flex-wrap:wrap;}
 .btn{font-family:var(--mono);font-size:14px;padding:13px 24px;border-radius:999px;text-decoration:none;transition:all .25s;cursor:pointer;border:1px solid rgba(255,255,255,0.52);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);}
 .btn-primary{background:rgba(245,159,47,0.86);color:#fffaf3;font-weight:700;border-color:rgba(255,255,255,0.62);}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,159,47,0.26);}
 .btn-ghost{color:var(--text);}
 .btn-ghost{background:rgba(255,255,255,0.32);}
 .btn-ghost:hover{border-color:var(--border-bright);background:rgba(255,255,255,0.54);}
+.btn-link{color:var(--text);background:rgba(255,255,255,0.2);}
+.btn-link:hover{color:var(--accent);background:rgba(255,255,255,0.5);border-color:rgba(245,159,47,0.34);}
 .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--text-faint);letter-spacing:2px;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 1s 1.8s forwards;}
 .scroll-hint .bar{width:1px;height:40px;background:linear-gradient(var(--accent),transparent);animation:scrollBar 2s ease-in-out infinite;}
 @keyframes scrollBar{0%,100%{transform:scaleY(.4);opacity:.4;}50%{transform:scaleY(1);opacity:1;}}
@@ -237,6 +241,17 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .stat:hover{background:rgba(255,255,255,0.32);}
 .stat .num{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.2vw,44px);color:var(--accent);line-height:1.05;letter-spacing:0;white-space:nowrap;word-break:keep-all;}
 .stat .label{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:12px;line-height:1.5;}
+
+/* ===== Quick Signal ===== */
+.signal-section{padding-bottom:54px;margin-top:-34px;}
+.signal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.signal-card{position:relative;min-height:174px;padding:22px;border-radius:26px;background:var(--glass-bg);border:1px solid var(--border);box-shadow:var(--glass-shadow);overflow:hidden;transition:transform .28s,border-color .28s,box-shadow .28s;}
+.signal-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 18% 0%,rgba(245,159,47,0.18),transparent 42%);opacity:.72;pointer-events:none;}
+.signal-card:hover{transform:translateY(-4px);border-color:var(--border-bright);box-shadow:0 28px 84px rgba(56,72,100,0.18),inset 0 1px 0 rgba(255,255,255,0.72);}
+.signal-kicker{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:1.1px;color:var(--accent);text-transform:uppercase;}
+.signal-card h3{position:relative;font-family:var(--display);font-size:22px;line-height:1.12;margin:16px 0 10px;letter-spacing:-.4px;}
+.signal-card p{position:relative;font-size:13.5px;color:var(--text-dim);line-height:1.55;}
+.signal-card strong{color:var(--text);}
 
 /* ===== About ===== */
 .about-grid{display:grid;grid-template-columns:1.25fr .95fr;gap:52px;align-items:start;}
@@ -300,6 +315,29 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .tool .use{font-size:12.5px;color:var(--text-dim);line-height:1.5;}
 
 /* ===== Portfolio ===== */
+.work-intro{max-width:720px;margin:-24px 0 36px;color:var(--text-dim);font-size:16px;line-height:1.7;}
+.featured-work{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:42px;align-items:stretch;}
+.feature-card{position:relative;min-height:0;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.78);border:1px solid rgba(255,255,255,0.7);box-shadow:0 18px 54px rgba(56,72,100,0.12),inset 0 1px 0 rgba(255,255,255,0.72);display:flex;flex-direction:column;transition:transform .24s,border-color .24s,box-shadow .24s;isolation:isolate;}
+.feature-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0));z-index:-1;pointer-events:none;}
+.feature-card::after{content:attr(data-visual);position:absolute;top:14px;left:14px;z-index:3;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.86);border:1px solid rgba(255,255,255,0.76);box-shadow:0 8px 18px rgba(56,72,100,0.1);font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.7px;}
+.feature-card:hover{transform:translateY(-3px);border-color:var(--border-bright);box-shadow:0 24px 66px rgba(56,72,100,0.16),inset 0 1px 0 rgba(255,255,255,0.78);}
+.feature-card.feature-primary{min-height:0;}
+.feature-media{width:100%;height:176px;object-fit:cover;object-position:center;background:#fff8ef;padding:0;border-bottom:1px solid rgba(255,255,255,0.62);transition:transform .28s cubic-bezier(.16,1,.3,1);}
+.feature-card:hover .feature-media{transform:scale(1.015);}
+.feature-content{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;gap:12px;background:rgba(255,255,255,0.7);flex:1;}
+.feature-kicker{font-family:var(--mono);font-size:11px;letter-spacing:1.2px;color:var(--accent);text-transform:uppercase;}
+.feature-card h3{font-family:var(--display);font-size:26px;line-height:1.16;letter-spacing:-.4px;}
+.feature-card p{color:var(--text-dim);font-size:13.5px;line-height:1.58;max-width:560px;}
+.feature-proof{display:grid;gap:8px;margin-top:2px;}
+.feature-proof div{display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:start;padding:9px 11px;border:1px solid rgba(255,255,255,0.62);border-radius:14px;background:rgba(255,255,255,0.68);}
+.feature-proof b{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.8px;}
+.feature-proof span{font-size:12px;color:var(--text);line-height:1.45;}
+.feature-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+.feature-link{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:8px 12px;border-radius:999px;background:rgba(245,159,47,0.9);border:1px solid rgba(255,255,255,0.58);color:#fffaf3;text-decoration:none;font-family:var(--mono);font-size:11px;font-weight:700;transition:transform .22s,box-shadow .22s;}
+.feature-link:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(245,159,47,0.2);}
+.all-work-label{display:flex;align-items:center;gap:16px;margin:10px 0 18px;color:var(--text-dim);}
+.all-work-label span{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:1px;white-space:nowrap;}
+.all-work-label::after{content:'';height:1px;flex:1;background:var(--border);}
 .filters{display:flex;gap:10px;margin-bottom:34px;flex-wrap:wrap;}
 .filter{font-family:var(--mono);font-size:13px;padding:8px 16px;border:1px solid rgba(255,255,255,0.52);border-radius:20px;background:rgba(255,255,255,0.26);color:var(--text-dim);cursor:pointer;transition:all .22s;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
 .filter:hover{color:var(--text);border-color:var(--text-dim);}
@@ -578,6 +616,8 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .float-logo.fl-visible{opacity:1;transition:opacity .6s ease, box-shadow .25s, transform .25s;}
 .float-logo:hover{box-shadow:0 10px 36px rgba(245,159,47,0.38),0 0 0 2px var(--accent);transform:scale(1.14) !important;}
 .float-logo img{width:52px;height:52px;object-fit:contain;pointer-events:none;}
+.float-logo::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 12px);width:210px;transform:translate(-50%,8px);padding:10px 12px;border-radius:14px;background:rgba(255,255,255,0.86);border:1px solid rgba(255,255,255,0.78);box-shadow:0 18px 44px rgba(56,72,100,0.18);font-family:var(--mono);font-size:11px;line-height:1.45;color:var(--text);text-align:left;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);}
+.float-logo:hover::after{opacity:1;transform:translate(-50%,0);}
 #fl-leyang img,#fl-yidao img{width:66px;height:66px;}
 /* 各 logo 不规则位置：右侧无文字区（left>52%） */
 #fl-leyang{left:58%;top:22%;}
@@ -621,11 +661,13 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 .clink:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
 
 /* ===== Reveal animation ===== */
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);will-change:opacity,transform;}
-.reveal.in{opacity:1;transform:translateY(0);will-change:auto;}
-.reveal.d1{transition-delay:.08s;}
-.reveal.d2{transition-delay:.16s;}
-.reveal.d3{transition-delay:.24s;}
+.reveal{opacity:0;transform:translate3d(0,46px,0) scale(.975);filter:blur(8px);transition:opacity .82s cubic-bezier(.16,1,.3,1),transform .82s cubic-bezier(.18,1.25,.28,1),filter .72s cubic-bezier(.16,1,.3,1);transition-delay:var(--reveal-delay,0ms);will-change:opacity,transform,filter;}
+.reveal.in{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0);will-change:auto;}
+.reveal.d1{--reveal-delay:90ms;}
+.reveal.d2{--reveal-delay:180ms;}
+.reveal.d3{--reveal-delay:270ms;}
+.reveal-pop{animation:softPop .74s cubic-bezier(.18,1.25,.28,1) both;}
+@keyframes softPop{0%{opacity:0;transform:translate3d(0,36px,0) scale(.965);filter:blur(8px);}62%{opacity:1;transform:translate3d(0,-6px,0) scale(1.012);filter:blur(0);}100%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0);}}
 
 /* ===== Hermes diagram ===== */
 .hermes-diagram {
@@ -692,12 +734,21 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   padding: 20px 12px 12px;
   border: 1px solid rgba(255,255,255,0.5);
   background: rgba(255,255,255,0.23);
+  transition:border-color .35s,box-shadow .35s,background .35s;
 }
 .workflow-diagram svg {
   width: 100%;
   height: auto;
   display: block;
 }
+.workflow-diagram.is-active{border-color:rgba(245,159,47,0.55);box-shadow:0 22px 70px rgba(245,159,47,0.14);background:rgba(255,255,255,0.34);}
+.workflow-diagram.is-active rect{animation:workflowPulse 2.8s ease-in-out infinite;}
+.workflow-diagram.is-active g:nth-of-type(4) rect{animation-delay:.15s;}
+.workflow-diagram.is-active g:nth-of-type(5) rect{animation-delay:.3s;}
+.workflow-diagram.is-active g:nth-of-type(6) rect{animation-delay:.45s;}
+.workflow-diagram.is-active g:nth-of-type(7) rect{animation-delay:.6s;}
+.workflow-diagram.is-active g:nth-of-type(8) rect{animation-delay:.75s;}
+@keyframes workflowPulse{0%,100%{opacity:1;}50%{opacity:.82;}}
 
 /* ===== Responsive ===== */
 @media(max-width:900px){
@@ -705,6 +756,9 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   .about-highlights{grid-template-columns:repeat(2,minmax(0,1fr));}
   .about-card ul{grid-template-columns:repeat(2,minmax(0,1fr));}
   .grid{grid-template-columns:repeat(2,1fr);}
+  .signal-grid{grid-template-columns:repeat(2,1fr);}
+  .featured-work{grid-template-columns:1fr;}
+  .feature-media{height:190px;}
   .stats{grid-template-columns:repeat(2,1fr);}
   .stat:nth-child(2){border-right:none;}
   .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border);}
@@ -723,8 +777,30 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   .about-card ul{grid-template-columns:1fr;gap:8px;}
   .about-card li{padding:11px 12px;}
   .about-photo{height:220px;}
-  .hero{min-height:100vh;}
+  .hero{min-height:100vh;padding-top:92px;}
   .hero h1{font-size:clamp(44px,18vw,76px);}
+  .hero-desc{font-size:15px;line-height:1.62;padding:18px 18px;border-radius:22px;}
+  .hero-proof{gap:8px;}
+  .hero-proof span{white-space:normal;font-size:11px;padding:7px 10px;}
+  .signal-section{margin-top:0;padding-bottom:34px;}
+  .signal-grid{grid-template-columns:1fr;gap:10px;}
+  .signal-card{min-height:auto;padding:18px;border-radius:22px;}
+  .signal-card h3{font-size:20px;margin:12px 0 8px;}
+  .featured-work{gap:14px;}
+  .feature-card,.feature-card.feature-primary{border-radius:22px;}
+  .feature-media{height:170px;}
+  .feature-content{padding:18px;}
+  .feature-card h3{font-size:23px;}
+  .feature-proof div{grid-template-columns:1fr;gap:4px;}
+  .work-intro{font-size:14px;margin-top:-18px;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+  .reveal{opacity:1;transform:none;filter:none;}
+  .bg-grid,.bg-glow,.float-logo{animation:none!important;}
+  .hero-backdrop video{display:none;}
 }
 
 /* ===== AI Chat ===== */
@@ -1352,24 +1428,55 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
   </h1>
   <div class="hero-sub" id="typed">AI 硬件 / AI 玩具产品经理<span class="cursor"></span></div>
   <p class="hero-desc">
-    胡强斌 Chopper 是 AI 硬件 / AI 玩具产品经理，主导火火兔百万级 AI 玩具产品线，推动 JD.com 品类登顶，获国家级科技成果认证，并搭建行业首个品牌侧 AI Agent DIY 平台。
-    从校园创业到 AI 硬件产品经理，擅长把 AI 技术落地为消费级产品。
-    兼具商业嗅觉和工程落地能力，正在带领公司完成从贴牌到品牌的关键转型。
-    把 <strong>AI 工具链深度嵌入产品开发全流程</strong>——既懂产品定义与商业落地，也能亲手用 <strong>vibe coding</strong> 构建原型、模拟器与自动化工具。
+    我把 <strong>AI 大模型能力落地成可量产的儿童硬件产品</strong>，也能亲手用 Codex / Claude Code / Qoder 做交互模拟器、AI Agent 和自动化工具。
+    适合需要 <strong>产品定义 + 技术选型 + 原型验证 + 商业落地</strong> 一起推进的 AI 硬件团队。
   </p>
+  <div class="hero-proof" aria-label="核心成果">
+    <span>百万级 AI 玩具产品线</span>
+    <span>京东 AI 早教类目 TOP 1</span>
+    <span>国内领先科技成果评价</span>
+    <span>品牌侧 AI Agent DIY 平台</span>
+  </div>
   <div class="hero-actions">
-    <a href="#work" class="btn btn-primary">查看作品集 →</a>
-    <a href="#contact" class="btn btn-ghost">联系我</a>
+    <a href="#featured-work" class="btn btn-primary">看 3 个代表项目 →</a>
+    <a href="#ai-demo" class="btn btn-ghost">体验 AI 玩具 Demo</a>
+    <button class="btn btn-link" id="heroAskBtn" type="button">问我的作品档案</button>
   </div>
   <div class="scroll-hint"><span>SCROLL</span><span class="bar"></span></div>
 
   <!-- 经历快跳 logos（不规则漂浮在首屏右侧） -->
   <div class="hero-exp-logos" aria-label="经历快速跳转">
-    <a class="float-logo" id="fl-leyang" href="#exp-leyang" aria-label="乐漾JOYIN"><img loading="lazy" src="images/logos/logo-leyang.png" alt="乐漾JOYIN"></a>
-    <a class="float-logo" id="fl-hhtu" href="#exp-hhtu" aria-label="火火兔"><img loading="lazy" src="images/logos/logo-hhtu.png" alt="火火兔"></a>
-    <a class="float-logo" id="fl-vivo" href="#exp-vivo" aria-label="vivo"><img loading="lazy" src="images/logos/logo-vivo.svg" alt="vivo"></a>
-    <a class="float-logo" id="fl-yidao" href="#exp-yidao" aria-label="亿道信息"><img loading="lazy" src="images/logos/logo-yidao.png" alt="亿道信息"></a>
-    <a class="float-logo" id="fl-yxy" href="#exp-yxy" aria-label="颜小芋"><img loading="lazy" src="images/logos/logo-yxy.png" alt="颜小芋"></a>
+    <a class="float-logo" id="fl-leyang" href="#exp-leyang" aria-label="乐漾JOYIN" data-tip="乐漾 JOYIN · 现职：负责 Play-Act 电子 / AI 玩具新品类，面向 Amazon US。"><img loading="lazy" src="images/logos/logo-leyang.png" alt="乐漾JOYIN"></a>
+    <a class="float-logo" id="fl-hhtu" href="#exp-hhtu" aria-label="火火兔" data-tip="火火兔 · AI 玩具转型：百万级产品线，京东 AI 早教机器人类目 TOP 1。"><img loading="lazy" src="images/logos/logo-hhtu.png" alt="火火兔"></a>
+    <a class="float-logo" id="fl-vivo" href="#exp-vivo" aria-label="vivo" data-tip="vivo · 未来星训练营：综合评分第一，活动策划与线下转化经验。"><img loading="lazy" src="images/logos/logo-vivo.svg" alt="vivo"></a>
+    <a class="float-logo" id="fl-yidao" href="#exp-yidao" aria-label="亿道信息" data-tip="亿道信息 · 硬件底子：28 个量产项目，ID/MD/SCH/Layout 全流程评审。"><img loading="lazy" src="images/logos/logo-yidao.png" alt="亿道信息"></a>
+    <a class="float-logo" id="fl-yxy" href="#exp-yxy" aria-label="颜小芋" data-tip="颜小芋 · 校园创业：助农产业链 0→1，累计收购荔浦芋 780 吨。"><img loading="lazy" src="images/logos/logo-yxy.png" alt="颜小芋"></a>
+  </div>
+</section>
+
+<!-- QUICK SIGNAL -->
+<section class="wrap signal-section">
+  <div class="signal-grid reveal">
+    <div class="signal-card">
+      <div class="signal-kicker">NOW</div>
+      <h3>AI 玩具 / 硬件 PM</h3>
+      <p>乐漾 JOYIN · Play-Act 品牌，负责电子 / AI 玩具新品类，从立项、方案商评估到 Amazon US 运营支持。</p>
+    </div>
+    <div class="signal-card">
+      <div class="signal-kicker">PROOF</div>
+      <h3>把 AI 玩具做成销量</h3>
+      <p>主导火火兔 AI 大模型玩具转型，产品线 2025 累计近百万台，推动京东 AI 早教机器人类目登顶。</p>
+    </div>
+    <div class="signal-card">
+      <div class="signal-kicker">EDGE</div>
+      <h3>懂产品，也能自己造原型</h3>
+      <p>用 Codex / Qoder 构建交互模拟器，用 AI 工具链替代冗长说明书，支撑研发评审和多版本方案对齐。</p>
+    </div>
+    <div class="signal-card">
+      <div class="signal-kicker">FIT</div>
+      <h3>适合 0→1 AI 硬件团队</h3>
+      <p>能同时承担用户场景、ASR/TTS/LLM 选型、方案商协同、成本约束和商业化路径收敛。</p>
+    </div>
   </div>
 </section>
 
@@ -1574,6 +1681,55 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     <span class="sec-title">作品集</span>
     <span class="sec-line"></span>
   </div>
+  <p class="work-intro reveal">
+    先看三个最能代表我的项目：可量产的 AI 玩具产品线、可验证的 AI 硬件平台能力、以及我用 AI coding 亲手搭出的工作流基建。下面的全部案例再按方向筛选。
+  </p>
+  <div class="featured-work reveal" id="featured-work">
+    <article class="feature-card feature-primary" data-visual="量产产品图">
+      <img class="feature-media" src="https://assets.chopperh.me/images/hhtu-ai-toy-line-04.webp" alt="火火兔 G6 Pro AI 智能早教机产品图">
+      <div class="feature-content">
+        <div class="feature-kicker">FEATURED 01 · AI HARDWARE</div>
+        <h3>儿童 AI 玩具产品线</h3>
+        <p>主导火火兔从传统语音故事机转向 AI 大模型玩具，覆盖 ASR / TTS / LLM 选型、方案商协同、交互定义和量产落地。</p>
+        <div class="feature-proof">
+          <div><b>ROLE</b><span>AI 玩具产品经理，推动战略转型和多模型混合架构落地。</span></div>
+          <div><b>IMPACT</b><span>2025 产品线累计近百万台，京东 AI 早教机器人类目 TOP 1。</span></div>
+          <div><b>WHY</b><span>证明我能把 AI 能力做成真实硬件、真实销量和可运营产品线。</span></div>
+        </div>
+        <div class="feature-actions">
+          <a class="feature-link" href="#grid">查看相关案例 ↓</a>
+        </div>
+      </div>
+    </article>
+    <article class="feature-card" data-visual="平台界面证据">
+      <img class="feature-media" src="https://assets.chopperh.me/images/diy-platform.webp" alt="AI 智能体 DIY 平台">
+      <div class="feature-content">
+        <div class="feature-kicker">FEATURED 02 · AI PLATFORM</div>
+        <h3>AI 智能体 DIY 平台</h3>
+        <p>主导落地品牌方硬件 AI 智能体 DIY 小程序，让用户能自定义专属 AI 角色，把硬件从“固定内容”推进到“可共创智能体”。</p>
+        <div class="feature-proof">
+          <div><b>ROLE</b><span>平台产品定义、角色系统、硬件侧体验闭环。</span></div>
+          <div><b>IMPACT</b><span>行业首个品牌方硬件 AI 智能体 DIY 平台。</span></div>
+        </div>
+      </div>
+    </article>
+    <article class="feature-card" data-visual="出海产品图">
+      <img class="feature-media" src="https://assets.chopperh.me/images/w1-product.webp" alt="Alilo CocoNap W1 白噪音哄睡宝产品图">
+      <div class="feature-content">
+        <div class="feature-kicker">FEATURED 03 · GLOBAL TOY</div>
+        <h3>W1 白噪音哄睡宝</h3>
+        <p>以高音质切入欧美白噪音哄睡市场，推进出海链路，并在升级版加入哭声唤醒算法，兼顾产品定位和技术增量。</p>
+        <div class="feature-proof">
+          <div><b>ROLE</b><span>出海选品、功能规划、升级方案推进。</span></div>
+          <div><b>IMPACT</b><span>Kids' Time Star 2026 波兰国际大奖。</span></div>
+        </div>
+        <div class="feature-actions">
+          <a class="feature-link" href="https://aliloai.com/products/pocket-soother" target="_blank" rel="noopener noreferrer">商品页 ↗</a>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="all-work-label reveal"><span>ALL CASES</span></div>
   <div class="filters reveal">
     <button class="filter active" data-f="all">全部</button>
     <button class="filter" data-f="hw">AI 硬件</button>
@@ -2103,13 +2259,13 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
 
 <!-- AI Chat -->
 <div class="chat-hint">
-  <span id="chatServiceStatusText">作品档案在线</span>
+  <span id="chatServiceStatusText">可提问作品档案</span>
 </div>
 <button class="chat-toggle" id="chatToggle" aria-label="打开作品档案问答">
   <img src="https://assets.chopperh.me/images/chopper-avatar.webp" alt="" class="chat-avatar">
   <span class="chat-toggle-copy">
-    <b>问作品档案</b>
-    <small>经历 / 项目 / 合作</small>
+    <b>问我的作品档案</b>
+    <small>岗位 / 项目 / 技术落地</small>
   </span>
   <span class="chat-status" aria-hidden="true"></span>
 </button>
@@ -2118,17 +2274,17 @@ nav.scrolled{border-bottom-color:rgba(255,255,255,0.62);background:rgba(255,255,
     <img src="https://assets.chopperh.me/images/chopper-avatar.webp" alt="Chopper" class="header-avatar">
     <div class="info">
       <h3>作品档案助手</h3>
-      <p>基于主页内容回答，不替代本人判断</p>
+      <p>快速判断岗位匹配、代表项目和技术落地能力</p>
     </div>
     <button class="chat-close" id="chatClose" aria-label="关闭作品档案问答">×</button>
   </div>
   <div class="chat-messages" id="chatMessages">
-    <div class="message bot">你好，我整理了胡强斌的经历、项目和工具链。你可以直接问某段经历、某个作品，或让它帮你快速判断岗位匹配度。</div>
+    <div class="message bot">你好，我整理了胡强斌的经历、项目和 AI 工具链。你可以直接问：他适合什么岗位、做过哪些 AI 玩具、技术落地能力如何。</div>
   </div>
   <div class="chat-suggestions" aria-label="快捷问题">
-    <button type="button" data-question="用 3 句话介绍胡强斌最适合什么岗位？">适合岗位</button>
-    <button type="button" data-question="他最能代表能力的 3 个项目是什么？">代表项目</button>
-    <button type="button" data-question="如果要合作或面试，建议重点聊哪些问题？">合作/面试</button>
+    <button type="button" data-question="他最适合什么岗位？请用招聘方视角回答。">适合岗位</button>
+    <button type="button" data-question="他做过哪些 AI 玩具？哪些成果最值得看？">AI 玩具成果</button>
+    <button type="button" data-question="他的技术落地能力如何？请结合项目和工具链说明。">技术落地能力</button>
   </div>
   <div class="chat-input">
     <textarea id="chatInput" placeholder="输入你的问题..." rows="2"></textarea>
@@ -2235,36 +2391,19 @@ function formatMarkdown(text) {
 
 // Nav scroll state
 const nav=document.getElementById('nav');
-addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+let navTicking=false;
+addEventListener('scroll',()=>{
+  if(navTicking)return;
+  navTicking=true;
+  requestAnimationFrame(()=>{
+    nav.classList.toggle('scrolled',scrollY>40);
+    navTicking=false;
+  });
+},{passive:true});
 
-// Scroll-controlled full-page hero video
+// Lightweight hero video: avoid scroll-linked currentTime seeking for smoother page scrolling.
 const scrollVideo=document.getElementById('scrollVideo');
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const mobileViewport=window.matchMedia('(max-width: 760px)').matches;
-let videoDuration=0;
-let desiredTime=0;
-let renderedTime=0;
-let rafStarted=false;
-
-function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-
-function updateVideoTarget(){
-  if(!scrollVideo||!videoDuration||reducedMotion||mobileViewport)return;
-  const scrollable=document.documentElement.scrollHeight-window.innerHeight;
-  const progress=scrollable>0?clamp(window.scrollY/scrollable,0,1):0;
-  desiredTime=progress*videoDuration;
-}
-
-function renderScrollVideo(){
-  if(!scrollVideo||!videoDuration||reducedMotion||mobileViewport)return;
-  renderedTime+=(desiredTime-renderedTime)*0.12;
-  if(Math.abs(renderedTime-desiredTime)<0.01)renderedTime=desiredTime;
-  // 限制 currentTime 写入频率：变化超过 1 帧才更新，避免每帧 decode
-  if(Math.abs(scrollVideo.currentTime-renderedTime)>0.033){
-    try{scrollVideo.currentTime=clamp(renderedTime,0,Math.max(videoDuration-0.05,0));}catch(e){}
-  }
-  requestAnimationFrame(renderScrollVideo);
-}
 
 function initScrollVideo(){
   if(!scrollVideo)return;
@@ -2273,29 +2412,14 @@ function initScrollVideo(){
     scrollVideo.currentTime=0;
     return;
   }
-  if(mobileViewport){
-    scrollVideo.loop=true;
-    scrollVideo.autoplay=true;
-    scrollVideo.muted=true;
-    scrollVideo.play().catch(()=>{});
-    return;
-  }
-  videoDuration=scrollVideo.duration||0;
-  renderedTime=0;
-  desiredTime=0;
-  scrollVideo.pause();
-  try{scrollVideo.currentTime=0;}catch(e){}
-  updateVideoTarget();
-  if(!rafStarted){
-    rafStarted=true;
-    requestAnimationFrame(renderScrollVideo);
-  }
+  scrollVideo.loop=true;
+  scrollVideo.muted=true;
+  scrollVideo.playsInline=true;
+  scrollVideo.play().catch(()=>{});
 }
 
 if(scrollVideo){
   scrollVideo.addEventListener('loadedmetadata',initScrollVideo,{once:true});
-  addEventListener('scroll',updateVideoTarget,{passive:true});
-  addEventListener('resize',updateVideoTarget);
   if(scrollVideo.readyState>=1)initScrollVideo();
 }
 
@@ -2319,9 +2443,33 @@ setTimeout(type,1400);
 
 // Reveal on scroll
 const io=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
-},{threshold:0.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in','reveal-pop');
+    io.unobserve(e.target);
+  });
+},{threshold:0.14,rootMargin:'0px 0px -8% 0px'});
+
+document.querySelectorAll('.reveal').forEach((el)=>{
+  const group=el.closest('.signal-grid,.featured-work,.tools,.grid,.exp-cards,.about-grid');
+  if(group){
+    const peers=Array.from(group.querySelectorAll('.reveal'));
+    const index=peers.indexOf(el);
+    if(index>0&&!el.style.getPropertyValue('--reveal-delay')){
+      el.style.setProperty('--reveal-delay',Math.min(index*70,420)+'ms');
+    }
+  }
+  io.observe(el);
+});
+
+// Workflow diagram highlight when it becomes part of the reading flow
+const workflow=document.querySelector('.workflow-diagram');
+if(workflow){
+  const workflowObs=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>workflow.classList.toggle('is-active',entry.isIntersecting));
+  },{threshold:0.42});
+  workflowObs.observe(workflow);
+}
 
 // Stack-img lazy load：卡片进入视口才加载叠图
 const stackObs=new IntersectionObserver(entries=>{
@@ -2501,6 +2649,7 @@ const chatSend=document.getElementById('chatSend');
 const chatClose=document.getElementById('chatClose');
 const chatHint=document.querySelector('.chat-hint');
 const chatServiceStatusText=document.getElementById('chatServiceStatusText');
+const heroAskBtn=document.getElementById('heroAskBtn');
 
 function adjustChatInputHeight(){
   const styles=getComputedStyle(chatInput);
@@ -2530,7 +2679,7 @@ function setChatServiceStatus(isOnline){
   chatToggle.classList.toggle('is-offline',!isOnline);
   chatHint?.classList.toggle('is-offline',!isOnline);
   if(chatServiceStatusText){
-    chatServiceStatusText.textContent=isOnline?'作品档案在线':'作品档案离线';
+    chatServiceStatusText.textContent=isOnline?'可提问作品档案':'作品档案暂时离线';
   }
   chatToggle.setAttribute('aria-label',isOnline?'打开作品档案问答':'打开作品档案问答（服务离线）');
   chatToggle.title=isOnline?'AI 对话服务在线':'AI 对话服务暂时离线';
@@ -2582,6 +2731,13 @@ chatToggle.addEventListener('click',(e)=>{
     adjustChatInputHeight();
     chatInput.focus();
   }
+});
+
+heroAskBtn?.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  chatWindow.classList.add('active');
+  adjustChatInputHeight();
+  chatInput.focus();
 });
 
 chatClose.addEventListener('click',(e)=>{
