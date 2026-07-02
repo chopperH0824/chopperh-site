@@ -42,8 +42,14 @@ wrangler kv key put --binding=MEMORY "memory.md" --path="../memory.md"
 3. 进入 **Settings** → **Variables**
 4. 添加环境变量：
    - **Variable name**: `MIMO_API_KEY`
-   - **Value**: 你的小米 mimo-2.5 API 密钥
+   - **Value**: 你的小米 MiMo 普通 API Key（`sk-...`）
    - 勾选 **Encrypt** 加密存储
+
+也可以使用 Wrangler 写入加密 secret：
+
+```bash
+wrangler secret put MIMO_API_KEY
+```
 
 ### 5. 更新 wrangler.toml
 

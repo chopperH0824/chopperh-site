@@ -2,9 +2,10 @@
 name = "hu-qiangbin-ai-chat"
 main = "worker.js"
 compatibility_date = "2024-01-01"
+account_id = "6b3b8135956978d76031d36a1cacc8da"
 
-# 环境变量（需要在Cloudflare Dashboard中设置）
-# MIMO_API_KEY = "你的小米mimo-2.5 API密钥"
+# 环境变量（需要在 Cloudflare Dashboard 或 wrangler secret 中设置）
+# MIMO_API_KEY = "你的小米 MiMo 普通 API Key（sk-...）"
 
 # KV命名空间（用于存储记忆文件）
 [[kv_namespaces]]

@@ -1,6 +1,17 @@
 // Cloudflare Worker - AI Chat + TTS Proxy
 // 用于代理小米 MiMo API 调用，隐藏 API 密钥，支持流式输出和 TTS
 
+const MIMO_API_BASE_URL = 'https://api.xiaomimimo.com/v1';
+const MIMO_CHAT_MODEL = 'mimo-v2.5-pro';
+const MIMO_TTS_MODEL = 'mimo-v2.5-tts';
+
+function buildMiMoHeaders(env) {
+  return {
+    'Content-Type': 'application/json',
+    'api-key': env.MIMO_API_KEY
+  };
+}
+
 export default {
   async fetch(request, env) {
     const corsHeaders = {
@@ -42,7 +53,7 @@ export default {
   // ─── TTS 处理 ─────────────────────────────────────
   async handleTTS(request, env, corsHeaders) {
     try {
-      const { text, voice = '冰糖', model = 'mimo-v2.5-tts', style } = await request.json();
+      const { text, voice = '冰糖', model = MIMO_TTS_MODEL, style } = await request.json();
 
       if (!text) {
         return new Response(JSON.stringify({ error: 'text is required' }), {
@@ -57,12 +68,9 @@ export default {
       }
       messages.push({ role: 'assistant', content: text });
 
-      const apiResponse = await fetch('https://token-plan-cn.xiaomimimo.com/v1/chat/completions', {
+      const apiResponse = await fetch(`${MIMO_API_BASE_URL}/chat/completions`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.MIMO_API_KEY}`
-        },
+        headers: buildMiMoHeaders(env),
         body: JSON.stringify({
           model,
           messages,
@@ -187,14 +195,11 @@ ${memoryContent}
         { role: 'user', content: message }
       ];
 
-      const apiResponse = await fetch('https://token-plan-cn.xiaomimimo.com/v1/chat/completions', {
+      const apiResponse = await fetch(`${MIMO_API_BASE_URL}/chat/completions`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.MIMO_API_KEY}`
-        },
+        headers: buildMiMoHeaders(env),
         body: JSON.stringify({
-          model: 'mimo-v2.5',
+          model: MIMO_CHAT_MODEL,
           messages: messages,
           max_tokens: 1024,
           temperature: 0.7,
